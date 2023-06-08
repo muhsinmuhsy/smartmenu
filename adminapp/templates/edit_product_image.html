@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<style>
+		.logo{
+			width: 200px;
+		}
+	</style>
+	<!-- wrapper -->
+	<div class="wrapper">
+		<!--sidebar-wrapper-->
+		<div class="sidebar-wrapper" data-simplebar="true">
+			<div class="sidebar-header">
+				<div class="">
+					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
+				</div>
+				
+				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
+				</a>
+			</div>
+			<!--navigation-->
+			<ul class="metismenu" id="menu">
+				<li>
+					<a href="{% url 'admin_index' %}" class="has-arrow">
+						<div class="parent-icon icon-color-5"><i class="bx bx-home-alt"></i>
+						</div>
+						<div class="menu-title">Dashboard</div>
+					</a>
+					
+				</li>
+				
+				
+				
+
+                <li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-7"><i class="bx bx-file"></i>
+						</div>
+						<div class="menu-title">Category</div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'category_add' %}"><i class="bx bx-right-arrow-alt"></i>Add Category</a>
+						</li>
+						<li> <a href="{% url 'category_list'  %}"><i class="bx bx-right-arrow-alt"></i>List Category</a>
+						</li>
+						
+					</ul>
+				</li>
+				
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-9"><i class="bx bx-spa"></i>
+						</div>
+						<div class="menu-title">Products</div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'add_product' %}"><i class="bx bx-right-arrow-alt"></i>Add product</a>
+						</li>
+						<li> <a href="{% url 'product_list' %}"><i class="bx bx-right-arrow-alt"></i>List product</a>
+						</li>
+						
+					</ul>
+				</li>
+				
+				
+			</ul>
+			<!--end navigation-->
+		</div>
+		<!--end sidebar-wrapper-->
+		<!--header-->
+		<header class="top-header">
+			<nav class="navbar navbar-expand">
+				<div class="left-topbar d-flex align-items-center">
+					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
+					</a>
+				</div>
+				<div class="flex-grow-1 search-bar">
+					<div class="input-group">
+						 
+					</div>
+				</div>
+				<div class="right-topbar ms-auto">
+					<ul class="navbar-nav">
+						
+						
+						<li class="nav-item dropdown dropdown-user-profile">
+							<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
+								<div class="d-flex user-box align-items-center">
+									<div class="user-info">
+										<p class="user-name mb-0">Jessica Doe</p>
+										<p class="designattion mb-0">Available</p>
+									</div>
+									<img src="{% static 'images/avatars/avatar-1.png' %}" class="user-img" alt="user avatar">
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">	
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-user"></i><span>Profile</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-cog"></i><span>Settings</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-tachometer"></i><span>Dashboard</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-wallet"></i><span>Earnings</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-cloud-download"></i><span>Downloads</span></a>
+								<div class="dropdown-divider mb-0"></div>	<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-power-off"></i><span>Logout</span></a>
+							</div>
+						</li>
+						<li class="nav-item dropdown dropdown-language">
+							
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!--end header-->
+
+        <!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					
+					<div class="row">
+						<div class="col-xl-7 mx-auto">
+							
+							<hr>
+							<div class="card border-top border-0 border-4 border-primary">
+								<div class="card-body p-5">
+									
+
+									<form class="row g-3" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+										
+
+										<div class="file-upload-container">
+											
+                                            <input type="file" name="image" id="image" accept="image/*" required>
+											<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
+										</div>
+										  
+										
+                                        
+										<div class="col-12">
+											<button type="submit" id="add-button" class="btn btn-primary save-button px-5">Save</button>
+
+                                            <!-- Hidden input field for cropped image data -->
+                                            <input type="hidden" id="cropped-image" name="cropped_image">
+										</div>
+									</form>
+                                        
+                                    
+                                    <div class="image-preview-container">
+                                        <img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
+                                    </div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end row-->
+					
+					
+				</div>
+			</div>
+			<!--end page-content-wrapper-->
+		</div>
+		<!--end page-wrapper-->
+
+		<!--start overlay-->
+		<div class="overlay toggle-btn-mobile"></div>
+		<!--end overlay-->
+		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+		<!--End Back To Top Button-->
+		<!--footer -->
+		<div class="footer">
+			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
+			</p>
+		</div>
+		<!-- end footer -->
+
+    </div>
+
+
+    <!-------------------------------------- Styles -------------------------------------------------------->
+
+    <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
+    <style>
+        .container {
+            margin: 20px auto;
+            max-width: 640px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+
+        /* Style for the file upload container */
+		.file-upload-container {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+          
+          /* Hide the default file input */
+        .file-upload-container input[type="file"] {
+            display: none;
+        }
+          
+          /* Style for the label */
+        .file-upload-container label {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 4px;
+            cursor: pointer;
+            border-style: dashed;
+        }
+          
+          /* Style for the image preview */
+        .image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+          
+          /* Style for the Save button */
+        .save-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .image-preview-container {
+            width: 300px;
+            height: 200px;
+            margin-top: 20px;
+			border-style: groove;
+        }
+    
+        @media (max-width: 576px) {
+            .image-preview-container {
+                width: 269px;
+                height: 418px;
+                
+            }
+        }
+    </style>
+
+
+    <!------------------------------------ Scripts ------------------------------------------------------>
+
+    <script src="{% static 'js/cropper.js' %}"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var image = document.querySelector('#image');
+            var previewImage = document.querySelector('#preview-image');
+            var croppedImageInput = document.querySelector('#cropped-image');
+
+            image.addEventListener('change', function () {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    var cropper = new Cropper(previewImage, {
+                        dragMode: 'move',
+                        aspectRatio: 4 / 3,  // Set the desired aspect ratio (4:3 in this example)
+                        autoCropArea: 0.65,
+                        restore: false,
+                        guides: false,
+                        center: false,
+                        highlight: false,
+                        cropBoxMovable: false,
+                        cropBoxResizable: false,
+                        toggleDragModeOnDblclick: false,
+                    });
+
+                    // Save cropped image when the "Add" button is clicked
+                    var addButton = document.querySelector('button[type="submit"]');
+                    addButton.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        cropper.getCroppedCanvas().toBlob(function (blob) {
+                            var formData = new FormData();
+                            
+                            formData.append('image', blob, 'image.jpg');
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '');
+                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            xhr.onload = function () {
+                                if (xhr.status === 200) {
+                                    // Successful response
+                                    console.log('Image uploaded successfully');
+                                    window.location.href = '{% url "product_detail" product_id=product.id %}';
+                                } else {
+                                    // Error handling
+                                    console.error('Image upload failed');
+                                }
+                            };
+                            xhr.send(formData);
+                        }, 'image/jpeg');
+                    });
+                };
+
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+    </script>
+		
+{% endblock content %}

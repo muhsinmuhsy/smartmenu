@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<style>
+		.logo{
+			width: 200px;
+		}
+	</style>
+	<!-- wrapper -->
+	<div class="wrapper">
+		<!--sidebar-wrapper-->
+		<div class="sidebar-wrapper" data-simplebar="true">
+			<div class="sidebar-header">
+				<div class="">
+					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
+				</div>
+				
+				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
+				</a>
+			</div>
+			<!--navigation-->
+			<ul class="metismenu" id="menu">
+				<li>
+					<a href="{% url 'admin_index' %}" class="has-arrow">
+						<div class="parent-icon icon-color-5"><i class="bx bx-home-alt"></i>
+						</div>
+						<div class="menu-title">Dashboard</div>
+					</a>
+					
+				</li>
+				
+				
+				
+
+                <li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-7"><i class="bx bx-file"></i>
+						</div>
+						<div class="menu-title">Category</div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'category_add' %}"><i class="bx bx-right-arrow-alt"></i>Add Category</a>
+						</li>
+						<li> <a href="{% url 'category_list'  %}"><i class="bx bx-right-arrow-alt"></i>List Category</a>
+						</li>
+						
+					</ul>
+				</li>
+				
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-10"><i class="bx bx-spa"></i>
+						</div>
+						<div class="menu-title">Products</div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'add_product' %}"><i class="bx bx-right-arrow-alt"></i>Add product</a>
+						</li>
+						<li> <a href="{% url 'product_list' %}"><i class="bx bx-right-arrow-alt"></i>List product</a>
+						</li>
+						
+					</ul>
+				</li>
+				
+				
+			</ul>
+			<!--end navigation-->
+		</div>
+		<!--end sidebar-wrapper-->
+		<!--header-->
+		<header class="top-header">
+			<nav class="navbar navbar-expand">
+				<div class="left-topbar d-flex align-items-center">
+					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
+					</a>
+				</div>
+				<div class="flex-grow-1 search-bar">
+					<div class="input-group">
+						 
+					</div>
+				</div>
+				<div class="right-topbar ms-auto">
+					<ul class="navbar-nav">
+						
+						
+						<li class="nav-item dropdown dropdown-user-profile">
+							<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
+								<div class="d-flex user-box align-items-center">
+									<div class="user-info">
+										<p class="user-name mb-0">Jessica Doe</p>
+										<p class="designattion mb-0">Available</p>
+									</div>
+									<img src="{% static 'images/avatars/avatar-1.png' %}" class="user-img" alt="user avatar">
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">	
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-user"></i><span>Profile</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-cog"></i><span>Settings</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-tachometer"></i><span>Dashboard</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-wallet"></i><span>Earnings</span></a>
+								<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-cloud-download"></i><span>Downloads</span></a>
+								<div class="dropdown-divider mb-0"></div>	<a class="dropdown-item" href="javascript:;"><i
+										class="bx bx-power-off"></i><span>Logout</span></a>
+							</div>
+						</li>
+						<li class="nav-item dropdown dropdown-language">
+							
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!--end header-->
+
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					
+					<div class="product-image-container">
+						<img src="{{ product.image.url }}" alt="" class="centered-image">
+					</div>
+					<div class="text-center">
+
+						<button type="button"  class="btn btn-light-dark m-1 px-5 radius-30">
+							<a href="{% url 'edit_product_image' product_id=product.id %}" style="color: black; ">
+								Edit Image
+							</a>
+						</button>
+
+						<button type="button"  class="btn btn-light-dark m-1 px-5 radius-30">
+							<a href="{% url 'edit_product' product_id=product.id %}" style="color: black; ">
+								Edit Details
+							</a>
+						</button>
+
+					</div>
+					<div class="product-title">
+						<h2 style="font-weight: 600; color: #7f7f7f;">{{ product.name }}</h2>
+					</div>
+					
+					<div class="availability">
+						<div class="row align-items-center" style="padding-bottom: 10px; padding-top: 10px;">
+							<div class="col-auto">
+								<p style="font-size: large;" class="mb-0">Availability</p>
+							</div>
+							<div class="col-auto">
+								<label class="switch">
+									<input type="checkbox" {% if product.availability %}checked="checked"{% endif %} onchange="toggleAvailability('{{ product.id }}')">
+									<span class="slider round"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					
+					<div class="product-price">
+						<div>
+							{% for price in product_prices %}
+							  <div class="product-price-style">
+								<h4 style="margin-top: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-left: 10px;"> {{ price.name }}</h4>
+								<p style="padding-left: 10px; margin-bottom: 0px;">Actual Price <span style="padding-left: 15px;">:</span> {{ price.actual_price }}</p>
+								<p style="padding-left: 10px;">Discount price <span>:</span> {{ price.discount_price }}</p>
+							  </div>
+							{% endfor %}
+						</div>
+					</div>
+
+					<div class="product-description">
+						<h6>Description</h6>
+						<p>{{ product.description }}</p>
+
+					</div>
+					
+				</div>
+				<!--end page content-->
+			</div>
+			<!--end page-content-wrapper-->
+		</div>
+		<!--end page-wrapper-->		
+
+
+        <!--start overlay-->
+		<div class="overlay toggle-btn-mobile"></div>
+		<!--end overlay-->
+		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+		<!--End Back To Top Button-->
+		<!--footer -->
+		<div class="footer">
+			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
+			</p>
+		</div>
+		<!-- end footer -->
+    </div>
+
+	<style>
+		
+		  .product-image-container {
+			display: flex;
+			justify-content: center;
+			padding: 10px; /* Optional padding around the image */
+		  }
+		  
+		  .centered-image {
+			max-width: 100%; /* Ensures the image doesn't exceed the container's width */
+			max-height: 100%; /* Ensures the image doesn't exceed the container's height */
+			margin: auto; /* Centers the image horizontally */
+			display: block; /* Removes any extra space below the image */
+			border: none; /* Removes the border around the image */
+			border-radius: 30px;
+		  }
+		  
+		  .product-title{
+			padding-left: 10px;
+			padding-top: 10px;
+		  }
+		  
+		  .product-price-style{
+			border-top-style: dashed;
+			border-top-width: 1px;
+			
+			margin-bottom: 10px;
+		  }
+		  .product-price{
+			border-bottom-style: dashed;
+			border-bottom-width: 1px; /* Adjust the value as needed */
+		  }
+		  
+		  .product-description{
+			padding-left: 10px;
+			padding-top: 10px;
+		  }
+
+		  .availability{
+			padding-left: 10px;
+		  }
+
+
+		  /* Avaialbility switch */
+		
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 40px;
+			height: 20px;
+		}
+		  
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		  
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			border-radius: 34px; /* Rounded shape */
+			transition: .4s;
+		}
+		  
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 16px;
+			left: 2px;
+			bottom: 2px;
+			background-color: white;
+			border-radius: 50%; /* Rounded shape */
+			transition: .4s;
+			}
+		  
+		input:checked + .slider {
+			background-color: #4CAF50; /* Green color */
+		}
+		  
+		input:focus + .slider {
+			box-shadow: 0 0 1px #4CAF50; /* Green color */
+		}
+		  
+		input:checked + .slider:before {
+			transform: translateX(20px);
+		}
+
+		.px-5 {
+			padding-right: 5rem!important;
+			padding-left: 5rem!important;
+		}
+	</style>
+
+	<script>
+		function toggleAvailability(productId) {
+			const url = '/toggle_availability/' + productId + '/';
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': '{{ csrf_token }}'
+				},
+				body: JSON.stringify({})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
+	</script>
+
+{% endblock %}
