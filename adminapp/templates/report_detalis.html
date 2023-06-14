@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>report details</title>
+</head>
+<body>
+    
+    <table>
+        <thead>
+          <tr>
+            <th style="padding-right: 35px;">Product</th>
+            <th style="padding-right: 35px;">Price</th>
+            <th style="padding-right: 35px;">Tax</th>
+            <th style="padding-right: 35px;">Tax with Price</th>
+            <th style="padding-right: 35px;">Quantity</th>
+            <th style="padding-right: 35px;">Tax with Price with Quantity Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cart in order.cart.all %}
+            <tr>
+              <td style="padding-right: 35px;">{{ cart.product_price.product.name }} ( {{ cart.product_price.name}})</td>
+              
+            <td style="padding-right: 35px;">{{ cart.product_price_dummy }}</td>
+              
+            <td style="padding-right: 35px;">{{ cart.tax_dummy }}</td>
+              
+            <td style="padding-right: 35px;">{{ cart.get_total_price_with_tax_dummy }}</td>
+              
+                
+            <td style="padding-right: 35px;">{{ cart.quantity }}</td>
+            <td style="padding-right: 35px;">{{ cart.get_total_tax_with_price_and_quantity_dummy }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+      
+    <p>Total Price: {{ order.get_cart_total }}</p>
+      
+</body>
+</html>

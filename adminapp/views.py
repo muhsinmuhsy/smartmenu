@@ -5,29 +5,91 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils import timezone
+from datetime import date
 
 
 # Create your views here.
 
+
+# @login_required
+# def admin_index(request):
+#     orders = Order.objects.all()  # Fetch all orders
+#     total_orders_count = Order.objects.count()  # Fetch the count of all orders
+#     canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
+    
+#     # Get today's date
+#     today = timezone.now().date()
+
+#     # Filter the orders for today excluding canceled orders
+#     today_orders = Order.objects.filter(date=today, canceled=False)
+
+#     # Calculate the total earnings for today
+#     total_earnings = Decimal(0)
+#     for order in today_orders:
+#         total_earnings += order.get_product_total_price()
+    
+#     order_types = []
+#     for order_type in Order.TYPE:
+#         count = Order.objects.filter(order_type=order_type[0]).count()
+#         order_types.append((order_type[0], order_type[1], count))
+    
+#     context = {
+#         'orders': orders,
+#         'total_orders_count': total_orders_count,
+#         'canceled_orders_count': canceled_orders_count,
+#         'order_types': order_types,
+#         'total_earnings': total_earnings,  # Include the total_earnings in the context
+#     }
+#     return render(request, 'admin_index.html', context)
+
+
+
+# @login_required
+# def admin_index(request):
+#     today = date.today()  # Get today's date
+
+#     # Filter the orders for today excluding canceled orders
+#     orders = Order.objects.filter(date=today, canceled=False)
+
+#     total_orders_count = Order.objects.count()  # Fetch the count of all orders
+#     canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
+    
+#     # Calculate the total earnings for today
+#     total_earnings = Decimal(0)
+#     for order in orders:
+#         total_earnings += order.get_product_total_price()
+    
+#     order_types = []
+#     for order_type in Order.TYPE:
+#         count = Order.objects.filter(order_type=order_type[0]).count()
+#         order_types.append((order_type[0], order_type[1], count))
+    
+#     context = {
+#         'orders': orders,
+#         'total_orders_count': total_orders_count,
+#         'canceled_orders_count': canceled_orders_count,
+#         'order_types': order_types,
+#         'total_earnings': total_earnings,
+#     }
+#     return render(request, 'admin_index.html', context)
 
 
 
 
 @login_required
 def admin_index(request):
-    orders = Order.objects.all()  # Fetch all orders
-    total_orders_count = Order.objects.count()  # Fetch the count of all orders
-    canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
-    
-    # Get today's date
-    today = timezone.now().date()
+    today = date.today()  # Get today's date
 
     # Filter the orders for today excluding canceled orders
-    today_orders = Order.objects.filter(date=today, canceled=False)
+    orders = Order.objects.filter(date=today, canceled=False)
 
+    total_orders_count = orders.count()  # Fetch the count of orders for today
+    
+    canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
+    
     # Calculate the total earnings for today
     total_earnings = Decimal(0)
-    for order in today_orders:
+    for order in orders:
         total_earnings += order.get_product_total_price()
     
     order_types = []
@@ -40,9 +102,10 @@ def admin_index(request):
         'total_orders_count': total_orders_count,
         'canceled_orders_count': canceled_orders_count,
         'order_types': order_types,
-        'total_earnings': total_earnings,  # Include the total_earnings in the context
+        'total_earnings': total_earnings,
     }
     return render(request, 'admin_index.html', context)
+
 
 
 def order_details(request, order_id):
@@ -317,6 +380,29 @@ def edit_product_image(request, product_id):
 
 
 
+# def report(request):
+#     start_date = request.GET.get('start_date')
+#     end_date = request.GET.get('end_date')
+#     order_type = request.GET.get('order_type')
+
+#     orders = Order.objects.all()
+
+#     if start_date:
+#         orders = orders.filter(date__gte=start_date)
+#     if end_date:
+#         orders = orders.filter(date__lte=end_date)
+#     if order_type:
+#         orders = orders.filter(order_type=order_type)
+
+#     context = {
+#         'orders': orders,
+#         'start_date': start_date,  # Pass the start_date to the template
+#         'end_date': end_date,      # Pass the end_date to the template
+#         'order_type': order_type,  # Pass the order_type to the template
+#     }
+
+#     return render(request, 'report.html', context)
+
 def report(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -333,13 +419,17 @@ def report(request):
 
     context = {
         'orders': orders,
-        'start_date': start_date,  # Pass the start_date to the template
-        'end_date': end_date,      # Pass the end_date to the template
-        'order_type': order_type,  # Pass the order_type to the template
+        'start_date': start_date,
+        'end_date': end_date,
+        'order_type': order_type,
     }
 
     return render(request, 'report.html', context)
 
+
+def report_detalis(request, order_id):
+    order = Order.objects.get(id= order_id)
+    return render(request, 'report_detalis.html', {'order': order})
 # --------------------------------- Table ----------------------------------------- #
 
 
@@ -426,4 +516,31 @@ def toggle_category_availability(request, category_id):
     return JsonResponse({'success': True})
 
 
+
+from django.shortcuts import render, redirect
+from .models import Cart
+
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        product_price_id = request.POST.get('product_price_id')
+        quantity = request.POST.get('quantity')
+
+        # Retrieve the corresponding User and ProductPrice objects
+        user = User.objects.get(id=user_id)
+        product_price = ProductPrice.objects.get(id=product_price_id)
+
+        # Create a new Cart object
+        cart = Cart(user=user, product_price=product_price, quantity=quantity)
+        # Perform any additional logic or calculations here if needed
+        cart.save()
+
+        return redirect('admin_index')  # Redirect to a success page or another view
+
+    # Retrieve the list of users and products to populate the dropdowns
+    users = User.objects.all()  
+    products = ProductPrice.objects.all()
+
+    return render(request, 'add_to_cart.html', {'users': users, 'products': products})
 

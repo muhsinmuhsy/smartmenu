@@ -32,7 +32,7 @@ urlpatterns = [
     # --------------------------------- Report ----------------------------------------- #
     
     path('report/', views.report, name='report'),
-     
+    path('report/<int:order_id>/', views.report_detalis, name='report_detalis'),
      # --------------------------------- Table ----------------------------------------- #
      
     path('tables/', views.table_list, name='table_list'),
@@ -51,7 +51,7 @@ urlpatterns = [
     
     
     
-    
+    path('add_to_cart', views.add_to_cart, name='add_to_cart'),
  
 
     

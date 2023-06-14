@@ -26,32 +26,33 @@
     
     <table>
         <thead>
-        <tr>
-            <th>Reference Number</th>
-            <th>Date and Time</th>
-            <th>Total Price</th>
-            <th>Order Name</th>
-            <th>Order Type</th>
-            <th>Action</th>
-        </tr>
+            <tr>
+                <th>Reference Number</th>
+                <th>Date and Time</th>
+                <th>Total Price</th>
+                <th>Order Name</th>
+                <th>Order Type</th>
+                <th>Action</th>
+            </tr>
         </thead>
         <tbody>
-        {% for order in orders %}
-        <tr>
-            <td>{{ order.reference_number }}</td>
-            <td>{{ order.date }} {{ order.time }}</td>
-            <td>{{ order.get_product_total_price }}</td>
-            <td>{{ order.name }}</td>
-            <td>{{ order.get_order_type_display }}</td>
-            <td style="padding-right: 35px;">
-                <a href="{% url 'type_details' order_id=order.id %}">
-                    view
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.reference_number }}</td>
+                <td>{{ order.date }} {{ order.time }}</td>
+                <td>{{ order.get_cart_total }}</td>  <!-- Display the total price -->
+                <td>{{ order.name }}</td>
+                <td>{{ order.get_order_type_display }}</td>
+                <td style="padding-right: 35px;">
+                    <a href="{% url 'report_detalis' order_id=order.id %}">
+                        view
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
+    
   
 
 

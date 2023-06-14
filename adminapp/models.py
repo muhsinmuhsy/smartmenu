@@ -1,6 +1,12 @@
 from django.db import models
 from decimal import Decimal
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+
+
 # Create your models here.
 
 # ------------------------------------------------- Category ---------------------------------------------------------------------- #
@@ -67,15 +73,32 @@ class User(models.Model):
 
 # ------------------------------------------------- Cart ---------------------------------------------------------------------- #
 
+
+
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_price = models.ForeignKey(ProductPrice, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    product_price_dummy = models.CharField(max_length=100, null=True, blank=True)
+    tax_dummy = models.CharField(max_length=100, null=True, blank=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
+
     def __str__(self):
         return self.user.name
     
-    
+    def save(self, *args, **kwargs):
+        if self.product_price.discount_price is not None:
+            price = self.product_price.discount_price
+        else:
+            price = self.product_price.actual_price
+
+        tax_amount = Decimal(price) * Decimal(self.product_price.tax) / 100
+        total_price_with_tax = (Decimal(price) + tax_amount) * Decimal(self.quantity)
+        self.total = total_price_with_tax
+
+        super().save(*args, **kwargs)
+        
     # ITEMS TOTAL PRICE (TOTAL ITEM WITH TAX WITH QUANTITY TOTAL )
     def get_total_price_with_tax(self):
         if self.product_price.discount_price is not None:
@@ -98,6 +121,61 @@ class Cart(models.Model):
         tax_amount = Decimal(price) * Decimal(self.product_price.tax) / 100
         total_tax_with_price_and_quantity = (tax_amount + Decimal(price)) * Decimal(self.quantity)
         return total_tax_with_price_and_quantity
+
+
+    # -- Dummys calculates -- #
+
+    def get_total_price_with_tax_dummy(self):
+        price = self.product_price_dummy
+        tax_amount = Decimal(price) * Decimal(self.tax_dummy) / 100
+        total_price_with_tax = (Decimal(price) + tax_amount) 
+        return total_price_with_tax
+
+    def get_total_tax_with_price_and_quantity_dummy(self):
+        price = self.product_price_dummy
+        tax_amount = Decimal(price) * Decimal(self.tax_dummy) / 100
+        total_tax_with_price_and_quantity = (tax_amount + Decimal(price)) * Decimal(self.quantity)
+        return total_tax_with_price_and_quantity
+
+# @receiver(post_save, sender=Cart)
+# def update_cart_total(sender, instance, created, **kwargs):
+#     if created:
+#         if instance.product_price.discount_price is not None:
+#             price = instance.product_price.discount_price
+#         else:
+#             price = instance.product_price.actual_price
+
+#         tax_amount = Decimal(price) * Decimal(instance.product_price.tax) / 100
+#         total_price_with_tax = (Decimal(price) + tax_amount) * Decimal(instance.quantity)
+#         instance.total = total_price_with_tax
+#         instance.save()
+
+@receiver(post_save, sender=Cart)
+def update_cart_total(sender, instance, created, **kwargs):
+    if created:
+        if instance.product_price.discount_price is not None:
+            price = instance.product_price.discount_price
+        else:
+            price = instance.product_price.actual_price
+
+        tax_amount = Decimal(price) * Decimal(instance.product_price.tax) / 100
+        total_price_with_tax = (Decimal(price) + tax_amount) * Decimal(instance.quantity)
+        instance.total = total_price_with_tax
+
+        # Save discount_price if available, otherwise save actual_price
+        if instance.product_price.discount_price is not None:
+            instance.product_price_dummy = instance.product_price.discount_price
+        else:
+            instance.product_price_dummy = instance.product_price.actual_price
+
+        # Save tax value
+        instance.tax_dummy = instance.product_price.tax
+
+        instance.save()
+
+
+    
+    
   
 # ------------------------------------------------- Order---------------------------------------------------------------------- #
 
@@ -130,6 +208,13 @@ class Order(models.Model):
         for order_item in self.cart.all():
             total_price += order_item.get_total_price_with_tax()
         return total_price
+    
+    # -- For Dummy -- #
+    def get_cart_total(self):
+        total = Decimal(0)
+        for cart_item in self.cart.all():
+            total += cart_item.total
+        return total
 
 # ------------------------------------------------- Table ---------------------------------------------------------------------- #
 
