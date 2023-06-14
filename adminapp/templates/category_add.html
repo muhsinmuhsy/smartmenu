@@ -143,6 +143,8 @@
 											<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
 										</div>
 										  
+										<label for="availability" class="availability-label">Availability</label>
+                                        <input type="checkbox" name="availability" id="availability" class="availability-checkbox">
 										
 										<div class="col-12">
 											<button type="submit" id="add-button" class="btn btn-primary save-button px-5">Save</button>
@@ -291,6 +293,7 @@
                             var formData = new FormData();
                             formData.append('name', document.querySelector('#name').value);
                             formData.append('image', blob, 'image.jpg');
+							formData.append('availability', document.querySelector('#availability').checked ? 'on' : 'off');
 
                             var xhr = new XMLHttpRequest();
                             xhr.open('POST', '');

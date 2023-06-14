@@ -163,18 +163,23 @@
 							{% for price in product_prices %}
 							  <div class="product-price-style">
 								<h4 style="margin-top: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-left: 10px;"> {{ price.name }}</h4>
-								<p style="padding-left: 10px; margin-bottom: 0px;">Actual Price <span style="padding-left: 15px;">:</span> {{ price.actual_price }}</p>
-								<p style="padding-left: 10px;">Discount price <span>:</span> {{ price.discount_price }}</p>
+								<p style="padding-left: 10px; margin-bottom: 0px;">Actual Price <span style="padding-left: 15px;">:</span> {{ price.actual_price }} <span style="padding-left: 10px;">With tax : {{ price.actual_price_with_tax }}</span></p>
+								<p style="padding-left: 10px;">Discount price <span>:</span> {{ price.discount_price }}<span style="padding-left: 15px;">With tax : {{ price.discount_price_with_tax }}</span></p>
+								<p style="padding-left: 10px;">Tax <span>:</span> {{ price.tax }} %</p>
 							  </div>
 							{% endfor %}
 						</div>
 					</div>
+
+					
+
 
 					<div class="product-description">
 						<h6>Description</h6>
 						<p>{{ product.description }}</p>
 
 					</div>
+					<p>Product ID: {{ product.id }}</p>
 					
 				</div>
 				<!--end page content-->

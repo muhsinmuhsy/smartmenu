@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <!-- report.html -->
+    <form method="GET">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+        
+        <label for="order_type">Order Type:</label>
+        <select id="order_type" name="order_type">
+        <option value="">All</option>
+        <option value="Home Delivery" {% if order_type == 'Home Delivery' %}selected{% endif %}>Home Delivery</option>
+        <option value="Take Away" {% if order_type == 'Take Away' %}selected{% endif %}>Take Away</option>
+        </select>
+        
+        <button type="submit">Apply Filter</button>
+    </form>
+    
+    <table>
+        <thead>
+        <tr>
+            <th>Reference Number</th>
+            <th>Date and Time</th>
+            <th>Total Price</th>
+            <th>Order Name</th>
+            <th>Order Type</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.reference_number }}</td>
+            <td>{{ order.date }} {{ order.time }}</td>
+            <td>{{ order.get_product_total_price }}</td>
+            <td>{{ order.name }}</td>
+            <td>{{ order.get_order_type_display }}</td>
+            <td style="padding-right: 35px;">
+                <a href="{% url 'type_details' order_id=order.id %}">
+                    view
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  
+
+
+</body>
+</html>

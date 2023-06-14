@@ -176,6 +176,12 @@
                                             <i class='bx bx-trash-alt'></i>
                                         </a>
                                     </button>
+
+									<label class="switch">
+										<input type="checkbox" {% if category.availability %}checked="checked"{% endif %} onchange="toggleCategoryAvailability('{{ category.id }}')">
+										<span class="slider round"></span>
+									</label>
+									
                                 </div>
                             </div>
                         {% endfor %}
@@ -230,5 +236,26 @@
             padding-bottom: 3px;
         }
     </style>
+	
+	<script>
+		function toggleCategoryAvailability(categoryId) {
+			const url = '/toggle_category_availability/' + categoryId + '/';
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': '{{ csrf_token }}'
+				},
+				body: JSON.stringify({})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
 		
+	</script>
 {% endblock content %}

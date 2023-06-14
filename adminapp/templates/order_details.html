@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ 
+  
+  <h2>Order Details - Order ID: {{ order.id }}</h2>
+
+<h3>Order Items:</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="padding-right: 35px;">Product</th>
+      <th style="padding-right: 35px;">Price</th>
+      <th style="padding-right: 35px;">Tax</th>
+      <th style="padding-right: 35px;">Tax with Price</th>
+      <th style="padding-right: 35px;">Quantity</th>
+      <th style="padding-right: 35px;">Tax with Price + Quantity Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cart in order.cart.all %}
+      <tr>
+        <td style="padding-right: 35px;">{{ cart.product_price.product.name }} ( {{ cart.product_price.name}})</td>
+        {% if cart.product_price.discount_price %}
+          <td style="padding-right: 35px;">{{ cart.product_price.discount_price }}</td>
+        {% else %}
+          <td style="padding-right: 35px;">{{ cart.product_price.actual_price }}</td>
+        {% endif %}
+        <td style="padding-right: 35px;">{{ cart.product_price.tax }}</td>
+        {% if cart.product_price.discount_price %}
+          <td style="padding-right: 35px;">{{ cart.product_price.calculate_discount_price_with_tax }}</td>
+        {% else %}
+          <td style="padding-right: 35px;">{{ cart.product_price.calculate_actual_price_with_tax }}</td>
+        {% endif %}
+        <td style="padding-right: 35px;">{{ cart.quantity }}</td>
+        <td style="padding-right: 35px;">{{ cart.get_total_tax_with_price_and_quantity }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>Total Price: {{ order.get_product_total_price }}</p>
+
+
+
+
+
+
+
+
+  
+
+
+
+
+</body>
+</html>

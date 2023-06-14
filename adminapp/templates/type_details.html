@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Type Details</h3>
+    <p>Reference Number: {{ order.reference_number }}</p>
+    <p>Date: {{ order.date }}</p>
+
+    {% if order.order_type == 'Home Delivery' %}
+        <p>Type: Home Delivery</p>
+        <p>Name: {{ order.name }}</p>
+        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
+        <p>Contact Number: {{ order.contact_number }}</p>
+        <p>Address One: {{ order.address_one }}</p>
+        <p>Address Two: {{ order.address_two }}</p>
+        <p>Address Three: {{ order.address_three }}</p>
+        <p>Order Note: {{ order.order_note }}</p>
+    {% elif order.order_type == 'Take Away' %}
+        <p>Type: Take Away</p>
+        <p>Name: {{ order.name }}</p>
+        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
+        <p>Contact Number: {{ order.contact_number }}</p>
+        <p>Address One: {{ order.address_one }}</p>
+        <p>Address Two: {{ order.address_two }}</p>
+        <p>Address Three: {{ order.address_three }}</p>
+        <p>Pickup Time: {{ order.time }}</p>
+    {% endif %}
+
+</body>
+</html>

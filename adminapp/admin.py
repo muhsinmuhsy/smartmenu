@@ -4,3 +4,7 @@ from adminapp. models import *
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(ProductPrice)
+admin.site.register(Cart)
+admin.site.register(Order)
+admin.site.register(User)
+

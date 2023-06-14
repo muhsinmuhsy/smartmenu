@@ -349,47 +349,52 @@
 										
                                         <div class="add-product-container">    
                                             <form method="POST" enctype="multipart/form-data">
-                                                {% csrf_token %}
-                                            
-                                                <!-- Product fields -->
-                                                <label for="name">Product Name</label>
-                                                <input type="text" id="name" name="name" value="{{ product.name }}" required>
-                                                <br><br>
-                                            
-                                                
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="category">Categories</label>
-                                                    <select class="multiple-select" name="category" id="category" multiple>
-                                                        {% for category in categories %}
-														<option value="{{ category.id }}" {% if category in product.category.all %}selected{% endif %}>{{ category.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                        
-                                                
-
-                                                
-                                        
-                                                <label for="description">Description</label>
-                                                <input type="text" name="description" id="description"  value="{{ product.description }}" required>
-
-                                                <br><br>
-                                        
-                                                <label for="availability" class="availability-label">Availability</label>
-                                                <input type="checkbox" name="availability" id="availability" {% if product.availability %}checked{% endif %} class="availability-checkbox">
-
-                                                <br><br>
-                                        
-                                                <!-- Main Product Price -->
-                                                <label for="price_name">Price Name:</label>
+												{% csrf_token %}
+											
+												<!-- Product fields -->
+												<label for="name">Product Name</label>
+												<input type="text" id="name" name="name" value="{{ product.name }}" required>
+												<br><br>
+											
+												<div class="mb-3">
+													<label class="form-label" for="category">Categories</label>
+													<select class="multiple-select" name="category" id="category" multiple>
+														{% for category in categories %}
+															<option value="{{ category.id }}" {% if category in product.category.all %}selected{% endif %}>{{ category.name }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											
+												<label for="description">Description</label>
+												<input type="text" name="description" id="description" value="{{ product.description }}" required>
+												<br><br>
+											
+												<label for="availability" class="availability-label">Availability</label>
+												<input type="checkbox" name="availability" id="availability" {% if product.availability %}checked{% endif %} class="availability-checkbox">
+												<br><br>
+											
+												<!-- Main Product Price -->
+												<label for="quantity">Quantity:</label>
+												<select name="quantity">
+													<option value="Portion">Portion</option>
+													<option value="Quarter">Quarter</option>
+													<option value="Full">Full</option>
+													<option value="Small">Small</option>
+													<option value="Medium">Medium</option>
+													<option value="Large">Large</option>
+												</select>
+											
 												<input type="text" id="price_name" name="price_name" value="{{ product_price.name }}" required>
 												<label for="actual_price">Actual Price:</label>
 												<input type="text" id="actual_price" name="actual_price" value="{{ product_price.actual_price }}" required>
 												<label for="discount_price">Discount Price:</label>
-												<input type="text" id="discount_price" name="discount_price" value="{{ product_price.discount_price }}" required>
-                                        
-                                                <hr>
-                                                <!-- Additional Product Prices -->
+												<input type="text" id="discount_price" name="discount_price" value="{{ product_price.discount_price }}" >
+												<label for="tax">Tax:</label>
+												<input type="text" id="tax" name="tax" value="{{ product_price.tax }}" required>
+											
+												<hr>
+											
+												<!-- Additional Product Prices -->
 												{% for additional_price in product.productprice_set.all %}
 													{% if not forloop.first %}
 														<label for="additional_price_name_{{ additional_price.id }}">Additional Price Name:</label>
@@ -397,15 +402,15 @@
 														<label for="additional_actual_price_{{ additional_price.id }}">Additional Actual Price:</label>
 														<input type="text" id="additional_actual_price_{{ additional_price.id }}" name="additional_actual_price[]" value="{{ additional_price.actual_price }}" required>
 														<label for="additional_discount_price_{{ additional_price.id }}">Additional Discount Price:</label>
-														<input type="text" id="additional_discount_price_{{ additional_price.id }}" name="additional_discount_price[]" value="{{ additional_price.discount_price }}" required>
+														<input type="text" id="additional_discount_price_{{ additional_price.id }}" name="additional_discount_price[]" value="{{ additional_price.discount_price }}" >
 														<input type="hidden" name="additional_price_id[]" value="{{ additional_price.id }}">
 														<hr>
 													{% endif %}
 												{% endfor %}
-                                                <button type="submit" id="add-button">Update</button>
-    
-                                                
-                                            </form>
+											
+												<button type="submit" id="add-button">Update</button>
+											</form>
+											
 
                                             
 

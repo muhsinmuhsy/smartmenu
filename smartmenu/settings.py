@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     
     #new
     'adminapp',
-    'u_auth'
+    'u_auth',
+    'apiapp',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

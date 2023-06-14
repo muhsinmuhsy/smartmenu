@@ -388,17 +388,34 @@
                                         
                                                 <!-- Product Price fields -->
                                                 <label for="price_name">Price Name</label>
-                                                <input type="text" name="price_name" id="price_name">
+                                                    <select name="price_name" id="price_name">
+                                                    <option value="Portion">Portion</option>
+                                                    <option value="Quarter">Quarter</option>
+                                                    <option value="Full">Full</option>
+                                                    <option value="Small">Small</option>
+                                                    <option value="Medium">Medium</option>
+                                                    <option value="Large">Large</option>
+                                                    </select>
                                                 <br><br>
+
+
                                         
                                                 <label for="actual_price">Actual Price</label>
                                                 <input type="number" name="actual_price" id="actual_price">
                                                 <br><br>
                                         
+                                                
+
                                                 <label for="discount_price">Discount Price</label>
                                                 <input type="number" name="discount_price" id="discount_price">
                                                 <br><br>
-                                        
+
+                                                <br><br>
+                                                
+                                                <label for="tax">Tax (%)</label>
+                                                <input type="number" name="tax" id="tax">
+                                                <br><br>
+
                                                 
                                                 <!-- Additional Product Price fields -->
                                                 <div id="additional_prices"></div>
@@ -499,15 +516,18 @@
                             formData.append('price_name', document.querySelector('#price_name').value);
                             formData.append('actual_price', document.querySelector('#actual_price').value);
                             formData.append('discount_price', document.querySelector('#discount_price').value);
+                            formData.append('tax', document.querySelector('#tax').value);
     
                             var additionalPriceNames = document.querySelectorAll('.additional_price_name');
                             var additionalActualPrices = document.querySelectorAll('.additional_actual_price');
                             var additionalDiscountPrices = document.querySelectorAll('.additional_discount_price');
+                            var additionalTax = document.querySelectorAll('.additional_tax');
     
                             for (var i = 0; i < additionalPriceNames.length; i++) {
                                 formData.append('additional_price_name[]', additionalPriceNames[i].value);
                                 formData.append('additional_actual_price[]', additionalActualPrices[i].value);
                                 formData.append('additional_discount_price[]', additionalDiscountPrices[i].value);
+                                formData.append('additional_tax[]', additionalTax[i].value);
                             }
     
                             var xhr = new XMLHttpRequest();
@@ -535,27 +555,61 @@
     
 
     <script>
-        /* For additional price adding*/
+        /* For additional price adding */
         function addPriceFields() {
             const additionalPricesContainer = document.getElementById('additional_prices');
-
+    
             const priceFields = document.createElement('div');
             priceFields.classList.add('price_fields');
-
+    
             const priceNameLabel = document.createElement('label');
             priceNameLabel.textContent = 'Additional Price Name:';
-            const priceNameInput = document.createElement('input');
-            priceNameInput.type = 'text';
-            priceNameInput.name = 'additional_price_name[]';
-            priceNameInput.classList.add('additional_price_name');
+    
+            const priceNameSelect = document.createElement('select');
+            priceNameSelect.name = 'additional_price_name[]';
+            priceNameSelect.classList.add('additional_price_name');
 
+            // Create option elements
+            const option1 = document.createElement('option');
+            option1.value = 'Portion';
+            option1.textContent = 'Portion';
+
+            const option2 = document.createElement('option');
+            option2.value = 'Quarter';
+            option2.textContent = 'Quarter';
+
+            const option3 = document.createElement('option');
+            option3.value = 'Full';
+            option3.textContent = 'Full';
+
+            const option4 = document.createElement('option');
+            option4.value = 'Small';
+            option4.textContent = 'Small';
+
+            const option5 = document.createElement('option');
+            option5.value = 'Medium';
+            option5.textContent = 'Medium';
+
+            const option6 = document.createElement('option');
+            option6.value = 'Large';
+            option6.textContent = 'Large';
+
+            // Append options to the select dropdown
+            priceNameSelect.appendChild(option1);
+            priceNameSelect.appendChild(option2);
+            priceNameSelect.appendChild(option3);
+            priceNameSelect.appendChild(option4);
+            priceNameSelect.appendChild(option5);
+            priceNameSelect.appendChild(option6);
+
+    
             const actualPriceLabel = document.createElement('label');
             actualPriceLabel.textContent = 'Additional Actual Price:';
             const actualPriceInput = document.createElement('input');
             actualPriceInput.type = 'number';
             actualPriceInput.name = 'additional_actual_price[]';
             actualPriceInput.classList.add('additional_actual_price');
-
+    
             const discountPriceLabel = document.createElement('label');
             discountPriceLabel.textContent = 'Additional Discount Price:';
             const discountPriceInput = document.createElement('input');
@@ -563,10 +617,15 @@
             discountPriceInput.name = 'additional_discount_price[]';
             discountPriceInput.classList.add('additional_discount_price');
 
-           
-
+            const TaxLabel = document.createElement('label');
+            TaxLabel.textContent = 'Additional Tax:';
+            const TaxInput = document.createElement('input');
+            TaxInput.type = 'number';
+            TaxInput.name = 'additional_tax[]';
+            TaxInput.classList.add('additional_tax');
+    
             priceFields.appendChild(priceNameLabel);
-            priceFields.appendChild(priceNameInput);
+            priceFields.appendChild(priceNameSelect);
             priceFields.appendChild(document.createElement('br'));
             priceFields.appendChild(document.createElement('br'));
             priceFields.appendChild(actualPriceLabel);
@@ -578,11 +637,17 @@
             priceFields.appendChild(document.createElement('br'));
             priceFields.appendChild(document.createElement('br'));
 
+            priceFields.appendChild(TaxLabel);
+            priceFields.appendChild(TaxInput);
+            priceFields.appendChild(document.createElement('br'));
+            priceFields.appendChild(document.createElement('br'));
+    
             additionalPricesContainer.appendChild(priceFields);
         }
-
-        /* End additional price adding*/
+    
+        /* End additional price adding */
     </script>
+    
 
 	<script>
         /* For category add*/

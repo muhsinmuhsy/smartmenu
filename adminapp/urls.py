@@ -4,6 +4,9 @@ from django.urls import path
 urlpatterns = [
     path('',views.admin_index,name='admin_index'),
     
+    path('order/<int:order_id>/', views.order_details, name='order_details'),
+    path('type/<int:order_id>/', views.type_details, name='type_details'),
+    
     # --------------------------- Category ---------------------------------------------- #
     
     path('category/', views.category_list, name='category_list'),
@@ -25,9 +28,33 @@ urlpatterns = [
     
     path('<int:product_id>/edit_image', views.edit_product_image, name='edit_product_image'),
     
+    
+    # --------------------------------- Report ----------------------------------------- #
+    
+    path('report/', views.report, name='report'),
+     
+     # --------------------------------- Table ----------------------------------------- #
+     
+    path('tables/', views.table_list, name='table_list'),
+    path('tables/create/', views.table_create, name='table_create'),
+    path('tables/<int:table_id>/update/', views.table_update, name='table_update'),
+    path('tables/<int:table_id>/delete/', views.table_delete, name='table_delete'),
+    path('tables/status/', views.table_status, name='table_status'),
+    path('tables/filter/', views.table_filter, name='table_filter'),
+    path('tables/sort/', views.table_sort, name='table_sort'),
+    # path('tables/<int:table_id>/assign/<int:order_id>/', views.table_assign, name='table_assign'),
+    
     # ---------------------- For product avalability toggle on/of switch --------------------#
         
     path('toggle_availability/<int:product_id>/', views.toggle_availability, name='toggle_availability'),
+    path('toggle_category_availability/<int:category_id>/', views.toggle_category_availability, name='toggle_category_availability'),
     
+    
+    
+    
+ 
+
     
 ]
+
+
