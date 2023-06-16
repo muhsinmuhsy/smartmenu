@@ -1,11 +1,7 @@
 from django.db import models
 from decimal import Decimal
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
-
 
 # Create your models here.
 
@@ -111,7 +107,6 @@ class Cart(models.Model):
         return total_price_with_tax
     
     # ONE ONE ITEM WITH QUANTITYS WITH TOTAL
-
     def get_total_tax_with_price_and_quantity(self):
         if self.product_price.discount_price is not None:
             price = self.product_price.discount_price
@@ -123,8 +118,7 @@ class Cart(models.Model):
         return total_tax_with_price_and_quantity
 
 
-    # -- Dummys calculates -- #
-
+    # -- DUMMY CALCULATES -- #
     def get_total_price_with_tax_dummy(self):
         price = self.product_price_dummy
         tax_amount = Decimal(price) * Decimal(self.tax_dummy) / 100
@@ -137,19 +131,8 @@ class Cart(models.Model):
         total_tax_with_price_and_quantity = (tax_amount + Decimal(price)) * Decimal(self.quantity)
         return total_tax_with_price_and_quantity
 
-# @receiver(post_save, sender=Cart)
-# def update_cart_total(sender, instance, created, **kwargs):
-#     if created:
-#         if instance.product_price.discount_price is not None:
-#             price = instance.product_price.discount_price
-#         else:
-#             price = instance.product_price.actual_price
 
-#         tax_amount = Decimal(price) * Decimal(instance.product_price.tax) / 100
-#         total_price_with_tax = (Decimal(price) + tax_amount) * Decimal(instance.quantity)
-#         instance.total = total_price_with_tax
-#         instance.save()
-
+# -- AUTO SAVE THE DUMMY FIELD -- #
 @receiver(post_save, sender=Cart)
 def update_cart_total(sender, instance, created, **kwargs):
     if created:
