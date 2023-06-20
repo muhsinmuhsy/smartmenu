@@ -1,209 +1,279 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
 {% load static %}
-{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashbord</title>
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <!-- Bootstrap css for icon eg:bi -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- bx font css -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<!-- Font awesome icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- cropper css -->
+	<link rel="stylesheet" href="{% static 'css/cropper.css' %}">
+
+
+	
 	<style>
-		.logo{
-			width: 200px;
+    .container {
+      margin: 20px auto;
+      max-width: 640px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  </style>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
 		}
-	</style>
-	<!-- wrapper -->
-	<div class="wrapper">
-		<!--sidebar-wrapper-->
-		<div class="sidebar-wrapper" data-simplebar="true">
-			<div class="sidebar-header">
-				<div class="">
-					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
-				</div>
-				
-				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
-				</a>
-			</div>
-			<!--navigation-->
-			<ul class="metismenu" id="menu">
-				<li>
-					<a href="{% url 'admin_index' %}" class="has-arrow">
-						<div class="parent-icon icon-color-5"><i class="bx bx-home-alt"></i>
-						</div>
-						<div class="menu-title">Dashboard</div>
-					</a>
-					
-				</li>
-				
-				
-				
+		  
+		.menu-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			position: fixed;
+			top: 15px;
+			left: 10px;
+			z-index: 100;
+		}
+		  
+		.menu-icon i {
+			font-size: 20px;
+		}
+		  
+		#sidebar {
+			  width: 250px;
+			  height: 100vh;
+			  background-color: #666666;
+			  position: fixed;
+			  top: 0;
+			
+			  transition: left 0.3s ease-in-out;
+			  z-index: 100;
+			  padding-left: 10px;
+			  padding-top: 17px;
+			  border-bottom-right-radius: 30px;
+			  border-top-right-radius: 30px;
+			  overflow-y: scroll;
+			  scrollbar-width: thin;
+			  scrollbar-color: transparent transparent;
+			
+		}
+		@media (max-width: 1300px) {
+			#sidebar{
+				left: -250px;
+			}
+		  }
+		#sidebar::-webkit-scrollbar {
+				width: 0.5em;
+				background-color: transparent;
+		}
+			  
+			  
+		#sidebar::-webkit-scrollbar-thumb {
+				  background-color: transparent;
+			  
+		}
+			  
+			  
+		#sidebar.active::-webkit-scrollbar-thumb {
+				  background-color: #888;
+		}
+			  
+		#sidebar::-webkit-scrollbar-thumb:hover {
+				  background-color: #555;
+			  
+		}
+	  
+		  
+		.slidebar-ul{
+			  padding-top: 30px;
+			  list-style-type: none;
+		}
+		  
+		.slidebar-ul a{
+			  color: #fff;
+			  text-decoration: none;
+		  
+		}
+		  
+		.slidebar-ul li {
+			  position: relative;
+			  margin-bottom: 20px;
+			  padding-bottom: 5px;
+		}
+	  
+		.slidebar-ul li:after {
+			  content: "";
+			  position: absolute;
+			  bottom: -2px;
+			  left: 0;
+			  width: 90%;
+			  height: 2px;
+			  background-color: #fff;
+		}
+		  
+		.dropdown-ul li:after {
+			  content: none;
+		}
+			
+		 
+		.dropdown-ul {
+			  display: none;
+			  list-style: none;
+			  padding-top: 15px;
+		}
+		  
+		  
+		.slidebar-ul li.active .dropdown-ul {
+			  display: block;
+		  }
+			
+		.order-dropdown-icon{
+			  color: #fff;
+			  padding-left: 105px;
+		  
+		}
+		
+		.category-dropdown-icon{
+			  color: #fff;
+			  padding-left: 90px;
+		}
+		.food-dropdown-icon{
+			  color: #fff;
+			  padding-left: 110px;
+		}
+		  
+		 .sidebar-open {
+			left: 0;
+		}
+		  
+		.close-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			color: #fff;
+		}
+		  
+		  .close-icon i {
+			font-size: 20px;
+		  }
+	  
+		.admin-profile{
+			  display: flex;
+			  justify-content: end;
+		 }
+	  
+		  /**/
+		  
+		.table-responsive{
+			margin-left: 280px;
+			margin-right: 35px;
+			margin-top: 15px;
+			border: ridge;
+			border-radius: 5px
+		}
+		.table{
+			margin: 5px;
+		}
+		.table a{
+			text-decoration: none;
+		}
+		@media (max-width: 1300px) {
+			
+			.table-responsive{
 
-                <li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-7"><i class="bx bx-file"></i>
-						</div>
-						<div class="menu-title">Category</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'category_add' %}"><i class="bx bx-right-arrow-alt"></i>Add Category</a>
-						</li>
-						<li> <a href="{% url 'category_list'  %}"><i class="bx bx-right-arrow-alt"></i>List Category</a>
-						</li>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-9"><i class="bx bx-spa"></i>
-						</div>
-						<div class="menu-title">Products</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'add_product' %}"><i class="bx bx-right-arrow-alt"></i>Add product</a>
-						</li>
-						<li> <a href="{% url 'product_list' %}"><i class="bx bx-right-arrow-alt"></i>List product</a>
-						</li>
-						
-					</ul>
-				</li>
-				
-				
-			</ul>
-			<!--end navigation-->
-		</div>
-		<!--end sidebar-wrapper-->
-		<!--header-->
-		<header class="top-header">
-			<nav class="navbar navbar-expand">
-				<div class="left-topbar d-flex align-items-center">
-					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
-					</a>
-				</div>
-				<div class="flex-grow-1 search-bar">
-					<div class="input-group">
-						 
-					</div>
-				</div>
-				<div class="right-topbar ms-auto">
-					<ul class="navbar-nav">
-						
-						
-						<li class="nav-item dropdown dropdown-user-profile">
-							<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-								<div class="d-flex user-box align-items-center">
-									<div class="user-info">
-										<p class="user-name mb-0">Jessica Doe</p>
-										<p class="designattion mb-0">Available</p>
-									</div>
-									<img src="{% static 'images/avatars/avatar-1.png' %}" class="user-img" alt="user avatar">
-								</div>
-							</a>
-							<div class="dropdown-menu dropdown-menu-end">	
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-user"></i><span>Profile</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cog"></i><span>Settings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-tachometer"></i><span>Dashboard</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-wallet"></i><span>Earnings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cloud-download"></i><span>Downloads</span></a>
-								<div class="dropdown-divider mb-0"></div>	<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-power-off"></i><span>Logout</span></a>
-							</div>
-						</li>
-						<li class="nav-item dropdown dropdown-language">
-							
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<!--end header-->
+				margin-left: 20px;
+				margin-right: 3px;
+				padding-right: 20px;
+			}
+		}
+		
+		@media (min-width: 1300px) {
+			.close-icon{
+				display: none;
+			}
+		}
+	
 
-        <!--page-wrapper-->
-		<div class="page-wrapper">
-			<!--page-content-wrapper-->
-			<div class="page-content-wrapper">
-				<div class="page-content">
-					
-					<div class="row">
-						<div class="col-xl-7 mx-auto">
-							
-							
-							<div class="card border-top border-0 border-4 border-primary">
-								<div class="card-body p-5">
-									
-
-									<form class="row g-3" method="post" enctype="multipart/form-data">
-                                        {% csrf_token %}
-										<div class="col-md">
-											<label for="name" class="form-label">Category Name</label>
-											<input type="text" class="form-control" id="name" name="name" required>
-										</div>
-
-										<div class="file-upload-container">
-											<input type="file" id="image" name="image" required>
-											<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
-										</div>
-										  
-										<label for="availability" class="availability-label">Availability</label>
-                                        <input type="checkbox" name="availability" id="availability" class="availability-checkbox">
-										
-										<div class="col-12">
-											<button type="submit" id="add-button" class="btn btn-primary save-button px-5">Save</button>
-
-                                            <!-- Hidden input field for cropped image data -->
-                                            <input type="hidden" id="cropped-image" name="cropped_image">
-										</div>
-									</form>
-                                        
-                                    <div class="image-preview-container">
-                                        <img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
-                                    </div>
-                                    
-
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--end row-->
-					
-					
-				</div>
-			</div>
-			<!--end page-content-wrapper-->
-		</div>
-		<!--end page-wrapper-->
-
-		<!--start overlay-->
-		<div class="overlay toggle-btn-mobile"></div>
-		<!--end overlay-->
-		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-		<!--End Back To Top Button-->
-		<!--footer -->
-		<div class="footer">
-			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
-			</p>
-		</div>
-		<!-- end footer -->
-
-    </div>
-
-
-    <!-------------------------------------- Styles -------------------------------------------------------->
-
-    <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
-    <style>
-        .container {
-            margin: 20px auto;
-            max-width: 640px;
-        }
-
-        img {
-            max-width: 100%;
-        }
+		/* fo cancel icon and whatsapp icon setting in one line */
+		
+		.icons-container {
+			display: inline-flex;
+			align-items: center;
+		}
+		
 
 
-        /* Style for the file upload container */
+		/* Dark mode styles */
+		body.dark-mode {
+			background-color: #222;
+			color: #fff;
+		}
+		
+		body.dark-mode #sidebar {
+			background-color: #333;
+		}
+		
+		body.dark-mode .slidebar-ul a,
+		body.dark-mode .dropdown-ul a {
+			color: #fff;
+		}
+
+		/* Table styles for dark mode */
+		body.dark-mode .table.table-striped thead tr th{
+			color: #fff;
+		}
+		body.dark-mode .table.table-striped tbody tr {
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr td{
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr a {
+			color: #fff;
+		}
+
+
+		.card {
+			margin-top: 15px;
+			margin-left: 280px;
+			margin-right: 30px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			
+		}
+		@media (max-width: 1300px) {
+			.card{
+				margin-left: 0px;
+				margin-right: 0px;
+				margin: 20px;
+			}
+		}
+
+
+		/* Style for the file upload container */
 		.file-upload-container {
-            display: inline-block;
+            display: flex;
+			justify-content: flex-start;
             margin-bottom: 10px;
         }
           
@@ -216,51 +286,244 @@
         .file-upload-container label {
             display: inline-block;
             padding: 6px 12px;
-            background-color: #fff;
-            color: #000;
-            border-radius: 4px;
-            cursor: pointer;
-            border-style: dashed;
-        }
-          
-          /* Style for the image preview */
-        .image-preview {
-            max-width: 300px;
-            max-height: 300px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-          
-          /* Style for the Save button */
-        .save-button {
-            background-color: #007bff;
+            background-color: #666666;
             color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
+            border-radius: 3px;
             cursor: pointer;
+           
         }
 
-        .image-preview-container {
-            width: 300px;
-            height: 200px;
-            margin-top: 20px;
-			border-style: groove;
-        }
-    
-        @media (max-width: 576px) {
-            .image-preview-container {
-                width: 250px;
-                height: 400px;
-                
-            }
-        }
-    </style>
+		.btn {
+			background-color: #680a18;
+			color: #fff;
+			width: 100%;
+		}
 
 
-    <!------------------------------------ Scripts ------------------------------------------------------>
+		/* Avaialbility switch */
+		
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 45px;
+			height: 20px;
+		}
+		  
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		  
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+		}
+		  
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 20px;
+			left: 2px;
+			bottom: 2px;
+			background-color: white;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+			}
+		  
+		input:checked + .slider {
+			background-color: #8cc63f; /* Green color */
+		}
+		  
+		input:focus + .slider {
+			box-shadow: 0 0 1px #8cc63f; /* Green color */
+		}
+		  
+		input:checked + .slider:before {
+			transform: translateX(20px);
+		}
+	</style>
+</head>
+<body>
 
-    <script src="{% static 'js/cropper.js' %}"></script>
+	<!-- Navbar etc -->
+    <header>
+        <div class="menu-icon" id="menuIcon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="sidebar">
+            <div class="close-icon" onclick="closeSidebar()">
+            <i class="fas fa-bars"></i>
+            </div>
+            <img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
+            <ul class="slidebar-ul">
+                <li>
+                <a href="{% url 'admin_index' %}">Dashboard</a>
+                </li>
+                <li>
+                <a href="#">Orders</a>
+                <i class="fas fa-chevron-down order-dropdown-icon" ></i>
+                <ul class="dropdown-ul">
+                    <li><a href="#">All Orders</a></li>
+                    <li><a href="#">Dininig</a></li>
+                    <li><a href="#">Take Away</a></li>
+                    <li><a href="#">Delivery</a></li>
+                </ul>
+                </li>
+                <li>
+                    <a href="#">Category</a>
+                    <i class="fas fa-chevron-down category-dropdown-icon" ></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'category_add' %}">Add Category</a></li>
+                        <li><a href="{% url 'category_list'  %}">Category list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Foods</a>
+                    <i class="fas fa-chevron-down food-dropdown-icon"></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'add_product' %}">Add Food</a></li>
+                        <li><a href="{% url 'product_list' %}">Food list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'report' %}">Report</a>
+                </li>
+				<!-- <li>
+					<input type="checkbox" id="darkModeToggle">
+					<label for="darkModeToggle">Dark Mode</label>
+				</li> -->
+            </ul>
+            <div>
+              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
+            </div>
+            
+            
+        </div>
+        <div class="admin-profile">
+            <img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 10px; margin-right: 10px;">
+        </div>
+    </header>
+	
+    <!-- End navbar etc -->
+
+	<div class="card text-center">
+		
+		<div class="card-body">
+		
+			<form class="row g-3" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="col-md">
+					<label for="name" class="form-label" style="display: flex; justify-content: flex-start;">Category Name</label>
+					<input type="text" class="form-control" id="name" name="name" required>
+				</div>
+
+				<div class="file-upload-container">
+					<input type="file" id="image" name="image" required >
+					<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
+				</div>
+				
+							
+				<p style="display: flex; justify-content: flex-start;">Avaialbility 
+					<span>
+						<label for="availability" class="switch" style="margin-left: 8px;">
+							<input type="checkbox" name="availability" id="availability" class="availability-checkbox">
+							<span class="slider round"></span>
+						</label>
+					</span>
+				</p>
+				<div class="col-12">
+					<button type="submit" id="add-button" class="btn  save-button px-5">Save</button>
+
+					<!-- Hidden input field for cropped image data -->
+					<input type="hidden" id="cropped-image" name="cropped_image">
+				</div>
+			</form>
+				
+			
+			<div class="container">
+				<div style="height: 40vh;">
+					<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
+				</div>
+			</div>
+			
+			
+		</div>
+		
+	</div>
+
+
+	<!-- <div class="image-preview-container">
+		<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
+	</div> -->
+	
+	
+
+	<!-- foe menu open and close -->
+	<script>
+		var menuIcon = document.getElementById("menuIcon");
+		var sidebar = document.getElementById("sidebar");
+	
+		menuIcon.addEventListener("click", function() {
+		  if (sidebar.style.left === "-250px") {
+			sidebar.style.left = "0";
+		  } else {
+			sidebar.style.left = "-250px";
+		  }
+		});
+	
+		function closeSidebar() {
+		  sidebar.style.left = "-250px";
+		}
+	</script>
+	<!-- for slidbar dropdown -->
+	<script>
+		var dropdownItems = document.querySelectorAll('.slidebar-ul .dropdown-ul');
+		var parentItems = document.querySelectorAll('.slidebar-ul > li');
+	
+		parentItems.forEach(function (parentItem) {
+		parentItem.addEventListener('click', function () {
+			this.classList.toggle('active');
+		});
+		});
+	
+	</script>
+	<!-- FOR DARK MODE-->
+	<script>
+		const darkModeToggle = document.querySelector('#darkModeToggle');
+		const body = document.body;
+	  
+		// Check if the user previously selected dark mode
+		const isDarkMode = localStorage.getItem('darkMode') === 'true';
+	  
+		// Set initial dark mode preference
+		if (isDarkMode) {
+		  body.classList.add('dark-mode');
+		  darkModeToggle.checked = true;
+		}
+	  
+		darkModeToggle.addEventListener('change', function() {
+		  if (this.checked) {
+			body.classList.add('dark-mode');
+			localStorage.setItem('darkMode', 'true');
+		  } else {
+			body.classList.remove('dark-mode');
+			localStorage.setItem('darkMode', 'false');
+		  }
+		});
+	  </script>
+	
+
+	<!-- cropper js -->
+	<script src="{% static 'js/cropper.js' %}"></script>
     <script>
         window.addEventListener('DOMContentLoaded', function () {
             var image = document.querySelector('#image');
@@ -273,16 +536,16 @@
                 reader.onload = function (e) {
                     previewImage.src = e.target.result;
                     var cropper = new Cropper(previewImage, {
-                        dragMode: 'move',
-                        aspectRatio: 4 / 3,  // Set the desired aspect ratio (4:3 in this example)
-                        autoCropArea: 0.65,
-                        restore: false,
-                        guides: false,
-                        center: false,
-                        highlight: false,
-                        cropBoxMovable: false,
-                        cropBoxResizable: false,
-                        toggleDragModeOnDblclick: false,
+						viewMode: 3,
+						dragMode: 'move',
+						autoCropArea: 1,
+						restore: false,
+						modal: false,
+						guides: false,
+						highlight: false,
+						cropBoxMovable: false,
+						cropBoxResizable: false,
+						toggleDragModeOnDblclick: false,
                     });
 
                     // Save cropped image when the "Add" button is clicked
@@ -317,5 +580,10 @@
             });
         });
     </script>
-		
-{% endblock content %}
+	  
+
+
+    <!-- Bootstrap Link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>

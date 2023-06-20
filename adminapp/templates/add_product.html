@@ -1,154 +1,276 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Syndash - Bootstrap4 Admin Template</title>
-	<!--favicon-->
-	<link rel="icon" href="{% static 'images/favicon-32x32.png' %}" type="image/png" />
-	<!--plugins-->
-	<link href="{% static 'plugins/simplebar/css/simplebar.css' %}" rel="stylesheet" />
-	<link href="{% static 'plugins/select2/css/select2.min.css' %}" rel="stylesheet" />
-	<link href="{% static 'plugins/select2/css/select2-bootstrap4.css' %}" rel="stylesheet" />
-	<link href="{% static 'plugins/metismenu/css/metisMenu.min.css' %}" rel="stylesheet" />
-	<link href="{% static 'plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet" />
-	<!-- loader-->
-	<link href="{% static 'css/pace.min.css' %}" rel="stylesheet" />
-	<script src="{% static 'js/pace.min.js' %}"></script>
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
-	<!-- Icons CSS -->
-	<link rel="stylesheet" href="{% static 'css/icons.css' %}" />
-	<!-- App CSS -->
-	<link rel="stylesheet" href="{% static 'css/app.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/dark-sidebar.css' %}" />
-	<link rel="stylesheet" href="{% static 'css/dark-theme.css' %}" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashbord</title>
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    <!-- For croping image -->
-    <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
-    
-    <style>
-        .logo{
-			width: 200px;
+    <!-- Bootstrap css for icon eg:bi -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- bx font css -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<!-- Font awesome icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- cropper css -->
+	<link rel="stylesheet" href="{% static 'css/cropper.css' %}">
+	<style>
+    .container {
+      margin: 20px auto;
+      max-width: 640px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  </style>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
 		}
-        /* Add a unique class or ID to the container to prevent style conflicts */
-        .add-product-container {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+		  
+		.menu-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			position: fixed;
+			top: 15px;
+			left: 10px;
+			z-index: 100;
+		}
+		  
+		.menu-icon i {
+			font-size: 20px;
+		}
+		  
+		#sidebar {
+			  width: 250px;
+			  height: 100vh;
+			  background-color: #666666;
+			  position: fixed;
+			  top: 0;
+			
+			  transition: left 0.3s ease-in-out;
+			  z-index: 100;
+			  padding-left: 10px;
+			  padding-top: 17px;
+			  border-bottom-right-radius: 30px;
+			  border-top-right-radius: 30px;
+			  overflow-y: scroll;
+			  scrollbar-width: thin;
+			  scrollbar-color: transparent transparent;
+			
+		}
+		@media (max-width: 1300px) {
+			#sidebar{
+				left: -250px;
+			}
+		  }
+		#sidebar::-webkit-scrollbar {
+				width: 0.5em;
+				background-color: transparent;
+		}
+			  
+			  
+		#sidebar::-webkit-scrollbar-thumb {
+				  background-color: transparent;
+			  
+		}
+			  
+			  
+		#sidebar.active::-webkit-scrollbar-thumb {
+				  background-color: #888;
+		}
+			  
+		#sidebar::-webkit-scrollbar-thumb:hover {
+				  background-color: #555;
+			  
+		}
+	  
+		  
+		.slidebar-ul{
+			  padding-top: 30px;
+			  list-style-type: none;
+		}
+		  
+		.slidebar-ul a{
+			  color: #fff;
+			  text-decoration: none;
+		  
+		}
+		  
+		.slidebar-ul li {
+			  position: relative;
+			  margin-bottom: 20px;
+			  padding-bottom: 5px;
+		}
+	  
+		.slidebar-ul li:after {
+			  content: "";
+			  position: absolute;
+			  bottom: -2px;
+			  left: 0;
+			  width: 90%;
+			  height: 2px;
+			  background-color: #fff;
+		}
+		  
+		.dropdown-ul li:after {
+			  content: none;
+		}
+			
+		 
+		.dropdown-ul {
+			  display: none;
+			  list-style: none;
+			  padding-top: 15px;
+		}
+		  
+		  
+		.slidebar-ul li.active .dropdown-ul {
+			  display: block;
+		  }
+			
+		.order-dropdown-icon{
+			  color: #fff;
+			  padding-left: 105px;
+		  
+		}
+		
+		.category-dropdown-icon{
+			  color: #fff;
+			  padding-left: 90px;
+		}
+		.food-dropdown-icon{
+			  color: #fff;
+			  padding-left: 110px;
+		}
+		  
+		 .sidebar-open {
+			left: 0;
+		}
+		  
+		.close-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			color: #fff;
+		}
+		  
+		  .close-icon i {
+			font-size: 20px;
+		  }
+	  
+		.admin-profile{
+			  display: flex;
+			  justify-content: end;
+		 }
+	  
+		  /**/
+		  
+		.table-responsive{
+			margin-left: 280px;
+			margin-right: 35px;
+			margin-top: 15px;
+			border: ridge;
+			border-radius: 5px
+		}
+		.table{
+			margin: 5px;
+		}
+		.table a{
+			text-decoration: none;
+		}
+		@media (max-width: 1300px) {
+			
+			.table-responsive{
 
-        .add-product-container form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
+				margin-left: 20px;
+				margin-right: 3px;
+				padding-right: 20px;
+			}
+		}
+		
+		@media (min-width: 1300px) {
+			.close-icon{
+				display: none;
+			}
+		}
+	
 
-        .add-product-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .add-product-container input[type="text"],
-        .add-product-container input[type="number"],
-        .add-product-container select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .add-product-container select[multiple] {
-            height: 100px;
-        }
-
-        .add-product-container input[type="file"] {
-            margin-top: 5px;
-        }
-
-        .add-product-container button[type="button"],
-        .add-product-container button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .add-product-container button[type="submit"] {
-            background-color: #007bff;
-        }
-
-        .add-product-container .price_fields {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .availability-label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-          
-        .availability-checkbox {
-            /* Hide the default checkbox */
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #555;
-            border-radius: 4px;
-            outline: none;
-            vertical-align: middle;
-            position: relative;
-            cursor: pointer;
-        }
-          
-        .availability-checkbox:checked {
-            background-color: #555;
-        }
-          
-        .availability-checkbox:checked::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            background-color: white;
-            border-radius: 50%;
-        }
-          
-        .availability-checkbox:focus-visible {
-            /* Add focus outline only when the checkbox is focused using keyboard navigation */
-            outline: 2px solid blue;
-        }
-        
-          
-
-        .container {
-            margin: 20px auto;
-            max-width: 640px;
-        }
-
-        img {
-            max-width: 100%;
-        }
+		/* fo cancel icon and whatsapp icon setting in one line */
+		
+		.icons-container {
+			display: inline-flex;
+			align-items: center;
+		}
+		
 
 
-        /* Style for the file upload container */
+		/* Dark mode styles */
+		body.dark-mode {
+			background-color: #222;
+			color: #fff;
+		}
+		
+		body.dark-mode #sidebar {
+			background-color: #333;
+		}
+		
+		body.dark-mode .slidebar-ul a,
+		body.dark-mode .dropdown-ul a {
+			color: #fff;
+		}
+
+		/* Table styles for dark mode */
+		body.dark-mode .table.table-striped thead tr th{
+			color: #fff;
+		}
+		body.dark-mode .table.table-striped tbody tr {
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr td{
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr a {
+			color: #fff;
+		}
+
+
+		.card {
+			margin-top: 15px;
+			margin-left: 280px;
+			margin-right: 30px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			
+		}
+		@media (max-width: 1300px) {
+			.card{
+				margin-left: 0px;
+				margin-right: 0px;
+				margin: 20px;
+			}
+		}
+
+
+		/* Style for the file upload container */
 		.file-upload-container {
-            display: inline-block;
+            display: flex;
+			justify-content: flex-start;
             margin-bottom: 10px;
         }
           
@@ -161,514 +283,285 @@
         .file-upload-container label {
             display: inline-block;
             padding: 6px 12px;
-            background-color: #fff;
-            color: black;
-            border-radius: 4px;
-            cursor: pointer;
-            border-style: dashed;
-        }
-          
-          /* Style for the image preview */
-        .image-preview {
-            max-width: 300px;
-            max-height: 300px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-          
-          /* Style for the Save button */
-        .save-button {
-            background-color: #3498db;
+            background-color: #666666;
             color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
+            border-radius: 3px;
             cursor: pointer;
+           
         }
 
-        .image-preview-container {
-            width: 300px;
-            height: 200px;
-            margin-top: 20px;
-            border-style: groove;
-        }
-    
-        @media (max-width: 576px) {
-            .image-preview-container {
-                width: 250px;
-                height: 400px;
-                
-            }
-        }
-    </style>
+		
+
+
+		/* Avaialbility switch */
+		
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 45px;
+			height: 20px;
+		}
+		  
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		  
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+		}
+		  
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 20px;
+			left: 2px;
+			bottom: 2px;
+			background-color: white;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+			}
+		  
+		input:checked + .slider {
+			background-color: #8cc63f; /* Green color */
+		}
+		  
+		input:focus + .slider {
+			box-shadow: 0 0 1px #8cc63f; /* Green color */
+		}
+		  
+		input:checked + .slider:before {
+			transform: translateX(20px);
+		}
+	</style>
 </head>
-
 <body>
-	<!-- wrapper -->
-	<div class="wrapper">
-		<!--sidebar-wrapper-->
-		<div class="sidebar-wrapper" data-simplebar="true">
-			<div class="sidebar-header">
-				<div class="">
-					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
-				</div>
-				
-				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
-				</a>
-			</div>
-			<!--navigation-->
-			<ul class="metismenu" id="menu">
-				<li>
-					<a href="{% url 'admin_index' %}" class="has-arrow">
-						<div class="parent-icon icon-color-5"><i class="bx bx-home-alt"></i>
-						</div>
-						<div class="menu-title">Dashboard</div>
-					</a>
-					
-				</li>
-				
-				
-				
 
+	<!-- Navbar etc -->
+    <header>
+        <div class="menu-icon" id="menuIcon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="sidebar">
+            <div class="close-icon" onclick="closeSidebar()">
+            <i class="fas fa-bars"></i>
+            </div>
+            <img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
+            <ul class="slidebar-ul">
                 <li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-7"><i class="bx bx-file"></i>
-						</div>
-						<div class="menu-title">Category</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'category_add' %}"><i class="bx bx-right-arrow-alt"></i>Add Category</a>
-						</li>
-						<li> <a href="{% url 'category_list'  %}"><i class="bx bx-right-arrow-alt"></i>List Category</a>
-						</li>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-10"><i class="bx bx-spa"></i>
-						</div>
-						<div class="menu-title">Products</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'add_product' %}"><i class="bx bx-right-arrow-alt"></i>Add product</a>
-						</li>
-						<li> <a href="{% url 'product_list' %}"><i class="bx bx-right-arrow-alt"></i>List product</a>
-						</li>
-						
-					</ul>
-				</li>
-				
-				
-			</ul>
-			<!--end navigation-->
-		</div>
-		<!--end sidebar-wrapper-->
-		<!--header-->
-		<header class="top-header">
-			<nav class="navbar navbar-expand">
-				<div class="left-topbar d-flex align-items-center">
-					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
-					</a>
-				</div>
-				<div class="flex-grow-1 search-bar">
-					<div class="input-group">
-						 
-					</div>
-				</div>
-				<div class="right-topbar ms-auto">
-					<ul class="navbar-nav">
-						
-						
-						<li class="nav-item dropdown dropdown-user-profile">
-							<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-								<div class="d-flex user-box align-items-center">
-									<div class="user-info">
-										<p class="user-name mb-0">Jessica Doe</p>
-										<p class="designattion mb-0">Available</p>
-									</div>
-									<img src="{% static 'images/avatars/avatar-1.png' %}" class="user-img" alt="user avatar">
-								</div>
-							</a>
-							<div class="dropdown-menu dropdown-menu-end">	
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-user"></i><span>Profile</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cog"></i><span>Settings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-tachometer"></i><span>Dashboard</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-wallet"></i><span>Earnings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cloud-download"></i><span>Downloads</span></a>
-								<div class="dropdown-divider mb-0"></div>	<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-power-off"></i><span>Logout</span></a>
-							</div>
-						</li>
-						<li class="nav-item dropdown dropdown-language">
-							
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<!--end header-->
-		<!--page-wrapper-->
-		<div class="page-wrapper">
-			<!--page-content-wrapper-->
-			<div class="page-content-wrapper">
-				<div class="page-content">
-					<!--breadcrumb-->
-					<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-						<div class="breadcrumb-title pe-3">Products</div>
-						<div class="ps-3">
-							<nav aria-label="breadcrumb">
-								<ol class="breadcrumb mb-0 p-0">
-									<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-									</li>
-									<li class="breadcrumb-item active" aria-current="page">Add Product</li>
-								</ol>
-							</nav>
-						</div>
-						<div class="ms-auto">
-							<div class="btn-group">
-								<button type="button" class="btn btn-primary">Product List</button>
-								
-							</div>
-						</div>
-					</div>
-					<!--end breadcrumb-->
-					<div class="row">
-						<div class="col-xl-9 mx-auto">
-							
-							<hr/>
-							<div class="card">
-								<div class="card-body">
-									<div class="border p-3 rounded">
-										
-                                        <div class="add-product-container">    
-                                            <form method="POST" enctype="multipart/form-data">
-                                                {% csrf_token %}
-                                            
-                                                <!-- Product fields -->
-                                                <label for="name">Product Name</label>
-                                                <input type="text" name="name" id="name">
-                                                <br><br>
-                                            
-                                                
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="category">Categories</label>
-                                                    <select class="multiple-select" name="category" id="category" multiple>
-                                                        {% for category in categories %}
-                                                            <option value="{{ category.id }}">{{ category.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                        
-                                                <div class="file-upload-container">
-                                                    <input type="file" id="image" name="image" required>
-                                                    <label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
-                                                </div>
-
-                                                <div class="image-preview-container">
-                                                    <img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
-                                                </div>
-                                                <br><br>
-                                        
-                                                <label for="description">Description</label>
-                                                <input type="text" name="description" id="description" required>
-
-                                                <br><br>
-                                        
-                                                <label for="availability" class="availability-label">Availability</label>
-                                                <input type="checkbox" name="availability" id="availability" class="availability-checkbox">
-
-                                                <br><br>
-                                        
-                                                <!-- Product Price fields -->
-                                                <label for="price_name">Price Name</label>
-                                                    <select name="price_name" id="price_name">
-                                                    <option value="Portion">Portion</option>
-                                                    <option value="Quarter">Quarter</option>
-                                                    <option value="Full">Full</option>
-                                                    <option value="Small">Small</option>
-                                                    <option value="Medium">Medium</option>
-                                                    <option value="Large">Large</option>
-                                                    </select>
-                                                <br><br>
-
-
-                                        
-                                                <label for="actual_price">Actual Price</label>
-                                                <input type="number" name="actual_price" id="actual_price">
-                                                <br><br>
-                                        
-                                                
-
-                                                <label for="discount_price">Discount Price</label>
-                                                <input type="number" name="discount_price" id="discount_price">
-                                                <br><br>
-
-                                                <br><br>
-                                                
-                                                <label for="tax">Tax (%)</label>
-                                                <input type="number" name="tax" id="tax">
-                                                <br><br>
-
-                                                
-                                                <!-- Additional Product Price fields -->
-                                                <div id="additional_prices"></div>
-                                                <button type="button" onclick="addPriceFields()">Add Additional Price</button>
-                                                <br><br>
-                                        
-                                                <button type="submit" id="add-button">Add</button>
-    
-                                                <!-- Hidden input field for cropped image data -->
-                                                <input type="hidden" id="cropped-image" name="cropped_image">
-                                            </form>
-
-                                            
-
-										</div>
-										
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--end row-->
-				</div>
-			</div>
-			<!--end page-content-wrapper-->
-		</div>
-		<!--end page-wrapper-->
-		<!--start overlay-->
-		<div class="overlay toggle-btn-mobile"></div>
-		<!--end overlay-->
-		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-		<!--End Back To Top Button-->
-		<!--footer -->
-		<div class="footer">
-			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
-			</p>
-		</div>
-		<!-- end footer -->
-	</div>
-	<!-- end wrapper -->
+                <a href="{% url 'admin_index' %}">Dashboard</a>
+                </li>
+                <li>
+                <a href="#">Orders</a>
+                <i class="fas fa-chevron-down order-dropdown-icon" ></i>
+                <ul class="dropdown-ul">
+                    <li><a href="#">All Orders</a></li>
+                    <li><a href="#">Dininig</a></li>
+                    <li><a href="#">Take Away</a></li>
+                    <li><a href="#">Delivery</a></li>
+                </ul>
+                </li>
+                <li>
+                    <a href="#">Category</a>
+                    <i class="fas fa-chevron-down category-dropdown-icon" ></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'category_add' %}">Add Category</a></li>
+                        <li><a href="{% url 'category_list'  %}">Category list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Foods</a>
+                    <i class="fas fa-chevron-down food-dropdown-icon"></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'add_product' %}">Add Food</a></li>
+                        <li><a href="{% url 'product_list' %}">Food list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'report' %}">Report</a>
+                </li>
+				<!-- <li>
+					<input type="checkbox" id="darkModeToggle">
+					<label for="darkModeToggle">Dark Mode</label>
+				</li> -->
+            </ul>
+            <div>
+              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
+            </div>
+            
+            
+        </div>
+        <div class="admin-profile">
+            <img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 10px; margin-right: 10px;">
+        </div>
+    </header>
 	
-	<!-- JavaScript -->
-	<!-- Bootstrap JS -->
-	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- End navbar etc -->
+
 	
-	<!--plugins-->
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	<script src="{% static 'plugins/simplebar/js/simplebar.min.js' %}"></script>
-	<script src="{% static 'plugins/metismenu/js/metisMenu.min.js' %}"></script>
-	<script src="{% static 'plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
-	<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+    <div class="card ">
+		
+		<div class="card-body">
 
-    <!------------------------------- Scripts ------------------------------------>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            
+                <!-- Product fields -->
+                <div class="col-md">
+                    <label for="name" class="form-label" style="display: flex; justify-content: flex-start;">Product Name</label>
+                    
+                    <input type="text" name="name" id="name" class="form-control">
+                </div>
+                
+            
+                
+                <div class="mb-3">
+                    <label class="form-label" for="category">Categories</label>
+                    <select class="multiple-select" name="category" id="category" multiple>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="file-upload-container">
+                    <input type="file" id="image" name="image" required>
+                    <label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
+                </div>
+
+                <div class="image-preview-container">
+                    <img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
+                </div>
+                <br><br>
+        
+                <label for="description">Description</label>
+                <input type="text" name="description" id="description" required>
+
+                <br><br>
+        
+                <label for="availability" class="availability-label">Availability</label>
+                <input type="checkbox" name="availability" id="availability" class="availability-checkbox">
+
+                <br><br>
+        
+                <!-- Product Price fields -->
+                <label for="price_name">Price Name</label>
+                    <select name="price_name" id="price_name">
+                    <option value="Portion">Portion</option>
+                    <option value="Quarter">Quarter</option>
+                    <option value="Full">Full</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    </select>
+                <br><br>
 
 
-    <script src="{% static 'js/cropper.js' %}"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            var image = document.querySelector('#image');
-            var previewImage = document.querySelector('#preview-image');
-            var croppedImageInput = document.querySelector('#cropped-image');
-    
-            image.addEventListener('change', function () {
-                var reader = new FileReader();
-    
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result;
-                    var cropper = new Cropper(previewImage, {
-                        dragMode: 'move',
-                        aspectRatio: 4 / 3,  // Set the desired aspect ratio (4:3 in this example)
-                        autoCropArea: 0.65,
-                        restore: false,
-                        guides: false,
-                        center: false,
-                        highlight: false,
-                        cropBoxMovable: false,
-                        cropBoxResizable: false,
-                        toggleDragModeOnDblclick: false,
-                    });
-    
-                    // Save cropped image when the "Add" button is clicked
-                    var addButton = document.querySelector('#add-button');
-                    addButton.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        cropper.getCroppedCanvas().toBlob(function (blob) {
-                            var formData = new FormData();
-                            formData.append('name', document.querySelector('#name').value);
-                            
-                            var categorySelect = document.querySelector('#category');
-                            var selectedOptions = categorySelect.selectedOptions;
-                            for (var i = 0; i < selectedOptions.length; i++) {
-                                formData.append('category', selectedOptions[i].value);
-                            }
-                            
-                            formData.append('image', blob, 'image.jpg');
-                            formData.append('description', document.querySelector('#description').value);
-                            formData.append('availability', document.querySelector('#availability').checked ? 'on' : 'off');
-                            formData.append('price_name', document.querySelector('#price_name').value);
-                            formData.append('actual_price', document.querySelector('#actual_price').value);
-                            formData.append('discount_price', document.querySelector('#discount_price').value);
-                            formData.append('tax', document.querySelector('#tax').value);
-    
-                            var additionalPriceNames = document.querySelectorAll('.additional_price_name');
-                            var additionalActualPrices = document.querySelectorAll('.additional_actual_price');
-                            var additionalDiscountPrices = document.querySelectorAll('.additional_discount_price');
-                            var additionalTax = document.querySelectorAll('.additional_tax');
-    
-                            for (var i = 0; i < additionalPriceNames.length; i++) {
-                                formData.append('additional_price_name[]', additionalPriceNames[i].value);
-                                formData.append('additional_actual_price[]', additionalActualPrices[i].value);
-                                formData.append('additional_discount_price[]', additionalDiscountPrices[i].value);
-                                formData.append('additional_tax[]', additionalTax[i].value);
-                            }
-    
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', '');
-                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-                            xhr.onload = function () {
-                                if (xhr.status === 200) {
-                                    // Successful response
-                                    console.log('Image uploaded successfully');
-                                    window.location.href = '{% url "product_list" %}';
-                                } else {
-                                    // Error handling
-                                    console.error('Image upload failed');
-                                }
-                            };
-                            xhr.send(formData);
-                        }, 'image/jpeg');
-                    });
-                };
-    
-                reader.readAsDataURL(this.files[0]);
-            });
-        });
-    </script>
-    
+        
+                <label for="actual_price">Actual Price</label>
+                <input type="number" name="actual_price" id="actual_price">
+                <br><br>
+        
+                
 
-    <script>
-        /* For additional price adding */
-        function addPriceFields() {
-            const additionalPricesContainer = document.getElementById('additional_prices');
-    
-            const priceFields = document.createElement('div');
-            priceFields.classList.add('price_fields');
-    
-            const priceNameLabel = document.createElement('label');
-            priceNameLabel.textContent = 'Additional Price Name:';
-    
-            const priceNameSelect = document.createElement('select');
-            priceNameSelect.name = 'additional_price_name[]';
-            priceNameSelect.classList.add('additional_price_name');
+                <label for="discount_price">Discount Price</label>
+                <input type="number" name="discount_price" id="discount_price">
+                <br><br>
 
-            // Create option elements
-            const option1 = document.createElement('option');
-            option1.value = 'Portion';
-            option1.textContent = 'Portion';
+                <br><br>
+                
+                <label for="tax">Tax (%)</label>
+                <input type="number" name="tax" id="tax">
+                <br><br>
 
-            const option2 = document.createElement('option');
-            option2.value = 'Quarter';
-            option2.textContent = 'Quarter';
+                
+                <!-- Additional Product Price fields -->
+                <div id="additional_prices"></div>
+                <button type="button" onclick="addPriceFields()">Add Additional Price</button>
+                <br><br>
+        
+                <button type="submit" id="add-button">Add</button>
 
-            const option3 = document.createElement('option');
-            option3.value = 'Full';
-            option3.textContent = 'Full';
+                <!-- Hidden input field for cropped image data -->
+                <input type="hidden" id="cropped-image" name="cropped_image">
+            </form>
+        </div>
+    </div>
 
-            const option4 = document.createElement('option');
-            option4.value = 'Small';
-            option4.textContent = 'Small';
+	
+	
+	
 
-            const option5 = document.createElement('option');
-            option5.value = 'Medium';
-            option5.textContent = 'Medium';
-
-            const option6 = document.createElement('option');
-            option6.value = 'Large';
-            option6.textContent = 'Large';
-
-            // Append options to the select dropdown
-            priceNameSelect.appendChild(option1);
-            priceNameSelect.appendChild(option2);
-            priceNameSelect.appendChild(option3);
-            priceNameSelect.appendChild(option4);
-            priceNameSelect.appendChild(option5);
-            priceNameSelect.appendChild(option6);
-
-    
-            const actualPriceLabel = document.createElement('label');
-            actualPriceLabel.textContent = 'Additional Actual Price:';
-            const actualPriceInput = document.createElement('input');
-            actualPriceInput.type = 'number';
-            actualPriceInput.name = 'additional_actual_price[]';
-            actualPriceInput.classList.add('additional_actual_price');
-    
-            const discountPriceLabel = document.createElement('label');
-            discountPriceLabel.textContent = 'Additional Discount Price:';
-            const discountPriceInput = document.createElement('input');
-            discountPriceInput.type = 'number';
-            discountPriceInput.name = 'additional_discount_price[]';
-            discountPriceInput.classList.add('additional_discount_price');
-
-            const TaxLabel = document.createElement('label');
-            TaxLabel.textContent = 'Additional Tax:';
-            const TaxInput = document.createElement('input');
-            TaxInput.type = 'number';
-            TaxInput.name = 'additional_tax[]';
-            TaxInput.classList.add('additional_tax');
-    
-            priceFields.appendChild(priceNameLabel);
-            priceFields.appendChild(priceNameSelect);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(actualPriceLabel);
-            priceFields.appendChild(actualPriceInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(discountPriceLabel);
-            priceFields.appendChild(discountPriceInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-
-            priceFields.appendChild(TaxLabel);
-            priceFields.appendChild(TaxInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-    
-            additionalPricesContainer.appendChild(priceFields);
-        }
-    
-        /* End additional price adding */
-    </script>
-    
-
+	<!-- foe menu open and close -->
 	<script>
-        /* For category add*/
-		$('.single-select').select2({
-			theme: 'bootstrap4',
-			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-			placeholder: $(this).data('placeholder'),
-			allowClear: Boolean($(this).data('allow-clear')),
+		var menuIcon = document.getElementById("menuIcon");
+		var sidebar = document.getElementById("sidebar");
+	
+		menuIcon.addEventListener("click", function() {
+		  if (sidebar.style.left === "-250px") {
+			sidebar.style.left = "0";
+		  } else {
+			sidebar.style.left = "-250px";
+		  }
 		});
-		$('.multiple-select').select2({
-			theme: 'bootstrap4',
-			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-			placeholder: $(this).data('placeholder'),
-			allowClear: Boolean($(this).data('allow-clear')),
-		});
-        /* End category add*/
+	
+		function closeSidebar() {
+		  sidebar.style.left = "-250px";
+		}
 	</script>
-	<!-- App JS -->
-	<script src="{% static 'js/app.js' %}"></script>
+	<!-- for slidbar dropdown -->
+	<script>
+		var dropdownItems = document.querySelectorAll('.slidebar-ul .dropdown-ul');
+		var parentItems = document.querySelectorAll('.slidebar-ul > li');
+	
+		parentItems.forEach(function (parentItem) {
+		parentItem.addEventListener('click', function () {
+			this.classList.toggle('active');
+		});
+		});
+	
+	</script>
+	<!-- FOR DARK MODE-->
+	<script>
+		const darkModeToggle = document.querySelector('#darkModeToggle');
+		const body = document.body;
+	  
+		// Check if the user previously selected dark mode
+		const isDarkMode = localStorage.getItem('darkMode') === 'true';
+	  
+		// Set initial dark mode preference
+		if (isDarkMode) {
+		  body.classList.add('dark-mode');
+		  darkModeToggle.checked = true;
+		}
+	  
+		darkModeToggle.addEventListener('change', function() {
+		  if (this.checked) {
+			body.classList.add('dark-mode');
+			localStorage.setItem('darkMode', 'true');
+		  } else {
+			body.classList.remove('dark-mode');
+			localStorage.setItem('darkMode', 'false');
+		  }
+		});
+	  </script>
+	
 
-    
+	<!-- cropper js -->
+	
+
+
+    <!-- Bootstrap Link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
-
 </html>

@@ -6,73 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils import timezone
 from datetime import date
-
+from django.http import HttpResponse
 
 # Create your views here.
-
-
-# @login_required
-# def admin_index(request):
-#     orders = Order.objects.all()  # Fetch all orders
-#     total_orders_count = Order.objects.count()  # Fetch the count of all orders
-#     canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
-    
-#     # Get today's date
-#     today = timezone.now().date()
-
-#     # Filter the orders for today excluding canceled orders
-#     today_orders = Order.objects.filter(date=today, canceled=False)
-
-#     # Calculate the total earnings for today
-#     total_earnings = Decimal(0)
-#     for order in today_orders:
-#         total_earnings += order.get_product_total_price()
-    
-#     order_types = []
-#     for order_type in Order.TYPE:
-#         count = Order.objects.filter(order_type=order_type[0]).count()
-#         order_types.append((order_type[0], order_type[1], count))
-    
-#     context = {
-#         'orders': orders,
-#         'total_orders_count': total_orders_count,
-#         'canceled_orders_count': canceled_orders_count,
-#         'order_types': order_types,
-#         'total_earnings': total_earnings,  # Include the total_earnings in the context
-#     }
-#     return render(request, 'admin_index.html', context)
-
-
-
-# @login_required
-# def admin_index(request):
-#     today = date.today()  # Get today's date
-
-#     # Filter the orders for today excluding canceled orders
-#     orders = Order.objects.filter(date=today, canceled=False)
-
-#     total_orders_count = Order.objects.count()  # Fetch the count of all orders
-#     canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
-    
-#     # Calculate the total earnings for today
-#     total_earnings = Decimal(0)
-#     for order in orders:
-#         total_earnings += order.get_product_total_price()
-    
-#     order_types = []
-#     for order_type in Order.TYPE:
-#         count = Order.objects.filter(order_type=order_type[0]).count()
-#         order_types.append((order_type[0], order_type[1], count))
-    
-#     context = {
-#         'orders': orders,
-#         'total_orders_count': total_orders_count,
-#         'canceled_orders_count': canceled_orders_count,
-#         'order_types': order_types,
-#         'total_earnings': total_earnings,
-#     }
-#     return render(request, 'admin_index.html', context)
-
 
 
 
@@ -84,19 +20,26 @@ def admin_index(request):
     orders = Order.objects.filter(date=today, canceled=False)
 
     total_orders_count = orders.count()  # Fetch the count of orders for today
-    
-    canceled_orders_count = Order.objects.filter(canceled=True).count()  # Fetch the count of canceled orders
-    
+
+    canceled_orders_count = Order.objects.filter(date=today, canceled=True).count()  # Fetch the count of canceled orders for today
+
     # Calculate the total earnings for today
     total_earnings = Decimal(0)
     for order in orders:
         total_earnings += order.get_product_total_price()
-    
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        order = Order.objects.get(id=order_id)
+        order.canceled = True
+        order.save()
+        return HttpResponse(status=204)  # Return a success response
+
     order_types = []
     for order_type in Order.TYPE:
-        count = Order.objects.filter(order_type=order_type[0]).count()
+        count = orders.filter(order_type=order_type[0]).count()
         order_types.append((order_type[0], order_type[1], count))
-    
+
     context = {
         'orders': orders,
         'total_orders_count': total_orders_count,
@@ -105,7 +48,6 @@ def admin_index(request):
         'total_earnings': total_earnings,
     }
     return render(request, 'admin_index.html', context)
-
 
 
 def order_details(request, order_id):

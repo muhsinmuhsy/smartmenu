@@ -1,243 +1,501 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
 {% load static %}
-{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashbord</title>
+    <!-- Bootstrap Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <!-- Bootstrap css for icon eg:bi -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- bx font css -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<!-- Font awesome icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+	
 	<style>
-		.logo{
-			width: 200px;
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		  
+		.menu-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			position: fixed;
+			top: 15px;
+			left: 10px;
+			z-index: 100;
+		}
+		  
+		.menu-icon i {
+			font-size: 20px;
+		}
+		  
+		#sidebar {
+			  width: 250px;
+			  height: 100vh;
+			  background-color: #666666;
+			  position: fixed;
+			  top: 0;
+			
+			  transition: left 0.3s ease-in-out;
+			  z-index: 100;
+			  padding-left: 10px;
+			  padding-top: 17px;
+			  border-bottom-right-radius: 30px;
+			  border-top-right-radius: 30px;
+			  overflow-y: scroll;
+			  scrollbar-width: thin;
+			  scrollbar-color: transparent transparent;
+			
+		}
+		@media (max-width: 1300px) {
+			#sidebar{
+				left: -250px;
+			}
+		  }
+		#sidebar::-webkit-scrollbar {
+				width: 0.5em;
+				background-color: transparent;
+		}
+			  
+			  
+		#sidebar::-webkit-scrollbar-thumb {
+				  background-color: transparent;
+			  
+		}
+			  
+			  
+		#sidebar.active::-webkit-scrollbar-thumb {
+				  background-color: #888;
+		}
+			  
+		#sidebar::-webkit-scrollbar-thumb:hover {
+				  background-color: #555;
+			  
+		}
+	  
+		  
+		.slidebar-ul{
+			  padding-top: 30px;
+			  list-style-type: none;
+		}
+		  
+		.slidebar-ul a{
+			  color: #fff;
+			  text-decoration: none;
+		  
+		}
+		  
+		.slidebar-ul li {
+			  position: relative;
+			  margin-bottom: 20px;
+			  padding-bottom: 5px;
+		}
+	  
+		.slidebar-ul li:after {
+			  content: "";
+			  position: absolute;
+			  bottom: -2px;
+			  left: 0;
+			  width: 90%;
+			  height: 2px;
+			  background-color: #fff;
+		}
+		  
+		.dropdown-ul li:after {
+			  content: none;
+		}
+			
+		 
+		.dropdown-ul {
+			  display: none;
+			  list-style: none;
+			  padding-top: 15px;
+		}
+		  
+		  
+		.slidebar-ul li.active .dropdown-ul {
+			  display: block;
+		  }
+			
+		.order-dropdown-icon{
+			  color: #fff;
+			  padding-left: 105px;
+		  
+		}
+		
+		.category-dropdown-icon{
+			  color: #fff;
+			  padding-left: 90px;
+		}
+		.food-dropdown-icon{
+			  color: #fff;
+			  padding-left: 110px;
+		}
+		  
+		 .sidebar-open {
+			left: 0;
+		}
+		  
+		.close-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 30px;
+			cursor: pointer;
+			color: #fff;
+		}
+		  
+		  .close-icon i {
+			font-size: 20px;
+		  }
+	  
+		.admin-profile{
+			  display: flex;
+			  justify-content: end;
+		 }
+	  
+		  /**/
+		  
+		.table-responsive{
+			margin-left: 280px;
+			margin-right: 35px;
+			margin-top: 15px;
+			border: ridge;
+			border-radius: 5px
+		}
+		.table{
+			margin: 5px;
+		}
+		.table a{
+			text-decoration: none;
+		}
+		@media (max-width: 1300px) {
+			
+			.table-responsive{
+
+				margin-left: 20px;
+				margin-right: 3px;
+				padding-right: 20px;
+			}
+		}
+		
+		@media (min-width: 1300px) {
+			.close-icon{
+				display: none;
+			}
+		}
+	
+
+		/* fo cancel icon and whatsapp icon setting in one line */
+		
+		.icons-container {
+			display: inline-flex;
+			align-items: center;
+		}
+		
+
+
+		/* Dark mode styles */
+		body.dark-mode {
+			background-color: #222;
+			color: #fff;
+		}
+		
+		body.dark-mode #sidebar {
+			background-color: #333;
+		}
+		
+		body.dark-mode .slidebar-ul a,
+		body.dark-mode .dropdown-ul a {
+			color: #fff;
+		}
+
+		/* Table styles for dark mode */
+		body.dark-mode .table.table-striped thead tr th{
+			color: #fff;
+		}
+		body.dark-mode .table.table-striped tbody tr {
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr td{
+			color: #fff;
+		}
+
+		body.dark-mode .table.table-striped tbody tr a {
+			color: #fff;
+		}
+
+		@media (max-width: 1300px) {
+			.col-xs-6 {
+			  flex: 0 0 50%;
+			  max-width: 50%;
+			  padding-right: 0px;
+			}
+		  }
+
+		.container{
+			margin-right: 0px;
+			margin-top: 15px;
+			padding-left: 120px;
+			padding-right: 30px;
+		}
+
+		.card{
+			margin-top: 10px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.card-body p{
+			padding-left: 8px;
+			padding-top: 2px;
+		}
+		.card-body a{
+			text-decoration: none;
+		}
+		@media (max-width: 1300px) {
+			.container{
+				padding-left: 20px;
+			}
+		}
+		.buttons{
+			padding-left: 8px;
+			padding-top: 3px;
+			margin-bottom: 6px;
+		}
+
+		/* Avaialbility switch */
+		
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 45px;
+			height: 20px;
+		}
+		  
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		  
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 3px;
+			left: 0;
+			right: 0;
+			bottom: -3px;
+			background-color: #ccc;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+		}
+		  
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 20px;
+			left: 2px;
+			bottom: 2px;
+			background-color: white;
+			border-radius: 1px; /* Rounded shape */
+			transition: .4s;
+			}
+		  
+		input:checked + .slider {
+			background-color: #8cc63f; /* Green color */
+		}
+		  
+		input:focus + .slider {
+			box-shadow: 0 0 1px #8cc63f; /* Green color */
+		}
+		  
+		input:checked + .slider:before {
+			transform: translateX(20px);
 		}
 	</style>
-	<!-- wrapper -->
-	<div class="wrapper">
-		<!--sidebar-wrapper-->
-		<div class="sidebar-wrapper" data-simplebar="true">
-			<div class="sidebar-header">
-				<div class="">
-					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
-				</div>
-				
-				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
-				</a>
-			</div>
-			<!--navigation-->
-			<ul class="metismenu" id="menu">
-				<li>
-					<a href="{% url 'admin_index' %}" class="has-arrow">
-						<div class="parent-icon icon-color-1"><i class="bx bx-home-alt"></i>
-						</div>
-						<div class="menu-title">Dashboard</div>
-					</a>
-					
-				</li>
-				
-				
-				
+</head>
+<body>
 
+	<!-- Navbar etc -->
+    <header>
+        <div class="menu-icon" id="menuIcon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="sidebar">
+            <div class="close-icon" onclick="closeSidebar()">
+            <i class="fas fa-bars"></i>
+            </div>
+            <img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
+            <ul class="slidebar-ul">
                 <li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-5"><i class="bx bx-file"></i>
-						</div>
-						<div class="menu-title">Category</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'category_add' %}"><i class="bx bx-right-arrow-alt"></i>Add Category</a>
-						</li>
-						<li> <a href="{% url 'category_list'  %}"><i class="bx bx-right-arrow-alt"></i>List Category</a>
-						</li>
-						
-					</ul>
-				</li>
-				
+                <a href="{% url 'admin_index' %}">Dashboard</a>
+                </li>
+                <li>
+                <a href="#">Orders</a>
+                <i class="fas fa-chevron-down order-dropdown-icon" ></i>
+                <ul class="dropdown-ul">
+                    <li><a href="#">All Orders</a></li>
+                    <li><a href="#">Dininig</a></li>
+                    <li><a href="#">Take Away</a></li>
+                    <li><a href="#">Delivery</a></li>
+                </ul>
+                </li>
+                <li>
+                    <a href="#">Category</a>
+                    <i class="fas fa-chevron-down category-dropdown-icon" ></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'category_add' %}">Add Category</a></li>
+                        <li><a href="{% url 'category_list'  %}">Category list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Foods</a>
+                    <i class="fas fa-chevron-down food-dropdown-icon"></i>
+                    <ul class="dropdown-ul">
+                        <li><a href="{% url 'add_product' %}">Add Food</a></li>
+                        <li><a href="{% url 'product_list' %}">Food list</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'report' %}">Report</a>
+                </li>
 				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon icon-color-10"><i class="bx bx-spa"></i>
-						</div>
-						<div class="menu-title">Products</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'add_product' %}"><i class="bx bx-right-arrow-alt"></i>Add product</a>
-						</li>
-						<li> <a href="{% url 'product_list' %}"><i class="bx bx-right-arrow-alt"></i>List product</a>
-						</li>
-						
-					</ul>
+					<input type="checkbox" id="darkModeToggle">
+					<label for="darkModeToggle">Dark Mode</label>
 				</li>
-				
-				
-			</ul>
-			<!--end navigation-->
-		</div>
-		<!--end sidebar-wrapper-->
-		<!--header-->
-		<header class="top-header">
-			<nav class="navbar navbar-expand">
-				<div class="left-topbar d-flex align-items-center">
-					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
-					</a>
-				</div>
-				<div class="flex-grow-1 search-bar">
-					<div class="input-group">
-						 
-					</div>
-				</div>
-				<div class="right-topbar ms-auto">
-					<ul class="navbar-nav">
-						
-						
-						<li class="nav-item dropdown dropdown-user-profile">
-							<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-								<div class="d-flex user-box align-items-center">
-									<div class="user-info">
-										<p class="user-name mb-0">Jessica Doe</p>
-										<p class="designattion mb-0">Available</p>
-									</div>
-									<img src="{% static 'images/avatars/avatar-1.png' %}" class="user-img" alt="user avatar">
-								</div>
-							</a>
-							<div class="dropdown-menu dropdown-menu-end">	
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-user"></i><span>Profile</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cog"></i><span>Settings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-tachometer"></i><span>Dashboard</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-wallet"></i><span>Earnings</span></a>
-								<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-cloud-download"></i><span>Downloads</span></a>
-								<div class="dropdown-divider mb-0"></div>	<a class="dropdown-item" href="javascript:;"><i
-										class="bx bx-power-off"></i><span>Logout</span></a>
-							</div>
-						</li>
-						<li class="nav-item dropdown dropdown-language">
-							
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<!--end header-->
+            </ul>
+            <div>
+              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
+            </div>
+            
+            
+        </div>
+        <div class="admin-profile">
+            <img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 10px; margin-right: 10px;">
+        </div>
+    </header>
+	
+    <!-- End navbar etc -->
+	
 
-        <!--page-wrapper-->
-		<div class="page-wrapper">
-			<!--page-content-wrapper-->
-			<div class="page-content-wrapper">
-				<div class="page-content">
-					<!--breadcrumb-->
-					<div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
-						<div class="breadcrumb-title pe-3">Category</div>
-						<div class="ps-3">
-							<nav aria-label="breadcrumb">
-								<ol class="breadcrumb mb-0 p-0">
-									<li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
-									</li>
-									<li class="breadcrumb-item active" aria-current="page">Category list</li>
-								</ol>
-							</nav>
+	<div class="container">
+		<div class="row">
+			{% for category in categories %}
+				<div class="col-md-6 col-lg-3 col-xs-6">
+					<div class="card">
+						<a href="{% url 'category_products' category.id %}">
+							<img src="{{ category.image.url }}" class="card-img-top" alt="">
+						</a>
+						<div class="card-body" style="padding: 0px;">
+							<p class="card-text">
+								<a href="{% url 'category_products' category.id %}" style="color: #666666; font-weight: 500;">{{ category.name }}</a>
+							</p>
 						</div>
-						<div class="ms-auto">
-							<div class="btn-group">
-								<button type="button" class="btn btn-primary">
-                                    <a href="{% url 'category_add' %}" style="color: white;">
-                                        Add Category
-                                    </a>
-                                </button>
-							</div>
-						</div>
-					</div>
-					
-					  
-					  
-					<!--end breadcrumb-->
-					
-					
-					
-					
-					<hr>
-					
-                    <div class="card-container">
-                        {% for category in categories %}
-                            <div class="card">
-                                <a href="{% url 'category_products' category.id %}">
-                                    <img src="{{ category.image.url }}" class="card-img-top" alt="">
-                                </a>
-                                <div class="card-bodys">
-                                    <h5 class="card-titles">
-                                        <a href="{% url 'category_products' category.id %}" style="color: black;">{{ category.name }}</a>
-                                    </h5>
-                                </div>
-                                <div class="card-button"> 
-                                    <button type="button" class="btn btn-info m-1 card-link">
-                                        <a href="{% url 'category_edit' category.id %}">
-                                            <i class='bx bx-edit-alt' style="color: #ffff;"></i>
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-danger m-1 card-link">
-                                        <a href="{% url 'category_delete' category.id %}" style="color: #fff;" onclick="return confirm('Do you want to logout this page?')">
-                                            <i class='bx bx-trash-alt'></i>
-                                        </a>
-                                    </button>
-
+						<div class="card-body" style="padding: 0px;">
+							<div class="buttons">
+								<span>
+									<a href="{% url 'category_edit' category.id %}"> 
+										<i class='bx bxs-calendar-edit' style="background-color: #0071bc; color: #fff; padding-top: 2px; 
+																				padding-bottom: 4px; padding-left: 5px; padding-right: 5px;
+																				border-radius: 2px;">
+										</i> 
+									</a>
+								</span>
+								<span>
+									<a href="{% url 'category_delete' category.id %}" onclick="return confirm('Do you want to logout this page?')">
+										<i class='bi bi-trash3-fill' style="background-color: #ed1c24; color: #fff; padding-top: 1px; 
+																				padding-bottom: 2px; padding-left: 5px; padding-right: 2px;
+																				border-radius: 2px; font-size: 14px;">
+										</i> 
+									</a>
+								</span>
+								<span style="padding-left: 5px;">
 									<label class="switch">
 										<input type="checkbox" {% if category.availability %}checked="checked"{% endif %} onchange="toggleCategoryAvailability('{{ category.id }}')">
 										<span class="slider round"></span>
 									</label>
-									
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-					<!--end row-->
-					
-					
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
-				<!--end page content-->
-			</div>
-			<!--end page-content-wrapper-->
+			{% endfor %}
 		</div>
-		<!--end page-wrapper-->		
 
-		<!--start overlay-->
-		<div class="overlay toggle-btn-mobile"></div>
-		<!--end overlay-->
-		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-		<!--End Back To Top Button-->
-		<!--footer -->
-		<div class="footer">
-			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
-			</p>
 		</div>
-		<!-- end footer -->
+	  </div>
 
-    </div>
-
-    <style>
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-        }
-    
-        .card-container .card {
-            flex: 0 0 calc(50% - 10px); /* Adjust the width as needed */
-            margin: 5px;
-        }
-    
-        @media (min-width: 768px) {
-            .card-container .card {
-                flex: 0 0 calc(33.3333% - 10px); /* Adjust the width as needed */
-            }
-        }
-
-        .card-bodys{
-            padding-left: 10px;
-            padding-top: 10px;
-        }
-        .card-button{
-            padding-left: 7px;
-            padding-bottom: 3px;
-        }
-    </style>
-	
+	<!-- foe menu open and close -->
 	<script>
+		var menuIcon = document.getElementById("menuIcon");
+		var sidebar = document.getElementById("sidebar");
+	
+		menuIcon.addEventListener("click", function() {
+		  if (sidebar.style.left === "-250px") {
+			sidebar.style.left = "0";
+		  } else {
+			sidebar.style.left = "-250px";
+		  }
+		});
+	
+		function closeSidebar() {
+		  sidebar.style.left = "-250px";
+		}
+	</script>
+	<!-- for slidbar dropdown -->
+	<script>
+		var dropdownItems = document.querySelectorAll('.slidebar-ul .dropdown-ul');
+		var parentItems = document.querySelectorAll('.slidebar-ul > li');
+	
+		parentItems.forEach(function (parentItem) {
+		parentItem.addEventListener('click', function () {
+			this.classList.toggle('active');
+		});
+		});
+	
+	</script>
+	<!-- FOR DARK MODE-->
+	<script>
+		const darkModeToggle = document.querySelector('#darkModeToggle');
+		const body = document.body;
+	  
+		// Check if the user previously selected dark mode
+		const isDarkMode = localStorage.getItem('darkMode') === 'true';
+	  
+		// Set initial dark mode preference
+		if (isDarkMode) {
+		  body.classList.add('dark-mode');
+		  darkModeToggle.checked = true;
+		}
+	  
+		darkModeToggle.addEventListener('change', function() {
+		  if (this.checked) {
+			body.classList.add('dark-mode');
+			localStorage.setItem('darkMode', 'true');
+		  } else {
+			body.classList.remove('dark-mode');
+			localStorage.setItem('darkMode', 'false');
+		  }
+		});
+	  </script>
+	  <!-- for avalability toggler on/off-->
+	  <script>
 		function toggleCategoryAvailability(categoryId) {
 			const url = '/toggle_category_availability/' + categoryId + '/';
 			fetch(url, {
@@ -258,4 +516,11 @@
 		}
 		
 	</script>
-{% endblock content %}
+
+
+	
+
+    <!-- Bootstrap Link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>
