@@ -67,18 +67,26 @@ def product_detail_api(request, pk):
 
     if request.method == 'GET':
         serializer = ProductSerializer(product)
-        return Response(serializer.data)
+        product_prices = ProductPrice.objects.filter(product__id=pk)
+        
+        varients = ProductPriceSerializer(product_prices,many=True)
+        
+        data = [serializer.data,varients.data]
+        
+        array = {'product':data[0],'varients':data[1]}
+        
+        return Response(array)
 
-    elif request.method == 'PUT':
-        serializer = ProductSerializer(product, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # elif request.method == 'PUT':
+    #     serializer = ProductSerializer(product, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
-        product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # elif request.method == 'DELETE':
+    #     product.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
