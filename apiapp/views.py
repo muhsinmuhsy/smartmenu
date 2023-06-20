@@ -58,24 +58,24 @@ def product_list_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def product_detail_api(request, pk):
-    try:
-        product = Product.objects.get(pk=pk)
-    except Product.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def product_detail_api(request, pk):
+#     try:
+#         product = Product.objects.get(pk=pk)
+#     except Product.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = ProductSerializer(product)
-        product_prices = ProductPrice.objects.filter(product__id=pk)
+#     if request.method == 'GET':
+#         serializer = ProductSerializer(product)
+#         product_prices = ProductPrice.objects.filter(product__id=pk)
         
-        varients = ProductPriceSerializer(product_prices,many=True)
+#         varients = ProductPriceSerializer(product_prices,many=True)
         
-        data = [serializer.data,varients.data]
+#         data = [serializer.data,varients.data]
         
-        array = {'product':data[0],'varients':data[1]}
+#         array = {'product':data[0],'varients':data[1]}
         
-        return Response(array)
+#         return Response(array)
 
     # elif request.method == 'PUT':
     #     serializer = ProductSerializer(product, data=request.data)
@@ -88,7 +88,25 @@ def product_detail_api(request, pk):
     #     product.delete()
     #     return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET', 'PUT', 'DELETE'])
+def product_detail_api(request, pk):
+    try:
+        product = Product.objects.get(pk=pk)
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+    if request.method == 'GET':
+        serializer = ProductSerializer(product)
+        product_prices = ProductPrice.objects.filter(product__id=pk)
+        
+        varients = ProductPriceSerializer(product_prices, many=True)
+        
+        response_data = {
+            "product": serializer.data,
+            "variants": varients.data
+        }
+        
+        return Response(response_data)
 
 
 

@@ -350,6 +350,56 @@
 		input:checked + .slider:before {
 			transform: translateX(20px);
 		}
+
+
+		.sava_button {
+			background-color: #680a18;
+			color: #fff;
+			width: 100%;
+		}
+
+		.additional_button {
+			background-color: #0071bc;
+			color: #fff;
+			width: 100%;
+		}
+
+
+		 /* Add custom styles for the elements */
+		 .custom-price-fields {
+			background-color: #f2f2f2;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			margin-top: 10px;
+			display: flex;
+			justify-content: center; /* Center the elements horizontally */
+			align-items: center; /* Center the elements vertically */
+			flex-direction: column; /* Arrange the elements in a column */
+		  }
+		
+		  /* Style the select dropdown */
+		  .additional_price_name {
+			width: 200px;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			
+			
+		  }
+		
+		  /* Style the inputs */
+		  .additional_actual_price,
+		  .additional_discount_price,
+		  .additional_tax {
+			width: 200px;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			display: flex;
+		  }
+		
+		  
 	</style>
 </head>
 <body>
@@ -440,53 +490,73 @@
 					</div>
 					
 					<div class="col-md-6 mt-3">
-						<div class="file-upload-container ">
+						<div class="file-upload-container">
 							<input type="file" id="image" name="image" required>
 							<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
 						</div>
 					</div>
-					
 
-					<div class="col-md-6 mt-3">
-						<div class="image-preview-container">
+					<div class="container">
+						<div style="height: 40vh; background-color: #f8f9fa;">
 							<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
 						</div>
 					</div>
 					
 					
+					
 					<div class="col-md-6 mt-3">
 						<label for="description">Description</label>
-						<input type="text" name="description" id="description" required>
+						<input type="text" name="description" id="description" class="form-control" required>
 					</div>
         
-					<label for="availability" class="availability-label">Availability</label>
-					<input type="checkbox" name="availability" id="availability" class="availability-checkbox">
-        
+					
+					<div class="col-md-6 mt-5">
+						<p style="display: flex; justify-content: flex-start;">Avaialbility 
+							<span>
+								<label for="availability" class="switch" style="margin-left: 8px;">
+									<input type="checkbox" name="availability" id="availability" class="availability-checkbox">
+									<span class="slider round"></span>
+								</label>
+							</span>
+						</p>
+					</div>
 					<!-- Product Price fields -->
-					<label for="price_name">Price Name</label>
-					<select name="price_name" id="price_name">
-						<option value="Portion">Portion</option>
-						<option value="Quarter">Quarter</option>
-						<option value="Full">Full</option>
-						<option value="Small">Small</option>
-						<option value="Medium">Medium</option>
-						<option value="Large">Large</option>
-					</select>
+					<div class="col-md-6 mt-3">
+						<label for="price_name">Price Name</label>
+						<select name="price_name" id="price_name" class="form-control">
+							<option value="Portion">Portion</option>
+							<option value="Quarter">Quarter</option>
+							<option value="Full">Full</option>
+							<option value="Small">Small</option>
+							<option value="Medium">Medium</option>
+							<option value="Large">Large</option>
+						</select>
+					</div>
+					<div class="col-md-6 mt-3">
+						<label for="actual_price">Actual Price</label>
+						<input type="number" name="actual_price" id="actual_price" class="form-control">
+					</div>
 
-					<label for="actual_price">Actual Price</label>
-					<input type="number" name="actual_price" id="actual_price">
+					<div class="col-md-6 mt-3">
+						<label for="discount_price">Discount Price</label>
+						<input type="number" name="discount_price" id="discount_price" class="form-control">
+					</div>
+					<div class="col-md-6 mt-3">
+						<label for="tax">Tax (%)</label>
+						<input type="number" name="tax" id="tax" class="form-control">
+					</div>
+					
 
-					<label for="discount_price">Discount Price</label>
-					<input type="number" name="discount_price" id="discount_price">
-
-					<label for="tax">Tax (%)</label>
-					<input type="number" name="tax" id="tax">
-                
 					<!-- Additional Product Price fields -->
-					<div id="additional_prices"></div>
-					<button type="button" onclick="addPriceFields()">Add Additional Price</button>
-        
-					<button type="submit" id="add-button">Add</button>
+					<div class="mt-3">
+						<div id="additional_prices">
+							<button type="button" class="btn additional_button" onclick="addPriceFields()">Add Additional Price</button>
+						</div>
+					</div>
+
+					<div class=" mt-3">
+						<button type="submit" id="add-button" class="btn sava_button">Save</button>
+					</div>
 
 					<!-- Hidden input field for cropped image data -->
 					<input type="hidden" id="cropped-image" name="cropped_image">
@@ -499,7 +569,7 @@
 	
 	
 
-	<!-- foe menu open and close -->
+	<!-- for menu open and close -->
 	<script>
 		var menuIcon = document.getElementById("menuIcon");
 		var sidebar = document.getElementById("sidebar");
@@ -555,6 +625,188 @@
 	
 
 	<!-- cropper js -->
+	<script src="{% static 'js/cropper.js' %}"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var image = document.querySelector('#image');
+            var previewImage = document.querySelector('#preview-image');
+            var croppedImageInput = document.querySelector('#cropped-image');
+    
+            image.addEventListener('change', function () {
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    var cropper = new Cropper(previewImage, {
+                        viewMode: 3,
+						dragMode: 'move',
+						autoCropArea: 1,
+						restore: false,
+						modal: false,
+						guides: false,
+						highlight: false,
+						cropBoxMovable: false,
+						cropBoxResizable: false,
+						toggleDragModeOnDblclick: false,
+                    });
+    
+                    // Save cropped image when the "Add" button is clicked
+                    var addButton = document.querySelector('#add-button');
+                    addButton.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        cropper.getCroppedCanvas().toBlob(function (blob) {
+                            var formData = new FormData();
+                            formData.append('name', document.querySelector('#name').value);
+                            
+                            var categorySelect = document.querySelector('#category');
+                            var selectedOptions = categorySelect.selectedOptions;
+                            for (var i = 0; i < selectedOptions.length; i++) {
+                                formData.append('category', selectedOptions[i].value);
+                            }
+                            
+                            formData.append('image', blob, 'image.jpg');
+                            formData.append('description', document.querySelector('#description').value);
+                            formData.append('availability', document.querySelector('#availability').checked ? 'on' : 'off');
+                            formData.append('price_name', document.querySelector('#price_name').value);
+                            formData.append('actual_price', document.querySelector('#actual_price').value);
+                            formData.append('discount_price', document.querySelector('#discount_price').value);
+                            formData.append('tax', document.querySelector('#tax').value);
+    
+                            var additionalPriceNames = document.querySelectorAll('.additional_price_name');
+                            var additionalActualPrices = document.querySelectorAll('.additional_actual_price');
+                            var additionalDiscountPrices = document.querySelectorAll('.additional_discount_price');
+                            var additionalTax = document.querySelectorAll('.additional_tax');
+    
+                            for (var i = 0; i < additionalPriceNames.length; i++) {
+                                formData.append('additional_price_name[]', additionalPriceNames[i].value);
+                                formData.append('additional_actual_price[]', additionalActualPrices[i].value);
+                                formData.append('additional_discount_price[]', additionalDiscountPrices[i].value);
+                                formData.append('additional_tax[]', additionalTax[i].value);
+                            }
+    
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '');
+                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            xhr.onload = function () {
+                                if (xhr.status === 200) {
+                                    // Successful response
+                                    console.log('Image uploaded successfully');
+                                    window.location.href = '{% url "product_list" %}';
+                                } else {
+                                    // Error handling
+                                    console.error('Image upload failed');
+                                }
+                            };
+                            xhr.send(formData);
+                        }, 'image/jpeg');
+                    });
+                };
+    
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+    </script>
+    
+
+    <script>
+        /* For additional price adding */
+        function addPriceFields() {
+            const additionalPricesContainer = document.getElementById('additional_prices');
+    
+            const priceFields = document.createElement('div');
+            priceFields.classList.add('price_fields');
+			
+			// Add a class for styling
+			priceFields.classList.add('custom-price-fields');
+			
+            const priceNameLabel = document.createElement('label');
+            priceNameLabel.textContent = 'Additional Price Name:';
+    
+            const priceNameSelect = document.createElement('select');
+            priceNameSelect.name = 'additional_price_name[]';
+            priceNameSelect.classList.add('additional_price_name');
+
+            // Create option elements
+            const option1 = document.createElement('option');
+            option1.value = 'Portion';
+            option1.textContent = 'Portion';
+
+            const option2 = document.createElement('option');
+            option2.value = 'Quarter';
+            option2.textContent = 'Quarter';
+
+            const option3 = document.createElement('option');
+            option3.value = 'Full';
+            option3.textContent = 'Full';
+
+            const option4 = document.createElement('option');
+            option4.value = 'Small';
+            option4.textContent = 'Small';
+
+            const option5 = document.createElement('option');
+            option5.value = 'Medium';
+            option5.textContent = 'Medium';
+
+            const option6 = document.createElement('option');
+            option6.value = 'Large';
+            option6.textContent = 'Large';
+
+            // Append options to the select dropdown
+            priceNameSelect.appendChild(option1);
+            priceNameSelect.appendChild(option2);
+            priceNameSelect.appendChild(option3);
+            priceNameSelect.appendChild(option4);
+            priceNameSelect.appendChild(option5);
+            priceNameSelect.appendChild(option6);
+
+    
+            const actualPriceLabel = document.createElement('label');
+            actualPriceLabel.textContent = 'Additional Actual Price:';
+            const actualPriceInput = document.createElement('input');
+            actualPriceInput.type = 'number';
+            actualPriceInput.name = 'additional_actual_price[]';
+            actualPriceInput.classList.add('additional_actual_price');
+			actualPriceInput.placeholder = 'Enter actual price';
+    
+            const discountPriceLabel = document.createElement('label');
+            discountPriceLabel.textContent = 'Additional Discount Price:';
+            const discountPriceInput = document.createElement('input');
+            discountPriceInput.type = 'number';
+            discountPriceInput.name = 'additional_discount_price[]';
+            discountPriceInput.classList.add('additional_discount_price');
+			discountPriceInput.placeholder = 'Enter discount price';
+
+            const TaxLabel = document.createElement('label');
+            TaxLabel.textContent = 'Additional Tax:';
+            const TaxInput = document.createElement('input');
+            TaxInput.type = 'number';
+            TaxInput.name = 'additional_tax[]';
+            TaxInput.classList.add('additional_tax');
+			TaxInput.placeholder = 'Enter tax amount';
+    
+            priceFields.appendChild(priceNameLabel);
+            priceFields.appendChild(priceNameSelect);
+            priceFields.appendChild(document.createElement('br'));
+          
+            priceFields.appendChild(actualPriceLabel);
+            priceFields.appendChild(actualPriceInput);
+            priceFields.appendChild(document.createElement('br'));
+            
+            priceFields.appendChild(discountPriceLabel);
+            priceFields.appendChild(discountPriceInput);
+            priceFields.appendChild(document.createElement('br'));
+            
+
+            priceFields.appendChild(TaxLabel);
+            priceFields.appendChild(TaxInput);
+            priceFields.appendChild(document.createElement('br'));
+           
+    
+            additionalPricesContainer.appendChild(priceFields);
+        }
+    
+        /* End additional price adding */
+    </script>
 
 	
 
