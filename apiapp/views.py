@@ -73,7 +73,7 @@ def product_detail_api(request, pk):
         
         data = [serializer.data,varients.data]
         
-        array = {'product':data[0],'varients':data[1]}
+        array = {data[0],data[1]}
         
         return Response(array)
 
