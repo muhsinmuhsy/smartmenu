@@ -39,10 +39,8 @@ class ProductPrice(models.Model):
         return f"{self.product} ({self.name})"
 
     def calculate_actual_price_with_tax(self):
-        if self.discount_price is not None:  # Check if discount price is available
-            price = self.discount_price
-        else:
-            price = self.actual_price
+        
+        price = self.actual_price
 
         tax_amount = Decimal(price) * Decimal(self.tax) / 100
         actual_price_with_tax = Decimal(price) + tax_amount

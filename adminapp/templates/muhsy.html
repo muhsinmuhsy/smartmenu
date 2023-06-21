@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+	<style>
+		.logo{
+			width: 200px;
+		}
+	</style>
 	<!-- wrapper -->
 	<div class="wrapper">
 		<!--sidebar-wrapper-->
 		<div class="sidebar-wrapper" data-simplebar="true">
 			<div class="sidebar-header">
 				<div class="">
-					<img src="{% static 'images/logo-icon.png' %}" class="logo-icon-2" alt="" />
+					<img src="{% static 'images/food wally logo.png' %}" class="logo" alt="" />
 				</div>
-				<div>
-					<h4 class="logo-text">Syndash</h4>
-				</div>
+				
 				<a href="javascript:;" class="toggle-btn ms-auto"> <i class='bx bx-menu-alt-right'></i>
 				</a>
 			</div>
@@ -19,7 +22,7 @@
 			<ul class="metismenu" id="menu">
 				<li>
 					<a href="{% url 'admin_index' %}" class="has-arrow">
-						<div class="parent-icon icon-color-1"><i class="bx bx-home-alt"></i>
+						<div class="parent-icon icon-color-5"><i class="bx bx-home-alt"></i>
 						</div>
 						<div class="menu-title">Dashboard</div>
 					</a>
@@ -68,7 +71,7 @@
 		<header class="top-header">
 			<nav class="navbar navbar-expand">
 				<div class="left-topbar d-flex align-items-center">
-					<a href="javascript:;" class="toggle-btn">	<i class="bx bx-menu"></i>
+					<a href="javascript:;" class="toggle-btn">	<i class='bx bx-menu-alt-left'></i>
 					</a>
 				</div>
 				<div class="flex-grow-1 search-bar">
@@ -114,224 +117,218 @@
 		</header>
 		<!--end header-->
 
-        <!--page-wrapper-->
+
+		<!--page-wrapper-->
 		<div class="page-wrapper">
 			<!--page-content-wrapper-->
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<!--breadcrumb-->
-					<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
 						<div class="breadcrumb-title pe-3">Products</div>
 						<div class="ps-3">
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb mb-0 p-0">
-									<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+									<li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
 									</li>
-									<li class="breadcrumb-item active" aria-current="page">Add Product</li>
+									<li class="breadcrumb-item active" aria-current="page">product list</li>
 								</ol>
 							</nav>
 						</div>
 						<div class="ms-auto">
 							<div class="btn-group">
-								<button type="button" class="btn btn-primary">Product List</button>
-								
+								<button type="button" class="btn btn-primary">
+                                    <a href="{% url 'add_product' %}" style="color: white;">
+                                        Add Product
+                                    </a>
+                                </button>
 							</div>
 						</div>
 					</div>
+					
+					  
+					  
 					<!--end breadcrumb-->
-					<div class="row">
-						<div class="col-xl-7 mx-auto">
-							
-							<hr>
-							<div class="card border-top border-0 border-4 border-primary">
-								<div class="card-body p-5">
-									<div class="card-title d-flex align-items-center">
-										<div><i class="bx bxs-user me-1 font-22 text-primary"></i>
-										</div>
-										<h5 class="mb-0 text-primary">Product Form</h5>
-									</div>
-									<hr>
-									
-                                    <form method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                    
-                                        <!-- Product fields -->
-                                        <label for="name">Product Name:</label>
-                                        <input type="text" name="name" id="name">
-                                        <br><br>
-                                    
-                                        <label for="category">Categories:</label>
-                                        <select name="category" id="category" multiple>
-                                            {% for category in categories %}
-                                            <option value="{{ category.id }}">{{ category.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                
-                                        <label for="image">Product Image:</label>
-                                        <input type="file" name="image" id="image">
-                                        <br><br>
-                                
-                                        <label for="description">Description:</label>
-                                        <input type="text" name="description" id="description">
-                                        <br><br>
-                                
-                                        <label for="availability">Availability:</label>
-                                        <input type="checkbox" name="availability" id="availability">
-                                        <br><br>
-                                
-                                        <!-- Product Price fields -->
-                                        <label for="price_name">Price Name:</label>
-                                        <input type="text" name="price_name" id="price_name">
-                                        <br><br>
-                                
-                                        <label for="actual_price">Actual Price:</label>
-                                        <input type="number" name="actual_price" id="actual_price">
-                                        <br><br>
-                                
-                                        <label for="discount_price">Discount Price:</label>
-                                        <input type="number" name="discount_price" id="discount_price">
-                                        <br><br>
-                                        
-                                        
-                                        <!-- Additional Product Price fields -->
-                                        <div id="additional_prices"></div>
-                                        <button type="button" onclick="addPriceFields()">Add Additional Price</button>
-                                        <br><br>
-                                
-                                        <button type="submit">Add Product</button>
-                                    </form>
-
+					
+					
+					
+					
+					<hr>
+					
+                    <div class="card-container">
+						{% for product in products %}
+							<div class="card">
+								<a href="{% url 'product_detail' product.id %}">
+									<img src="{{ product.image.url }}" class="card-img-top" alt="">
+								</a>
+								<div class="card-bodys">
+									<p class="card-titles">
+										<a href="{% url 'product_detail' product.id %}" style="color: black;" class="card-titles">{{ product.name }}</a>
+									</p>
 								</div>
+								<div class="card-price">
+									<p>
+										<span style="color: red; text-decoration: line-through;">{{ product.productprice_set.first.actual_price }}</span> {{ product.productprice_set.first.discount_price }}
+									</p>
+								</div>
+								<div class="card-button card-availability"> 
+									<button type="button" class="btn btn-info m-1 small-button">
+										<a href="{% url 'edit_product' product.id %}">
+											<i class='bx bx-edit-alt' style="color: #fff;"></i>
+										</a>
+									</button>
+									<button type="button" class="btn btn-danger m-1 small-button" >
+										<a href="{% url 'product_delete' product.id %}" onclick="return confirm('Do you want to logout this page?')">
+											<i class='bx bx-trash-alt' style="color: #fff;"></i>
+										</a>
+									</button>
+									
+									<label class="switch">
+										<input type="checkbox" {% if product.availability %}checked="checked"{% endif %} onchange="toggleAvailability('{{ product.id }}')">
+										<span class="slider round"></span>
+									</label>
+										
+									
+								</div>
+								
 							</div>
-						</div>
-                    </div>
+						{% endfor %}
+					</div>
+					<!--end row-->
+					
+					
 				</div>
+				<!--end page content-->
 			</div>
 			<!--end page-content-wrapper-->
 		</div>
-		<!--end page-wrapper-->
+		<!--end page-wrapper-->		
 
-        <!--footer -->
+
+        <!--start overlay-->
+		<div class="overlay toggle-btn-mobile"></div>
+		<!--end overlay-->
+		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+		<!--End Back To Top Button-->
+		<!--footer -->
 		<div class="footer">
-			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank">Thycha Technology</a>
+			<p class="mb-0">Smartmenu @2023 | Developed By : <a href="" target="_blank" style="color: #808c37;">Thycha Technology</a>
 			</p>
 		</div>
 		<!-- end footer -->
 
     </div>
 
-    <!------------------------------ Style -------------------------------------------->
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+	<style>
+		.card-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    
+        .card-container .card {
+            flex: 0 0 calc(50% - 10px); /* Adjust the width as needed */
+            margin: 5px;
+        }
+    
+        @media (min-width: 768px) {
+            .card-container .card {
+                flex: 0 0 calc(33.3333% - 10px); /* Adjust the width as needed */
+            }
         }
 
-        form {
-            max-width: 500px;
-            margin: 0 auto;
+        .card-bodys{
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+        .card-button{
+            padding-left: 7px;
+            padding-bottom: 3px;
+			
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+		.small-button{
+			padding: 0.25rem 0.5rem;
+    		font-size: 0.75rem;
+		}
 
-        input[type="text"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+		.card-price{
+			padding-left: 10px;
+		}
 
-        select[multiple] {
-            height: 100px;
-        }
+		
+		/* Avaialbility switch */
+		
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 40px;
+			height: 20px;
+		}
+		  
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		  
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			border-radius: 34px; /* Rounded shape */
+			transition: .4s;
+		}
+		  
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 16px;
+			left: 2px;
+			bottom: 2px;
+			background-color: white;
+			border-radius: 50%; /* Rounded shape */
+			transition: .4s;
+			}
+		  
+		input:checked + .slider {
+			background-color: #4CAF50; /* Green color */
+		}
+		  
+		input:focus + .slider {
+			box-shadow: 0 0 1px #4CAF50; /* Green color */
+		}
+		  
+		input:checked + .slider:before {
+			transform: translateX(20px);
+		}
+		  
+		  
+	</style>
 
-        input[type="file"] {
-            margin-top: 5px;
-        }
-
-        button[type="button"],
-        button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button[type="submit"] {
-            background-color: #007bff;
-        }
-
-        .price_fields {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-    </style>
-
-    <!------------------------------- Scripts ------------------------------------>
-
-    <script>
-        /* For additional price adding*/
-        function addPriceFields() {
-            const additionalPricesContainer = document.getElementById('additional_prices');
-
-            const priceFields = document.createElement('div');
-            priceFields.classList.add('price_fields');
-
-            const priceNameLabel = document.createElement('label');
-            priceNameLabel.textContent = 'Additional Price Name:';
-            const priceNameInput = document.createElement('input');
-            priceNameInput.type = 'text';
-            priceNameInput.name = 'additional_price_name[]';
-            priceNameInput.classList.add('additional_price_name');
-
-            const actualPriceLabel = document.createElement('label');
-            actualPriceLabel.textContent = 'Additional Actual Price:';
-            const actualPriceInput = document.createElement('input');
-            actualPriceInput.type = 'number';
-            actualPriceInput.name = 'additional_actual_price[]';
-            actualPriceInput.classList.add('additional_actual_price');
-
-            const discountPriceLabel = document.createElement('label');
-            discountPriceLabel.textContent = 'Additional Discount Price:';
-            const discountPriceInput = document.createElement('input');
-            discountPriceInput.type = 'number';
-            discountPriceInput.name = 'additional_discount_price[]';
-            discountPriceInput.classList.add('additional_discount_price');
-
-           
-
-            priceFields.appendChild(priceNameLabel);
-            priceFields.appendChild(priceNameInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(actualPriceLabel);
-            priceFields.appendChild(actualPriceInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(discountPriceLabel);
-            priceFields.appendChild(discountPriceInput);
-            priceFields.appendChild(document.createElement('br'));
-            priceFields.appendChild(document.createElement('br'));
-
-            additionalPricesContainer.appendChild(priceFields);
-        }
-
-        /* End additional price adding*/
-    </script>
+	<script>
+		function toggleAvailability(productId) {
+			const url = '/toggle_availability/' + productId + '/';
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': '{{ csrf_token }}'
+				},
+				body: JSON.stringify({})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
+	</script>
 
 {% endblock %}

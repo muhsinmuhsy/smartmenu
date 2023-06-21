@@ -399,7 +399,11 @@
 			display: flex;
 		  }
 		
-		  
+	
+		.img-preview{
+			width: 300px;
+			height: 200px;
+		}
 	</style>
 </head>
 <body>
@@ -497,11 +501,10 @@
 					</div>
 
 					<div class="container">
-						<div style="height: 40vh; background-color: #f8f9fa;">
+						<div style=" background-color: #f8f9fa; " class="img-preview">
 							<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
 						</div>
 					</div>
-					
 					
 					
 					<div class="col-md-6 mt-3">
@@ -524,12 +527,12 @@
 					<div class="col-md-6 mt-3">
 						<label for="price_name">Price Name</label>
 						<select name="price_name" id="price_name" class="form-control">
-							<option value="Portion">Portion</option>
-							<option value="Quarter">Quarter</option>
 							<option value="Full">Full</option>
-							<option value="Small">Small</option>
+							<option value="Half">Half</option>
+							<option value="Quarter">Quarter</option>
+							<option value="Large">Large`</option>
 							<option value="Medium">Medium</option>
-							<option value="Large">Large</option>
+							<option value="Small">Small</option>
 						</select>
 					</div>
 					<div class="col-md-6 mt-3">
@@ -543,7 +546,7 @@
 					</div>
 					<div class="col-md-6 mt-3">
 						<label for="tax">Tax (%)</label>
-						<input type="number" name="tax" id="tax" class="form-control">
+						<input type="number" name="tax" id="tax" class="form-control" required>
 					</div>
 					
 
@@ -728,28 +731,28 @@
 
             // Create option elements
             const option1 = document.createElement('option');
-            option1.value = 'Portion';
-            option1.textContent = 'Portion';
+            option1.value = 'Full';
+            option1.textContent = 'Full';
 
             const option2 = document.createElement('option');
-            option2.value = 'Quarter';
-            option2.textContent = 'Quarter';
+            option2.value = 'Half';
+            option2.textContent = 'Half';
 
             const option3 = document.createElement('option');
-            option3.value = 'Full';
-            option3.textContent = 'Full';
+            option3.value = 'Quarter';
+            option3.textContent = 'Quarter';
 
             const option4 = document.createElement('option');
-            option4.value = 'Small';
-            option4.textContent = 'Small';
+            option4.value = 'Large';
+            option4.textContent = 'Large';
 
             const option5 = document.createElement('option');
             option5.value = 'Medium';
             option5.textContent = 'Medium';
 
             const option6 = document.createElement('option');
-            option6.value = 'Large';
-            option6.textContent = 'Large';
+            option6.value = 'small';
+            option6.textContent = 'small';
 
             // Append options to the select dropdown
             priceNameSelect.appendChild(option1);

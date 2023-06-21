@@ -43,19 +43,65 @@ def category_detail_api(request, pk):
 
 
 
-@api_view(['GET', 'POST'])
+# @api_view(['GET', 'POST'])
+# def product_list_api(request):
+#     if request.method == 'GET':
+#         products = Product.objects.all()
+#         serializer = ProductSerializer(products, many=True)
+#         return Response(serializer.data)
+
+#     elif request.method == 'POST':
+#         serializer = ProductSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['GET'])
+# def product_list_api(request):
+#     if request.method == 'GET':
+#         products = Product.objects.all()
+#         serializer = ProductSerializer(products, many=True)
+
+#         response_data = []
+
+#         for product in products:
+#             product_data = next((item for item in serializer.data if item['id'] == product.id), None)
+
+#             product_price = ProductPrice.objects.filter(product=product).first()
+#             if product_price:
+#                 product_price_serializer = ProductPriceSerializer(product_price)
+#                 price_data = product_price_serializer.data
+#                 product_data['price'] = price_data
+
+#             response_data.append(product_data)
+
+#         return Response(response_data)
+
+
+@api_view(['GET'])
 def product_list_api(request):
     if request.method == 'GET':
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response_data = []
+
+        for product in products:
+            product_data = next((item for item in serializer.data if item['id'] == product.id), None)
+
+            product_prices = ProductPrice.objects.filter(product=product)
+            if product_prices:
+                product_price_serializer = ProductPriceSerializer(product_prices, many=True)
+                price_data = product_price_serializer.data
+                product_data['prices'] = price_data
+
+            response_data.append(product_data)
+
+        return Response(response_data)
+
+
 
 
 # @api_view(['GET', 'PUT', 'DELETE'])

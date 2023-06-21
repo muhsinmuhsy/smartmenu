@@ -350,6 +350,11 @@
 		input:checked + .slider:before {
 			transform: translateX(20px);
 		}
+		.img-preview{
+			width: 300px;
+			height: 200px;
+		}
+		
 	</style>
 </head>
 <body>
@@ -431,6 +436,12 @@
 					<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
 				</div>
 				
+
+				<div class="container">
+					<div style=" background-color: #f8f9fa; " class="img-preview">
+						<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
+					</div>
+				</div>
 							
 				<p style="display: flex; justify-content: flex-start;">Avaialbility 
 					<span>
@@ -440,6 +451,8 @@
 						</label>
 					</span>
 				</p>
+
+				
 				<div class="col-12">
 					<button type="submit" id="add-button" class="btn  save-button px-5">Save</button>
 
@@ -449,11 +462,7 @@
 			</form>
 				
 			
-			<div class="container">
-				<div style="height: 40vh;">
-					<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
-				</div>
-			</div>
+			
 			
 			
 		</div>
