@@ -193,6 +193,30 @@ def product_price_detail_api(request, pk):
         product_price.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .serializers import ProductSerializer, ProductPriceSerializer
+
+class ProductDetailAPI(APIView):
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, pk=product_id)
+        product_prices = product.productprice_set.all()
+
+        # Calculate actual prices with tax and discount prices with tax for each product price
+        for price in product_prices:
+            price.actual_price_with_tax = price.calculate_actual_price_with_tax()
+            price.discount_price_with_tax = price.calculate_discount_price_with_tax()
+
+        product_serializer = ProductSerializer(product)
+        prices_serializer = ProductPriceSerializer(product_prices, many=True)
+
+        data = {
+            'product': product_serializer.data,
+            'product_prices': prices_serializer.data
+        }
+
+        return Response(data)
 
 
 
