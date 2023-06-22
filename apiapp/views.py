@@ -48,6 +48,13 @@ def category_detail_api(request, pk):
 
 
 
+# class CategoryProductsAPIView(APIView):
+#     def get(self, request, category_id):
+#         category = Category.objects.get(id=category_id)
+#         products = category.product_set.all()
+#         serializer = ProductSerializer(products, many=True)
+#         return Response(serializer.data)
+
 class CategoryProductsAPIView(APIView):
     def get(self, request, category_id):
         category = Category.objects.get(id=category_id)
