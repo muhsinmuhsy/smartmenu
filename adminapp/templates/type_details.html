@@ -168,39 +168,7 @@
 	  
 		  /**/
 		  
-		  .card-container {
-			display: flex;
-			overflow-x: scroll;
-			scrollbar-width: none; /* Hide the scrollbar for Firefox */
-			-ms-overflow-style: none; /* Hide the scrollbar for IE and Edge */
-			width: 100%;
-			padding: 10px;
-			margin-top: 10px;
-		}
-		  
-		.card-container {
-			display: flex;
-			overflow-x: scroll;
-			scrollbar-width: none; /* Hide the scrollbar for Firefox */
-			-ms-overflow-style: none; /* Hide the scrollbar for IE and Edge */
-			width: 100%;
-			padding: 10px;
-			margin-top: 10px;
-			margin-left: 260px;
-		}
-		  
-		.card-container::-webkit-scrollbar {
-			display: none; /* Hide the scrollbar for Chrome, Safari, and Opera */
-		}
-		  .card {
-			width: 160px;
-			height: 106px;
-			margin-right: 30px;
-			margin-left: 10px;
-			border-radius: 5px;
-			flex-shrink: 0;
-		}
-
+		
 		.table-responsive{
 			margin-left: 280px;
 			margin-right: 35px;
@@ -214,26 +182,45 @@
 		.table a{
 			text-decoration: none;
 		}
+
+		.card{
+			margin-left: 282px;
+			margin-top: 10px;
+			margin-right: 35px;
+			
+		}
+		.order-items{
+			margin-left: 283px;
+			margin-top: 23px; 
+			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+		}
+
+		
+		
 		@media (max-width: 1300px) {
-			.card{
-			  	width: 150px;
-			 	 margin-right: 10px;
-			}
-			.card-container{
-				margin-left: 0px;
-			}
 			.table-responsive{
 
 				margin-left: 20px;
 				margin-right: 3px;
 				padding-right: 20px;
 			}
+
+			.card{
+				margin-left: 20px;
+			}
+			.order-items{
+				margin-left: 20px;
+			
+			}
 		}
+		
+
 		
 		@media (min-width: 1300px) {
 			.close-icon{
 				display: none;
 			}
+			
 		}
 	
 
@@ -276,88 +263,205 @@
 		body.dark-mode .table.table-striped tbody tr a {
 			color: #fff;
 		}
+
+		.font-bold{
+			font-weight: bold;
+		}
+		.font-normal{
+			font-weight: lighter;
+		}
 	</style>
 </head>
 <body>
 
 	<!-- Navbar etc -->
     <header>
-        <div class="menu-icon" id="menuIcon">
-            <i class="fas fa-bars"></i>
-        </div>
-        <div id="sidebar">
-            <div class="close-icon" onclick="closeSidebar()">
-            <i class="fas fa-bars"></i>
-            </div>
-            <img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
-            <ul class="slidebar-ul">
-                <li>
-                <a href="{% url 'admin_index' %}">Dashboard</a>
-                </li>
-                <li>
-                <a href="#">Orders</a>
-                <i class="fas fa-chevron-down order-dropdown-icon" ></i>
-                <ul class="dropdown-ul">
-                    <li><a href="#">All Orders</a></li>
-                    <li><a href="#">Dininig</a></li>
-                    <li><a href="#">Take Away</a></li>
-                    <li><a href="#">Delivery</a></li>
-                </ul>
-                </li>
-                <li>
-                    <a href="#">Category</a>
-                    <i class="fas fa-chevron-down category-dropdown-icon" ></i>
-                    <ul class="dropdown-ul">
-                        <li><a href="{% url 'category_add' %}">Add Category</a></li>
-                        <li><a href="{% url 'category_list'  %}">Category list</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Foods</a>
-                    <i class="fas fa-chevron-down food-dropdown-icon"></i>
-                    <ul class="dropdown-ul">
-                        <li><a href="{% url 'add_product' %}">Add Food</a></li>
-                        <li><a href="{% url 'product_list' %}">Food list</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{% url 'report' %}">Report</a>
-                </li>
-				<!-- <li>
-					<input type="checkbox" id="darkModeToggle">
-					<label for="darkModeToggle">Dark Mode</label>
-				</li> -->
-            </ul>
-            <div>
-              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
-            </div>
-            
-            
-        </div>
-        <div class="admin-profile">
-            <img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 10px; margin-right: 10px;">
-        </div>
+		<div class="row">
+			<div class="col">
+				<div class="menu-icon" id="menuIcon">
+					<i class="fas fa-bars"></i>
+				</div>
+				<div id="sidebar">
+					<div class="close-icon" onclick="closeSidebar()">
+					<i class="fas fa-bars"></i>
+					</div>
+					<img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
+					<ul class="slidebar-ul">
+						<li>
+						<a href="{% url 'admin_index' %}">Dashboard</a>
+						</li>
+						<li>
+						<a href="#">Orders</a>
+						<i class="fas fa-chevron-down order-dropdown-icon" ></i>
+						<ul class="dropdown-ul">
+							<li><a href="#">All Orders</a></li>
+							<li><a href="#">Dininig</a></li>
+							<li><a href="#">Take Away</a></li>
+							<li><a href="#">Delivery</a></li>
+						</ul>
+						</li>
+						<li>
+							<a href="#">Category</a>
+							<i class="fas fa-chevron-down category-dropdown-icon" ></i>
+							<ul class="dropdown-ul">
+								<li><a href="{% url 'category_add' %}">Add Category</a></li>
+								<li><a href="{% url 'category_list'  %}">Category list</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Foods</a>
+							<i class="fas fa-chevron-down food-dropdown-icon"></i>
+							<ul class="dropdown-ul">
+								<li><a href="{% url 'add_product' %}">Add Food</a></li>
+								<li><a href="{% url 'product_list' %}">Food list</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="{% url 'report' %}">Report</a>
+						</li>
+						<!-- <li>
+							<input type="checkbox" id="darkModeToggle">
+							<label for="darkModeToggle">Dark Mode</label>
+						</li> -->
+					</ul>
+					<div>
+						<img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="display: flex;justify-content: center;position: absolute;bottom: 65px; left: 45px;"> 
+					</div>
+					
+					
+				</div>
+			</div>
+
+			<div class="col">
+				<div style="display: flex; justify-content: center; padding-top: 15px;">
+					<h4></h4>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="admin-profile">
+					<img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 8px; margin-right: 10px;">
+				</div>
+			</div>
+		</div>
     </header>
-	
     <!-- End navbar etc -->
+	{% if order.order_type == 'Home Delivery' %}
+		<div class="card">
+			<div class="card-body">
+				<p> <span class="font-bold" style="padding-right: 13px;">Reference Number </span>  <span>:</span>  {{ order.reference_number }} </p>
+				<hr>
+				<p><span class="font-bold" style="padding-right: 120px;" >Date </span > <span>:</span> {{ order.date }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 119px;">Type </span > <span>:</span> Home Delivery</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 110px;">Name </span>  <span>:</span>  {{ order.name }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 11px;">WhatsApp  Number </span>  <span>:</span> {{ order.whatsapp_number }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 23px;">Conatact Number  </span>  <span>:</span> {{ order.contact_number }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 61px;">Address One </span>  <span>:</span> {{ order.address_one }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 61px;">Address Two </span > <span>:</span> {{ order.address_two }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 51px;">Address Three </span>  <span>:</span> {{ order.address_three }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 72px;">Order Note </span>  <span>:</span> {{ order.order_note }}</p>
+				
+			</div>
+		</div>
+		
 
-    <h3>Type Details</h3>
-    <p>Reference Number: {{ order.reference_number }}</p>
-    <p>Date: {{ order.date }}</p>
+    
+        
 
-    {% if order.order_type == 'Home Delivery' %}
-        <p>Type: Home Delivery</p>
-        <p>Name: {{ order.name }}</p>
-        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
-        <p>Contact Number: {{ order.contact_number }}</p>
-        <p>Address One: {{ order.address_one }}</p>
-        <p>Address Two: {{ order.address_two }}</p>
-        <p>Address Three: {{ order.address_three }}</p>
-        <p>Order Note: {{ order.order_note }}</p>
+        
 
-        <h2>Order Details - Order ID: {{ order.id }}</h2>
+        <h3 class="order-items">Order Items:</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead style="border: thin;">
+                    <tr class="text-center">
+                        <th scope="col" class="text-nowrap">Product</th>
+                        <th scope="col" class="text-nowrap">Price</th>
+                        <th scope="col" class="text-nowrap">Vat</th>
+                        <th scope="col" class="text-nowrap">Price + Vat</th>
+                        <th scope="col" class="text-nowrap">Quantity</th>
+                        <th scope="col" class="text-nowrap">Price + Vat + Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for cart in order.cart.all %}
+                        <tr class="text-center">
+                            
+                            <td class="text-nowrap" style="padding-top: 13px; ">
+                                {{ cart.product_price.product.name }} ( {{ cart.product_price.name}})
+                            </td>
 
-        <h3>Order Items:</h3>
+                            <td class="text-nowrap" style="padding-top: 13px; ">{{ cart.product_price_dummy }}</td>
+              
+                            <td class="text-nowrap" style="padding-top: 13px; ">{{ cart.tax_dummy }}</td>
+                            
+                            <td class="text-nowrap" style="padding-top: 13px; ">{{ cart.get_total_price_with_tax_dummy }}</td>
+                            
+                                
+                            <td class="text-nowrap" style="padding-top: 13px; ">{{ cart.quantity }}</td>
+                            <td class="text-nowrap" style="padding-top: 13px; ">{{ cart.get_total_tax_with_price_and_quantity_dummy }}</td>
+                            
+                        </tr>
+
+                       
+                    {% endfor%}
+                </tbody>
+                
+            </table>
+            
+    
+        </div>
+		<div class="card">
+			<div class="card-body">
+				<span class="font-bold">Total : {{ order.get_cart_total }} </span>
+			</div>
+		</div>
+    
+       <br><br>
+	   <!------------------------------------------ Take away-------------------------------->
+
+    
+
+
+
+	{% elif order.order_type == 'Take Away' %}
+		<div class="card">
+			<div class="card-body">
+				<p> <span class="font-bold" style="padding-right: 13px;">Reference Number </span>  <span>:</span>  {{ order.reference_number }} </p>
+				<hr>
+				<p><span class="font-bold" style="padding-right: 120px;" >Date </span > <span>:</span> {{ order.date }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 119px;">Type </span > <span>:</span> Take Away</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 110px;">Name </span>  <span>:</span>  {{ order.name }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 11px;">WhatsApp  Number </span>  <span>:</span> {{ order.whatsapp_number }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 23px;">Conatact Number  </span>  <span>:</span> {{ order.contact_number }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 61px;">Address One </span>  <span>:</span> {{ order.address_one }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 61px;">Address Two </span > <span>:</span> {{ order.address_two }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 51px;">Address Three </span>  <span>:</span> {{ order.address_three }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 72px;">Order Note </span>  <span>:</span> {{ order.order_note }}</p>
+				<hr>
+				<p> <span class="font-bold" style="padding-right: 75px;">Pickup Time </span>  <span>:</span> {{ order.time }}</p>
+				
+			</div>
+		</div>
+
+        <h3 class="order-items">Order Items:</h3>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead style="border: thin;">
@@ -396,59 +500,16 @@
                 </tbody>
                 
             </table>
-            <p>Total Price: {{ order.get_cart_total }}</p>
+            
     
         </div>
-    
-       
+		<div class="card">
+			<div class="card-body">
+				<span>Total : {{ order.get_cart_total }} </span>
+			</div>
+		</div>
 
-    {% elif order.order_type == 'Take Away' %}
-        <p>Type: Take Away</p>
-        <p>Name: {{ order.name }}</p>
-        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
-        <p>Contact Number: {{ order.contact_number }}</p>
-        <p>Address One: {{ order.address_one }}</p>
-        <p>Address Two: {{ order.address_two }}</p>
-        <p>Address Three: {{ order.address_three }}</p>
-        <p>Pickup Time: {{ order.time }}</p>
-
-        <h2>Order Details - Order ID: {{ order.id }}</h2>
-
-        <h3>Order Items:</h3>
-        <table>
-          <thead>
-            <tr>
-              <th style="padding-right: 35px;">Product</th>
-              <th style="padding-right: 35px;">Price</th>
-              <th style="padding-right: 35px;">Tax</th>
-              <th style="padding-right: 35px;">Tax with Price</th>
-              <th style="padding-right: 35px;">Quantity</th>
-              <th style="padding-right: 35px;">Tax with Price + Quantity Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for cart in order.cart.all %}
-              <tr>
-                <td style="padding-right: 35px;">{{ cart.product_price.product.name }} ( {{ cart.product_price.name}})</td>
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.discount_price }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.actual_price }}</td>
-                {% endif %}
-                <td style="padding-right: 35px;">{{ cart.product_price.tax }}</td>
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_discount_price_with_tax }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_actual_price_with_tax }}</td>
-                {% endif %}
-                <td style="padding-right: 35px;">{{ cart.quantity }}</td>
-                <td style="padding-right: 35px;">{{ cart.get_total_tax_with_price_and_quantity }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        
-        <p>Total Price: {{ order.get_product_total_price }}</p> 
+		<br><br>
     {% endif %}
 
 
@@ -478,10 +539,20 @@
 	
 		parentItems.forEach(function (parentItem) {
 		parentItem.addEventListener('click', function () {
+			// Close all other dropdowns
+			closeOtherDropdowns(this);
+	
 			this.classList.toggle('active');
 		});
 		});
 	
+		function closeOtherDropdowns(currentItem) {
+		parentItems.forEach(function (parentItem) {
+			if (parentItem !== currentItem) {
+			parentItem.classList.remove('active');
+			}
+		});
+		}
 	</script>
 	<!-- FOR DARK MODE-->
 	<script>

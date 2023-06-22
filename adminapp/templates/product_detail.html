@@ -485,8 +485,8 @@
 				</li> -->
             </ul>
             <div>
-              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
-            </div>
+				<img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="display: flex;justify-content: center;position: absolute;bottom: 65px; left: 45px;"> 
+			</div>
             
             
         </div>
@@ -547,7 +547,7 @@
 			<div  class="price-name">
 				{{ price.name }}
 			</div>
-			<div class="row" style="font-size: 14px; color: #666666;">
+			<div class="row" style="font-size: 13px; color: #666666;">
 				<div class="col-5">
 					<span>Actual Price: {{ price.actual_price }}</span> 
 				</div>
@@ -559,7 +559,7 @@
 				</div>
 			</div>
 
-			<div class="row" style="font-size: 14px; padding-bottom: 5px; color: #666666;">
+			<div class="row" style="font-size: 13px; padding-bottom: 5px; color: #666666;">
 				<div class="col-5">
 					<span>Discount Price: {{ price.discount_price }}</span> 
 				</div>
@@ -614,10 +614,20 @@
 	
 		parentItems.forEach(function (parentItem) {
 		parentItem.addEventListener('click', function () {
+			// Close all other dropdowns
+			closeOtherDropdowns(this);
+	
 			this.classList.toggle('active');
 		});
 		});
 	
+		function closeOtherDropdowns(currentItem) {
+		parentItems.forEach(function (parentItem) {
+			if (parentItem !== currentItem) {
+			parentItem.classList.remove('active');
+			}
+		});
+		}
 	</script>
 	<!-- FOR DARK MODE-->
 	<script>

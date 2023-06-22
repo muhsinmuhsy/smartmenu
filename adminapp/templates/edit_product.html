@@ -332,61 +332,74 @@
 
 	<!-- Navbar etc -->
     <header>
-        <div class="menu-icon" id="menuIcon">
-            <i class="fas fa-bars"></i>
-        </div>
-        <div id="sidebar">
-            <div class="close-icon" onclick="closeSidebar()">
-            <i class="fas fa-bars"></i>
-            </div>
-            <img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
-            <ul class="slidebar-ul">
-                <li>
-                <a href="{% url 'admin_index' %}">Dashboard</a>
-                </li>
-                <li>
-                <a href="#">Orders</a>
-                <i class="fas fa-chevron-down order-dropdown-icon" ></i>
-                <ul class="dropdown-ul">
-                    <li><a href="#">All Orders</a></li>
-                    <li><a href="#">Dininig</a></li>
-                    <li><a href="#">Take Away</a></li>
-                    <li><a href="#">Delivery</a></li>
-                </ul>
-                </li>
-                <li>
-                    <a href="#">Category</a>
-                    <i class="fas fa-chevron-down category-dropdown-icon" ></i>
-                    <ul class="dropdown-ul">
-                        <li><a href="{% url 'category_add' %}">Add Category</a></li>
-                        <li><a href="{% url 'category_list'  %}">Category list</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Foods</a>
-                    <i class="fas fa-chevron-down food-dropdown-icon"></i>
-                    <ul class="dropdown-ul">
-                        <li><a href="{% url 'add_product' %}">Add Food</a></li>
-                        <li><a href="{% url 'product_list' %}">Food list</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{% url 'report' %}">Report</a>
-                </li>
-				<!-- <li>
-					<input class="form-control" type="checkbox" id="darkModeToggle">
-					<label for="darkModeToggle">Dark Mode</label>
-				</li> -->
-            </ul>
-            <div>
-              <img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="position: sticky; left: 45px; margin-top: 150px;"> <!-- position:abselute bottom: 20px;--> 
-            </div>
-            
-            
-        </div>
-        <div class="admin-profile">
-            <img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 10px; margin-right: 10px;">
-        </div>
+		<div class="row">
+			<div class="col">
+				<div class="menu-icon" id="menuIcon">
+					<i class="fas fa-bars"></i>
+				</div>
+				<div id="sidebar">
+					<div class="close-icon" onclick="closeSidebar()">
+					<i class="fas fa-bars"></i>
+					</div>
+					<img src="{% static 'images/logo.png' %}" alt="Image" width="100px" style="padding-top: 15px; margin-left: 17px;">
+					<ul class="slidebar-ul">
+						<li>
+						<a href="{% url 'admin_index' %}">Dashboard</a>
+						</li>
+						<li>
+						<a href="#">Orders</a>
+						<i class="fas fa-chevron-down order-dropdown-icon" ></i>
+						<ul class="dropdown-ul">
+							<li><a href="#">All Orders</a></li>
+							<li><a href="#">Dininig</a></li>
+							<li><a href="#">Take Away</a></li>
+							<li><a href="#">Delivery</a></li>
+						</ul>
+						</li>
+						<li>
+							<a href="#">Category</a>
+							<i class="fas fa-chevron-down category-dropdown-icon" ></i>
+							<ul class="dropdown-ul">
+								<li><a href="{% url 'category_add' %}">Add Category</a></li>
+								<li><a href="{% url 'category_list'  %}">Category list</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Foods</a>
+							<i class="fas fa-chevron-down food-dropdown-icon"></i>
+							<ul class="dropdown-ul">
+								<li><a href="{% url 'add_product' %}">Add Food</a></li>
+								<li><a href="{% url 'product_list' %}">Food list</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="{% url 'report' %}">Report</a>
+						</li>
+						<!-- <li>
+							<input type="checkbox" id="darkModeToggle">
+							<label for="darkModeToggle">Dark Mode</label>
+						</li> -->
+					</ul>
+					<div>
+						<img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="display: flex;justify-content: center;position: absolute;bottom: 65px; left: 45px;"> 
+					</div>
+					
+					
+				</div>
+			</div>
+
+			<div class="col">
+				<div style="display: flex; justify-content: center; padding-top: 15px;">
+					<h4><span>Edit</span> Food</h4>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="admin-profile">
+					<img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 8px; margin-right: 10px;">
+				</div>
+			</div>
+		</div>
     </header>
 	
     <!-- End navbar etc -->
@@ -485,10 +498,20 @@
 	
 		parentItems.forEach(function (parentItem) {
 		parentItem.addEventListener('click', function () {
+			// Close all other dropdowns
+			closeOtherDropdowns(this);
+	
 			this.classList.toggle('active');
 		});
 		});
 	
+		function closeOtherDropdowns(currentItem) {
+		parentItems.forEach(function (parentItem) {
+			if (parentItem !== currentItem) {
+			parentItem.classList.remove('active');
+			}
+		});
+		}
 	</script>
 	<!-- FOR DARK MODE-->
 	<script>

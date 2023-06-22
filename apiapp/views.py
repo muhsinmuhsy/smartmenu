@@ -3,6 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .serializers import ProductSerializer, ProductPriceSerializer
+
+
 @api_view(['GET', 'POST'])
 def category_list_api(request):
     if request.method == 'GET':
@@ -40,6 +46,14 @@ def category_detail_api(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+
+class CategoryProductsAPIView(APIView):
+    def get(self, request, category_id):
+        category = Category.objects.get(id=category_id)
+        products = category.product_set.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
 
 
 
@@ -193,10 +207,7 @@ def product_price_detail_api(request, pk):
         product_price.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from .serializers import ProductSerializer, ProductPriceSerializer
+
 
 class ProductDetailAPI(APIView):
     def get(self, request, product_id):
