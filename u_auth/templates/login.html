@@ -5,48 +5,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time sheet</title>
+    <title>Login</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
     <!-- css -->
-    <style>
-        img{
-            max-width: 200px;
-        }
-        .form-img{
-            display: flex;
-            justify-content: center;
-            
-        }
-        .btn-login{
-            background-color: #680a18;
-            color: #fff;
-            width: 100%;
-        }
-        .input{}
-    </style>
+   
 </head>
 <body>
     
-    <div class="login">
+    <div class="login" style="margin-top: 200px;">
         
             <form action="" method="post">
                 {% csrf_token %}
-                <div class="form-img">
-                    <img src="{% static 'images/logo.png' %}" alt="">
+                <div class="d-flex justify-content-center mt-5 mb-5">
+                    <img src="{% static 'images/logo.png' %}" width="200px" alt="">
                 </div>
                 {% if error %}
                     <p>{{ error }}</p>
                 {% endif %}
-                <div class=" input">
+                <!-- <div class="input">
                     <input type="text" placeholder="Enyer Your User Name" required class="form-control" name="username">
-                </div>
-                <div class="">
                     <input type="password"  id="" placeholder="Enter Your Password" required class="form-control" name="password"> 
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div> -->
+                <div class="row m-1 d-flex justify-content-center">
+                    <div class="col-md-7 mt-3">
+                        <input type="text" name="username" placeholder="Username" style="height: 50px;" class="form-control shadow" required>
+                    </div>
+                    <div class="col-md-7 mt-3">
+                        <input type="password" name="password" placeholder="Password" style="height: 50px;" class="form-control shadow" required>
+                    </div>
+                    <div class="col-md-7 mt-3">
+                        <input type="submit" style="background-color: #680a18; color: #fff; height: 50px;" class="form-control">
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-login">Login</button>
             </form>
         
     </div>

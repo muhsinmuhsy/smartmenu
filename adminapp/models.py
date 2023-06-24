@@ -68,7 +68,6 @@ class User(models.Model):
 # ------------------------------------------------- Cart ---------------------------------------------------------------------- #
 
 
-
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_price = models.ForeignKey(ProductPrice, on_delete=models.CASCADE)
@@ -169,6 +168,12 @@ class Order(models.Model):
         ('Cash on Delivery', 'Cash on Delivery'),
         ('Card on Delivery', 'Card on Delivery'),
     )
+    STATUS = (
+        ('Pending', 'Pending'),
+        ('Order Confirmed', 'Order Confirmed'),
+        ('Order Don', 'Order Don'),
+        ('Canceled', 'Canceled'),          
+    )
     cart = models.ManyToManyField(Cart)
     reference_number = models.CharField(max_length=100, unique=True)
     order_type = models.CharField(max_length=100, choices=TYPE)
@@ -180,9 +185,9 @@ class Order(models.Model):
     address_three = models.CharField(max_length=500)
     order_note = models.CharField(max_length=500)
     payment_mode = models.CharField(max_length=100, choices=PAYMENT_MODE)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     time = models.TimeField()
-    canceled = models.BooleanField(default=False)
+    status = models.CharField(max_length=100, choices=STATUS, default='Pending', null=True, blank=True)
 
     def get_product_total_price(self):
         total_price = Decimal(0)

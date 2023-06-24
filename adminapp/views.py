@@ -12,26 +12,74 @@ from django.http import HttpResponse
 
 
 
+# @login_required
+# def admin_index(request):
+#     today = date.today()  # Get today's date
+
+#     # Filter the orders for today excluding canceled orders
+#     orders = Order.objects.filter(date=today, canceled=False)
+
+#     total_orders_count = orders.count()  # Fetch the count of orders for today
+
+#     canceled_orders_count = Order.objects.filter(date=today, canceled=True).count()  # Fetch the count of canceled orders for today
+
+#     # Calculate the total earnings for today
+#     total_earnings = Decimal(0)
+#     for order in orders:
+#         total_earnings += order.get_product_total_price()
+
+#     if request.method == 'POST':
+#         order_id = request.POST.get('order_id')
+#         order = Order.objects.get(id=order_id)
+#         order.canceled = True
+#         order.save()
+#         return HttpResponse(status=204)  # Return a success response
+
+#     order_types = []
+#     for order_type in Order.TYPE:
+#         count = orders.filter(order_type=order_type[0]).count()
+#         order_types.append((order_type[0], order_type[1], count))
+
+#     context = {
+#         'orders': orders,
+#         'total_orders_count': total_orders_count,
+#         'canceled_orders_count': canceled_orders_count,
+#         'order_types': order_types,
+#         'total_earnings': total_earnings,
+#     }
+#     return render(request, 'admin_index.html', context)
+
+
+
 @login_required
 def admin_index(request):
     today = date.today()  # Get today's date
 
-    # Filter the orders for today excluding canceled orders
-    orders = Order.objects.filter(date=today, canceled=False)
+    # Filter the orders for today
+    orders = Order.objects.filter(date=today)
 
-    total_orders_count = orders.count()  # Fetch the count of orders for today
+    # Calculate the total orders count for today
+    total_orders_count = orders.count()
 
-    canceled_orders_count = Order.objects.filter(date=today, canceled=True).count()  # Fetch the count of canceled orders for today
+    # Filter the canceled orders for today
+    canceled_orders = orders.filter(status='Canceled')
 
-    # Calculate the total earnings for today
-    total_earnings = Decimal(0)
-    for order in orders:
-        total_earnings += order.get_product_total_price()
+    # Calculate the count of canceled orders
+    canceled_orders_count = canceled_orders.count()
+
+    # Filter the orders with status 'Order Don' for today
+    orders_don = orders.filter(status='Order Don')
+
+    # Calculate the total cart earnings for the orders with status 'Order Don'
+    total_cart_earnings = Decimal(0)
+    for order in orders_don:
+        total_cart_earnings += order.get_cart_total()
 
     if request.method == 'POST':
         order_id = request.POST.get('order_id')
+        status = request.POST.get('status')
         order = Order.objects.get(id=order_id)
-        order.canceled = True
+        order.status = status
         order.save()
         return HttpResponse(status=204)  # Return a success response
 
@@ -44,11 +92,10 @@ def admin_index(request):
         'orders': orders,
         'total_orders_count': total_orders_count,
         'canceled_orders_count': canceled_orders_count,
+        'total_cart_earnings': total_cart_earnings,
         'order_types': order_types,
-        'total_earnings': total_earnings,
     }
     return render(request, 'admin_index.html', context)
-
 
 
 
