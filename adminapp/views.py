@@ -50,6 +50,8 @@ def admin_index(request):
     return render(request, 'admin_index.html', context)
 
 
+
+
 def order_details(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order_details.html', {'order': order})

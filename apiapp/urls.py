@@ -15,6 +15,11 @@ urlpatterns = [
     path('product-prices/', views.product_price_list_api, name='product-price-list'),
     path('product-prices/<int:pk>/', views.product_price_detail_api, name='product-price-detail'),
     
+    
+    path('carts/', views.cart_list_api, name='cart-list'),
+    path('carts/<int:pk>/', views.cart_detail_api, name='cart-detail'),
+    
+    
     path('order-items/', views.order_item_list_api, name='order_item_list'),
     path('order-items/<int:pk>/', views.order_item_detail_api, name='order_item_detail'),
     

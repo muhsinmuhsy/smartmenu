@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from .serializers import ProductSerializer, ProductPriceSerializer
 
 
+# ------------------------------------------ Category ----------------------------------------------------------- #
 @api_view(['GET', 'POST'])
 def category_list_api(request):
     if request.method == 'GET':
@@ -62,6 +63,9 @@ class CategoryProductsAPIView(APIView):
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
+
+
+# --------------------------------------------------- Products ----------------------------------------------------------- #
 
 
 # @api_view(['GET', 'POST'])
@@ -174,7 +178,30 @@ def product_detail_api(request, pk):
         }
         
         return Response(response_data)
+    
+    
+class ProductDetailAPI(APIView):
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, pk=product_id)
+        product_prices = product.productprice_set.all()
 
+        # Calculate actual prices with tax and discount prices with tax for each product price
+        for price in product_prices:
+            price.actual_price_with_tax = price.calculate_actual_price_with_tax()
+            price.discount_price_with_tax = price.calculate_discount_price_with_tax()
+
+        product_serializer = ProductSerializer(product)
+        prices_serializer = ProductPriceSerializer(product_prices, many=True)
+
+        data = {
+            'product': product_serializer.data,
+            'product_prices': prices_serializer.data
+        }
+
+        return Response(data)
+
+
+# --------------------------------------------------- ProductPrice ----------------------------------------------------------- #
 
 
 @api_view(['GET', 'POST'])
@@ -216,27 +243,64 @@ def product_price_detail_api(request, pk):
 
 
 
-class ProductDetailAPI(APIView):
-    def get(self, request, product_id):
-        product = get_object_or_404(Product, pk=product_id)
-        product_prices = product.productprice_set.all()
-
-        # Calculate actual prices with tax and discount prices with tax for each product price
-        for price in product_prices:
-            price.actual_price_with_tax = price.calculate_actual_price_with_tax()
-            price.discount_price_with_tax = price.calculate_discount_price_with_tax()
-
-        product_serializer = ProductSerializer(product)
-        prices_serializer = ProductPriceSerializer(product_prices, many=True)
-
-        data = {
-            'product': product_serializer.data,
-            'product_prices': prices_serializer.data
-        }
-
-        return Response(data)
 
 
+
+# --------------------------------------------- User ----------------------------------------------------------- #
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_list_api(request):
+    if request.metho == 'GET':
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+
+
+
+# -------------------------------------------------- Cart ------------------------------------------------------------ #
+
+@api_view(['GET', 'POST'])
+def cart_list_api(request):
+    if request.method == 'GET':
+        carts = Cart.objects.all()
+        serializer = CartSerializer(carts, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CartSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET', 'PUT', 'DELETE'])
+def cart_detail_api(request, pk):
+    try:
+        cart_item = Cart.objects.get(pk=pk)
+    except Cart.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CartSerializer(cart_item)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CartSerializer(cart_item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        cart_item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+# ----------------------------------------------------------------- Order ------------------------------------------------------ #
 
 @api_view(['GET', 'POST'])
 def order_item_list_api(request):
@@ -251,6 +315,8 @@ def order_item_list_api(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
