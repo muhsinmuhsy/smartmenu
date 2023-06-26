@@ -249,27 +249,31 @@
 	<div class="dining">
 		<div class="row">
 			{% for table in tables %}
-			<div class="col-md-4 col-lg-2 col-6"> <!-- Change the column classes -->
+			<div class="col-md-4 col-lg-2 col-6">
 				{% if table.is_occupied %}
-			<div class="card card-occupied">
-			{% else %}
-			<div class="card">
-			{% endif %}
+				<div class="card card-occupied shadow">
+				{% else %}
+				<div class="card shadow-sm">
+				{% endif %}
 					<div class="card-body">
 						<p style="font-weight: bolder;">
-							Table No : {{ table.table_number }}
+							Table No: {{ table.table_number }}
 						</p>
 						<p>
-							capacity : {{ table.seating_capacity }}
+							Capacity: {{ table.seating_capacity }}
 						</p>
-						
-						{{ table.is_occupied }}
+						{% if table.is_occupied %}
+							<p>You Have an Order</p>
+						{% else %}
+							<p>No Order</p>
+						{% endif %}
 					</div>
 				</div>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
+	
 	
 	
 	
