@@ -53,6 +53,7 @@ from django.http import HttpResponse
 
 @login_required
 def admin_index(request):
+    tables = Table.objects.all()
     today = date.today()  # Get today's date
 
     # Filter the orders for today
@@ -89,6 +90,7 @@ def admin_index(request):
         order_types.append((order_type[0], order_type[1], count))
 
     context = {
+        'tables' : tables,
         'orders': orders,
         'total_orders_count': total_orders_count,
         'canceled_orders_count': canceled_orders_count,
@@ -416,6 +418,8 @@ def report(request):
 def report_detalis(request, order_id):
     order = Order.objects.get(id= order_id)
     return render(request, 'report_detalis.html', {'order': order})
+
+
 # --------------------------------- Table ----------------------------------------- #
 
 
@@ -428,7 +432,7 @@ def table_create(request):
     if request.method == 'POST':
         table_number = request.POST['table_number']
         seating_capacity = request.POST['seating_capacity']
-        is_occupied = request.POST.get('is_occupied', False)
+        is_occupied = request.POST.get('is_occupied', False) == 'on'
         table = Table.objects.create(table_number=table_number, seating_capacity=seating_capacity, is_occupied=is_occupied)
         return redirect('table_list')
     return render(request, 'table_create.html')
@@ -438,40 +442,40 @@ def table_update(request, table_id):
     if request.method == 'POST':
         table.table_number = request.POST['table_number']
         table.seating_capacity = request.POST['seating_capacity']
-        table.is_occupied = request.POST.get('is_occupied', False)
+        table.is_occupied = request.POST.get('is_occupied', ) == 'on'
         table.save()
         return redirect('table_list')
     return render(request, 'table_update.html', {'table': table})
 
+
 def table_delete(request, table_id):
     table = get_object_or_404(Table, id=table_id)
-    if request.method == 'POST':
-        table.delete()
-        return redirect('table_list')
-    return render(request, 'table_delete.html', {'table': table})
+    table.delete()
+    return redirect('table_list')
+ 
 
-def table_status(request):
-    tables = Table.objects.all()
-    return render(request, 'table_status.html', {'tables': tables})
+# def table_status(request):
+#     tables = Table.objects.all()
+#     return render(request, 'table_status.html', {'tables': tables})
 
-def table_filter(request):
-    if request.method == 'GET':
-        query = request.GET.get('q')
-        if query:
-            tables = Table.objects.filter(table_number__icontains=query)
-        else:
-            tables = Table.objects.all()
-        return render(request, 'table_list.html', {'tables': tables})
+# def table_filter(request):
+#     if request.method == 'GET':
+#         query = request.GET.get('q')
+#         if query:
+#             tables = Table.objects.filter(table_number__icontains=query)
+#         else:
+#             tables = Table.objects.all()
+#         return render(request, 'table_list.html', {'tables': tables})
 
-def table_sort(request):
-    sort_by = request.GET.get('sort_by')
-    if sort_by == 'table_number':
-        tables = Table.objects.order_by('table_number')
-    elif sort_by == 'seating_capacity':
-        tables = Table.objects.order_by('seating_capacity')
-    else:
-        tables = Table.objects.all()
-    return render(request, 'table_list.html', {'tables': tables})
+# def table_sort(request):
+#     sort_by = request.GET.get('sort_by')
+#     if sort_by == 'table_number':
+#         tables = Table.objects.order_by('table_number')
+#     elif sort_by == 'seating_capacity':
+#         tables = Table.objects.order_by('seating_capacity')
+#     else:
+#         tables = Table.objects.all()
+#     return render(request, 'table_list.html', {'tables': tables})
 
 # def table_assign(request, table_id, order_id):
 #     table = get_object_or_404(Table, id=table_id)
@@ -503,8 +507,7 @@ def toggle_category_availability(request, category_id):
 
 
 
-from django.shortcuts import render, redirect
-from .models import Cart
+# ----------------------------------------------- cart --------------------------------------------------#
 
 
 def add_to_cart(request):
@@ -529,4 +532,7 @@ def add_to_cart(request):
     products = ProductPrice.objects.all()
 
     return render(request, 'add_to_cart.html', {'users': users, 'products': products})
+
+
+
 

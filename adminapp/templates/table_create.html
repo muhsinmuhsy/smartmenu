@@ -17,31 +17,9 @@
 	<!-- Font awesome icon -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-	<!-- cropper css -->
-	<link rel="stylesheet" href="{% static 'css/cropper.css' %}">
-
-	<!-- for searching many to many fiels the categories -->
-	<link href="{% static 'plugins/css/select2.min.css' %}" rel="stylesheet" />
-	<link href="{% static 'plugins/css/select2-bootstrap4.css' %}" rel="stylesheet" />
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
-
-
 	<!-- my css -->
-	<link rel="stylesheet" href="{% static 'css/edit-product-image.css' %}">
+	<link rel="stylesheet" href="{% static 'css/table-create.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animated.css' %}">
-
-	<style>
-    .container {
-      margin: 20px auto;
-      max-width: 640px;
-    }
-
-    img {
-      max-width: 100%;
-    }
-  </style>
-	
 </head>
 <body>
 
@@ -62,14 +40,14 @@
 						<a href="{% url 'admin_index' %}">Dashboard</a>
 						</li>
 						<li>
-							<a href="#">Dininig</a>
-							<i class="fas fa-chevron-down order-dropdown-icon" ></i>
-							<ul class="dropdown-ul">
-								<li><a href="#">Add Table</a></li>
-								<li><a href="#">Tables</a></li>
-								<li><a href="#">Table Orders</a></li>
-								
-							</ul>
+						<a href="#">Dininig</a>
+						<i class="fas fa-chevron-down order-dropdown-icon" ></i>
+						<ul class="dropdown-ul">
+							<li><a href="{% url 'table_create' %}">Add Table</a></li>
+							<li><a href="{% url 'table_list' %}">Tables</a></li>
+							<li><a href="#">Table Orders</a></li>
+							
+						</ul>
 						</li>
 						<li>
 							<a href="#">Category</a>
@@ -98,14 +76,12 @@
 					<div>
 						<img src="{% static 'images/tabki.png' %}" alt="Image" width="100px" style="display: flex;justify-content: center;position: absolute;bottom: 65px; left: 45px;"> 
 					</div>
-					
-					
 				</div>
 			</div>
 
 			<div class="col">
 				<div style="display: flex; justify-content: center; padding-top: 15px;">
-					<h4><span>Edit</span> <span>Food</span> Image</h4>
+					<h4>Add Table</h4>
 				</div>
 			</div>
 
@@ -118,47 +94,30 @@
     </header>
 	
     <!-- End navbar etc -->
-
-	
-    <div class="card zoomIn">
+    <div class="card fade-up">
 		
 		<div class="card-body">
-
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'table_create' %}">
                 {% csrf_token %}
+                <label for="table_number">Table Number:</label>
+                <input type="number" id="table_number" name="table_number" class="form-control" required><br>
             
-				<div class="file-upload-container">
-											
-					<input type="file" name="image" id="image" accept="image/*" required>
-					<label for="image"><i class='bx bxs-cloud-upload'></i> Upload image</label>
-				</div>
-				  
-				<div class="container">
-					<div style=" background-color: #f8f9fa; " class="img-preview">
-						<img id="preview-image" src="#" alt="Preview" onerror="this.style.display='none';">
-					</div>
-				</div>
-				
-				<div class="col-12">
-					<button type="submit" id="add-button" class="btn btn-save">Save</button>
-
-					<!-- Hidden input field for cropped image data -->
-					<input type="hidden" id="cropped-image" name="cropped_image">
-				</div>
-			</form>
-				
-			
-			
-
+                <label for="seating_capacity">Seating Capacity:</label>
+                <input type="number" id="seating_capacity" name="seating_capacity" class="form-control" required><br>
+            
+                
+                
+                <label for="is_occupied">Is Occupied:</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="is_occupied" name="is_occupied" >
+                </div>
+                <br>
+                <input type="submit" class="btn sava_button" value="Create">
             </form>
         </div>
-    </div>
+	</div>
 
-	
-	
-	
-
-	<!-- for menu open and close -->
+	<!-- foe menu open and close -->
 	<script>
 		var menuIcon = document.getElementById("menuIcon");
 		var sidebar = document.getElementById("sidebar");
@@ -197,6 +156,7 @@
 		});
 		}
 	</script>
+  
 	<!-- FOR DARK MODE-->
 	<script>
 		const darkModeToggle = document.querySelector('#darkModeToggle');
@@ -221,87 +181,9 @@
 		  }
 		});
 	  </script>
-	
+	  
+	  
 
-	<!-- cropper js -->
-	<script src="{% static 'js/cropper.js' %}"></script>
-	<script>
-        window.addEventListener('DOMContentLoaded', function () {
-            var image = document.querySelector('#image');
-            var previewImage = document.querySelector('#preview-image');
-            var croppedImageInput = document.querySelector('#cropped-image');
-    
-            image.addEventListener('change', function () {
-                var reader = new FileReader();
-    
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result;
-                    var cropper = new Cropper(previewImage, {
-                        viewMode: 3,
-						dragMode: 'move',
-						autoCropArea: 1,
-						restore: false,
-						modal: false,
-						guides: false,
-						highlight: false,
-						cropBoxMovable: false,
-						cropBoxResizable: false,
-						toggleDragModeOnDblclick: false,
-                    });
-    
-                    
-                    // Save cropped image when the "Add" button is clicked
-                    var addButton = document.querySelector('button[type="submit"]');
-                    addButton.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        cropper.getCroppedCanvas().toBlob(function (blob) {
-                            var formData = new FormData();
-                            
-                            formData.append('image', blob, 'image.jpg');
-
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', '');
-                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-                            xhr.onload = function () {
-                                if (xhr.status === 200) {
-                                    // Successful response
-                                    console.log('Image uploaded successfully');
-                                    window.location.href = '{% url "product_detail" product_id=product.id %}';
-                                } else {
-                                    // Error handling
-                                    console.error('Image upload failed');
-                                }
-                            };
-                            xhr.send(formData);
-                        }, 'image/jpeg');
-                    });
-                };
-    
-                reader.readAsDataURL(this.files[0]);
-            });
-        });
-    </script>
-    
-
-	
-
-
-
-
-	  <!--plugins-->
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	
-	
-	<script src="{% static 'plugins/js/select2.min.js' %}"></script>
-	<script>
-		
-		$('.multiple-select').select2({
-			theme: 'bootstrap4',
-			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-			placeholder: $(this).data('placeholder'),
-			allowClear: Boolean($(this).data('allow-clear')),
-		});
-	</script>
 
     <!-- Bootstrap Link -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>

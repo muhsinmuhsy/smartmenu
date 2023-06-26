@@ -62,14 +62,14 @@
 						<a href="{% url 'admin_index' %}">Dashboard</a>
 						</li>
 						<li>
-						<a href="#">Orders</a>
-						<i class="fas fa-chevron-down order-dropdown-icon" ></i>
-						<ul class="dropdown-ul">
-							<li><a href="#">All Orders</a></li>
-							<li><a href="#">Dininig</a></li>
-							<li><a href="#">Take Away</a></li>
-							<li><a href="#">Delivery</a></li>
-						</ul>
+							<a href="#">Dininig</a>
+							<i class="fas fa-chevron-down order-dropdown-icon" ></i>
+							<ul class="dropdown-ul">
+								<li><a href="#">Add Table</a></li>
+								<li><a href="#">Tables</a></li>
+								<li><a href="#">Table Orders</a></li>
+								
+							</ul>
 						</li>
 						<li>
 							<a href="#">Category</a>
@@ -180,7 +180,7 @@
 					{% endif %}
 				{% endfor %}
 			
-				<button type="submit" id="add-button">Update</button>
+				<button type="submit" class="btn btn-submit" id="add-button">Update</button>
             </form>
         </div>
     </div>

@@ -6,108 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>Type Details</h3>
-    <p>Reference Number: {{ order.reference_number }}</p>
-    <p>Date: {{ order.date }}</p>
-
-    {% if order.order_type == 'Home Delivery' %}
-        <p>Type: Home Delivery</p>
-        <p>Name: {{ order.name }}</p>
-        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
-        <p>Contact Number: {{ order.contact_number }}</p>
-        <p>Address One: {{ order.address_one }}</p>
-        <p>Address Two: {{ order.address_two }}</p>
-        <p>Address Three: {{ order.address_three }}</p>
-        <p>Order Note: {{ order.order_note }}</p>
-
-        <h2>Order Details - Order ID: {{ order.id }}</h2>
-
-        <h3>Order Items:</h3>
-        <table>
-          <thead>
-            <tr>
-              <th style="padding-right: 35px;">Product</th>
-              <th style="padding-right: 35px;">Price</th>
-              <th style="padding-right: 35px;">Tax</th>
-              <th style="padding-right: 35px;">Tax with Price</th>
-              <th style="padding-right: 35px;">Quantity</th>
-              <th style="padding-right: 35px;">Tax with Price + Quantity Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for cart in order.cart.all %}
-              <tr>
-                <td style="padding-right: 35px;">{{ cart.product_price.product.name }} ( {{ cart.product_price.name}})</td>
-				
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.discount_price }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.actual_price }}</td>
-                {% endif %}
-
-                <td style="padding-right: 35px;">{{ cart.product_price.tax }}</td>
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_discount_price_with_tax }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_actual_price_with_tax }}</td>
-                {% endif %}
-                <td style="padding-right: 35px;">{{ cart.quantity }}</td>
-                <td style="padding-right: 35px;">{{ cart.get_total_tax_with_price_and_quantity }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        
-        <p>Total Price: {{ order.get_product_total_price }}</p>
-
-    {% elif order.order_type == 'Take Away' %}
-        <p>Type: Take Away</p>
-        <p>Name: {{ order.name }}</p>
-        <p>WhatsApp Number: {{ order.whatsapp_number }}</p>
-        <p>Contact Number: {{ order.contact_number }}</p>
-        <p>Address One: {{ order.address_one }}</p>
-        <p>Address Two: {{ order.address_two }}</p>
-        <p>Address Three: {{ order.address_three }}</p>
-        <p>Pickup Time: {{ order.time }}</p>
-
-        <h2>Order Details - Order ID: {{ order.id }}</h2>
-
-        <h3>Order Items:</h3>
-        <table>
-          <thead>
-            <tr>
-              <th style="padding-right: 35px;">Product</th>
-              <th style="padding-right: 35px;">Price</th>
-              <th style="padding-right: 35px;">Tax</th>
-              <th style="padding-right: 35px;">Tax with Price</th>
-              <th style="padding-right: 35px;">Quantity</th>
-              <th style="padding-right: 35px;">Tax with Price + Quantity Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for cart in order.cart.all %}
-              <tr>
-                <td style="padding-right: 35px;">{{ cart.product_price.product.name }} ( {{ cart.product_price.name}})</td>
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.discount_price }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.actual_price }}</td>
-                {% endif %}
-                <td style="padding-right: 35px;">{{ cart.product_price.tax }}</td>
-                {% if cart.product_price.discount_price %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_discount_price_with_tax }}</td>
-                {% else %}
-                  <td style="padding-right: 35px;">{{ cart.product_price.calculate_actual_price_with_tax }}</td>
-                {% endif %}
-                <td style="padding-right: 35px;">{{ cart.quantity }}</td>
-                <td style="padding-right: 35px;">{{ cart.get_total_tax_with_price_and_quantity }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        
-        <p>Total Price: {{ order.get_product_total_price }}</p> 
-    {% endif %}
-
+    <form method="post">
+        {% csrf_token %}
+        <label for="table_number">Table Number:</label>
+        <input type="text" name="table_number" value="{{ table.table_number }}"><br>
+      
+        <label for="seating_capacity">Seating Capacity:</label>
+        <input type="number" name="seating_capacity" value="{{ table.seating_capacity }}"><br>
+      
+        <label for="is_occupied">Is Occupied:</label>
+        <input type="checkbox" name="is_occupied" {% if table.is_occupied %}checked{% endif %}><br>
+      
+        <input type="submit" value="Update">
+      </form>
+      
 </body>
 </html>

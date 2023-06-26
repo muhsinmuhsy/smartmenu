@@ -172,7 +172,7 @@ class Order(models.Model):
         ('Pending', 'Pending'),
         ('Order Confirmed', 'Order Confirmed'),
         ('Order Don', 'Order Don'),
-        ('Canceled', 'Canceled'),          
+        ('Cancel', 'Cancel'),          
     )
     cart = models.ManyToManyField(Cart)
     reference_number = models.CharField(max_length=100, unique=True)

@@ -7,4 +7,5 @@ admin.site.register(ProductPrice)
 admin.site.register(Cart)
 admin.site.register(Order)
 admin.site.register(User)
+admin.site.register(Table)
 

@@ -286,3 +286,8 @@ body.dark-mode .table.table-striped tbody tr a {
     transform: translateX(20px);
 }
 
+.btn-submit{
+    background-color: #680a18;
+    color: #fff;
+    width: 100%;
+}

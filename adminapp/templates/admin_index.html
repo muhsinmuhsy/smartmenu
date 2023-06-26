@@ -40,13 +40,13 @@
 						<a href="{% url 'admin_index' %}">Dashboard</a>
 						</li>
 						<li>
-						<a href="#">Orders</a>
+						<a href="#">Dininig</a>
 						<i class="fas fa-chevron-down order-dropdown-icon" ></i>
 						<ul class="dropdown-ul">
-							<li><a href="#">All Orders</a></li>
-							<li><a href="#">Dininig</a></li>
-							<li><a href="#">Take Away</a></li>
-							<li><a href="#">Delivery</a></li>
+							<li><a href="{% url 'table_create' %}">Add Table</a></li>
+							<li><a href="{% url 'table_list' %}">Tables</a></li>
+							<li><a href="#">Table Orders</a></li>
+							
 						</ul>
 						</li>
 						<li>
@@ -97,54 +97,55 @@
 
 	<!-- Dashbord -->
 
-	
-    <div class="card-container fade-in-right">
-		<div class="card" style="background-color: #ed1c24; color: #fff;">
-			<div>
-			<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Total Orders <br><span style="font-weight: bolder;">{{ total_orders_count }}</span></p>
-			<i class="bi bi-cart-check-fill" style="font-size: 25px; padding-left: 113px;"></i>
+	<div class="top">
+		<div class="card-container fade-in-right">
+			<div class="card" style="background-color: #ed1c24; color: #fff;">
+				<div>
+				<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Total Orders <br><span style="font-weight: bolder;">{{ total_orders_count }}</span></p>
+				<i class="bi bi-cart-check-fill" style="font-size: 25px; padding-left: 113px;"></i>
+				</div>
+			</div>
+			<div class="card" style="background-color: #0071bc; color: #fff;">
+				<div>
+				<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Table Orders <br><span style="font-weight: bolder;">356</span></p>
+				<i class="bi bi-table" style="font-size: 25px; padding-left: 113px;"></i>
+				</div>
+			</div>
+			<div class="card" style="background-color: #009245; color: #fff;">
+				<div>
+					<p style="font-size: 18px; margin-bottom: 0rem; padding-top: 8px; padding-left: 10px;">
+						Take Away <br>
+						<span style="font-weight: bolder;">{{ order_types.1.2 }}</span>
+					</p>
+					<i class="bx bxs-package" style="font-size: 26px; padding-left: 113px; padding-top: 8px;"></i>
+				</div>
+			</div>
+			
+			<div class="card" style="background-color: #ed1c24; color: #fff;">
+				<div>
+					<p style="font-size: 18px; margin-bottom: 0rem; padding-top: 8px; padding-left: 10px;">
+						Delivery <br>
+						<span style="font-weight: bolder;"> {{ order_types.0.2 }}</span>
+					</p>
+					<i class="bi bi-truck-flatbed" style="font-size: 25px; padding-left: 113px;"></i>
+				</div>
+			</div>
+			
+			
+			<div class="card" style="background-color: #0071bc; color: #fff;">
+				<div>
+				<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Canceled Orders<br><span style="font-weight: bolder;">{{ canceled_orders_count }}</span></p>
+				<i class="bi bi-x-octagon-fill" style="font-size: 25px; padding-left: 113px;"></i>
+				</div>
+			</div>
+			<div class="card" style="background-color: #009245;; color: #fff;">
+				<div>
+				<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Earnings Today <br><span style="font-weight: bolder;">{{ total_cart_earnings }}</span></p>
+				<i class="bi bi-wallet-fill" style="font-size: 25px; padding-left: 113px;"></i>
+				</div>
 			</div>
 		</div>
-		<div class="card" style="background-color: #0071bc; color: #fff;">
-			<div>
-			<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Table Orders <br><span style="font-weight: bolder;">356</span></p>
-			<i class="bi bi-table" style="font-size: 25px; padding-left: 113px;"></i>
-			</div>
-		</div>
-		<div class="card" style="background-color: #009245; color: #fff;">
-			<div>
-				<p style="font-size: 18px; margin-bottom: 0rem; padding-top: 8px; padding-left: 10px;">
-					Take Away <br>
-					<span style="font-weight: bolder;">{{ order_types.1.2 }}</span>
-				</p>
-				<i class="bx bxs-package" style="font-size: 26px; padding-left: 113px; padding-top: 8px;"></i>
-			</div>
-		</div>
-		
-		<div class="card" style="background-color: #ed1c24; color: #fff;">
-			<div>
-				<p style="font-size: 18px; margin-bottom: 0rem; padding-top: 8px; padding-left: 10px;">
-					Delivery <br>
-					<span style="font-weight: bolder;"> {{ order_types.0.2 }}</span>
-				</p>
-				<i class="bi bi-truck-flatbed" style="font-size: 25px; padding-left: 113px;"></i>
-			</div>
-		</div>
-		
-		
-		<div class="card" style="background-color: #0071bc; color: #fff;">
-			<div>
-			<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Canceled Orders<br><span style="font-weight: bolder;">{{ canceled_orders_count }}</span></p>
-			<i class="bi bi-x-octagon-fill" style="font-size: 25px; padding-left: 113px;"></i>
-			</div>
-		</div>
-		<div class="card" style="background-color: #009245;; color: #fff;">
-			<div>
-			<p style="font-size: 18px;     margin-bottom: 0rem;padding-top: 8px; padding-left: 10px;">Earnings Today <br><span style="font-weight: bolder;">{{ total_cart_earnings }}</span></p>
-			<i class="bi bi-wallet-fill" style="font-size: 25px; padding-left: 113px;"></i>
-			</div>
-		</div>
-    </div>
+	</div>
 
 	<div class="table-responsive fade-up">
         <table class="table table-striped">
@@ -192,7 +193,7 @@
 												<input type="hidden" name="order_id" value="{{ order.id }}">
 												
 												{% for status in order.STATUS %}
-													{% if status.0 == 'Canceled' %}
+													{% if status.0 == 'Cancel' %}
 													<button type="button" style="font-size: 12px; font-weight: bold;" onclick="updateStatus('{{ order.id }}', '{{ status.0 }}')" class="btn btn-danger {% if order.status == status.0 %}selected{% endif %}">
 														{{ status.1 }}
 													</button>
@@ -244,6 +245,22 @@
 			</tbody>
         </table>
     </div>
+
+	{% for table in tables %}
+		<div class="card" >
+			<div class="card-body">
+				{{ table.table_number }}
+			</div>
+		</div>
+	{% endfor %}
+
+      
+        
+        
+     
+    
+
+	
 	
 
 	<!-- foe menu open and close -->

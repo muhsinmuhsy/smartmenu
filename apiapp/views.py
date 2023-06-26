@@ -261,19 +261,34 @@ def user_list_api(request):
 
 # -------------------------------------------------- Cart ------------------------------------------------------------ #
 
+# @api_view(['GET', 'POST'])
+# def cart_list_api(request):
+#     if request.method == 'GET':
+#         carts = Cart.objects.all()
+#         serializer = CartSerializer(carts, many=True)
+#         return Response(serializer.data)
+
+#     elif request.method == 'POST':
+#         serializer = CartSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from django.http import HttpResponse
+
 @api_view(['GET', 'POST'])
 def cart_list_api(request):
-    if request.method == 'GET':
-        carts = Cart.objects.all()
-        serializer = CartSerializer(carts, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
+        ip_address = request.META.get('REMOTE_ADDR')
+        user, _ = User.objects.get_or_create(ip=ip_address)  # Get or create a user based on the IP address
         serializer = CartSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            cart = serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return HttpResponse('Method not allowed', status=405)
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def cart_detail_api(request, pk):
