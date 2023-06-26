@@ -58,7 +58,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'ip', 'user_id']
+        fields = ['id', 'user_id']
 
 # ---------------------------------------------- Cart ----------------------------------------------------------- #
 

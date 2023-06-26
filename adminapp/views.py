@@ -442,7 +442,7 @@ def table_update(request, table_id):
     if request.method == 'POST':
         table.table_number = request.POST['table_number']
         table.seating_capacity = request.POST['seating_capacity']
-        table.is_occupied = request.POST.get('is_occupied', ) == 'on'
+        table.is_occupied = request.POST.get('is_occupied', False) == 'on'
         table.save()
         return redirect('table_list')
     return render(request, 'table_update.html', {'table': table})

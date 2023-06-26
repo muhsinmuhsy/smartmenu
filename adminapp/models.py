@@ -59,11 +59,11 @@ class ProductPrice(models.Model):
 # ------------------------------------------------- User ---------------------------------------------------------------------- #
 
 class User(models.Model):
-    name = models.CharField(max_length=100,null=True)
-    ip = models.GenericIPAddressField()
-    user_id = models.CharField(max_length=225)
+    # name = models.CharField(max_length=100,null=True)
+    # ip = models.GenericIPAddressField()
+    user_id = models.CharField(max_length=500)
     def __str__(self):
-        return self.name
+        return self.user_id
 
 # ------------------------------------------------- Cart ---------------------------------------------------------------------- #
 

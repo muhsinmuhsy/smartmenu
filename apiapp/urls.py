@@ -15,6 +15,7 @@ urlpatterns = [
     path('product-prices/', views.product_price_list_api, name='product-price-list'),
     path('product-prices/<int:pk>/', views.product_price_detail_api, name='product-price-detail'),
     
+    path('user/', views.user_list_api,),
     
     path('carts/', views.cart_list_api, name='cart-list'),
     path('carts/<int:pk>/', views.cart_detail_api, name='cart-detail'),

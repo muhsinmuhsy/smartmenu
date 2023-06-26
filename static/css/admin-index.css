@@ -262,6 +262,29 @@ body.dark-mode .table.table-striped tbody tr a {
 
 }
 
+.dining{
+    margin-top: 15px;
+    margin-left: 280px;
+    margin-right: 35px;
+}
+.dining .card{
+    margin-bottom: 10PX;
+}
 
 
 
+@media (max-width:1300px){
+    .dining{
+    
+        margin-left: 20px;
+        margin-right: 23px;
+    }
+}
+
+
+
+
+.card-occupied {
+    background-color: #ba8c63; /* Set the background color for occupied cards */
+    color: white; /* Set the text color for occupied cards */
+}
