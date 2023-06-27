@@ -184,7 +184,8 @@ class Order(models.Model):
     address_three = models.CharField(max_length=500)
     order_note = models.CharField(max_length=500)
     payment_mode = models.CharField(max_length=100, choices=PAYMENT_MODE)
-    date = models.DateField(auto_now_add=True)
+    # date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=100, choices=STATUS, default='Pending', null=True, blank=True)
 
