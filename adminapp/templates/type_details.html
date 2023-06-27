@@ -44,9 +44,9 @@
 							<a href="#">Dininig</a>
 							<i class="fas fa-chevron-down order-dropdown-icon" ></i>
 							<ul class="dropdown-ul">
-								<li><a href="#">Add Table</a></li>
-								<li><a href="#">Tables</a></li>
-								<li><a href="#">Table Orders</a></li>
+								<li><a href="{% url 'table_create' %}">Add Table</a></li>
+								<li><a href="{% url 'table_list' %}">Tables</a></li>
+								<!-- <li><a href="#">Table Orders</a></li> -->
 								
 							</ul>
 						</li>
@@ -184,7 +184,7 @@
 
 
 	{% elif order.order_type == 'Take Away' %}
-		<div class="card">
+		<div class="card zoomIn">
 			<div class="card-body">
 				<p> <span class="font-bold" style="padding-right: 13px;">Reference Number </span>  <span>:</span>  {{ order.reference_number }} </p>
 				<hr>
@@ -211,8 +211,8 @@
 			</div>
 		</div>
 
-        <h3 class="order-items">Order Items:</h3>
-        <div class="table-responsive">
+        <h3 class="order-items fade-up">Order Items:</h3>
+        <div class="table-responsive fade-up">
             <table class="table table-striped">
                 <thead style="border: thin;">
                     <tr class="text-center">

@@ -367,7 +367,6 @@ def edit_product_image(request, product_id):
 
 
 
-
 # def report(request):
 #     start_date = request.GET.get('start_date')
 #     end_date = request.GET.get('end_date')
