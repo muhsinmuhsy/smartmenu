@@ -311,10 +311,10 @@ def cart_items_view(request):
             'id': item.id,
             'product_name': item.product_price.product.name,
             'product_price': item.product_price_dummy,
-            'discount_price': item.tax_dummy,
-            'tax': str(item.total),
+            'tax': item.tax_dummy,
+            'quantity': item.quantity,
+            'total': str(item.total),
         })
-    
     return Response(cart_item_data)
 
     
