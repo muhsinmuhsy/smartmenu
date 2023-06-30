@@ -18,6 +18,7 @@ urlpatterns = [
     path('user/', views.user_list_api,),
     
     path('carts/', views.cart_list_api, name='cart-list'),
+    path('cart-items/', views.cart_items_view, name='cart_items'),
     path('carts/<int:pk>/', views.cart_detail_api, name='cart-detail'),
     
     

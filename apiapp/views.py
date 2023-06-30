@@ -290,6 +290,34 @@ def cart_list_api(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    
+    
+
+
+@api_view(['GET'])
+def cart_items_view(request):
+    user_id = request.GET.get('user_id')
+    
+    try:
+        user = User.objects.get(user_id=user_id)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
+    cart_items = Cart.objects.filter(user=user)
+    
+    cart_item_data = []
+    for item in cart_items:
+        cart_item_data.append({
+            'id': item.id,
+            'product_name': item.product_price.product.name,
+            'product_price': item.product_price_dummy,
+            'discount_price': item.tax_dummy,
+            'tax': str(item.total),
+        })
+    
+    return Response(cart_item_data)
+
+    
 @api_view(['GET', 'PUT', 'DELETE'])
 def cart_detail_api(request, pk):
     try:

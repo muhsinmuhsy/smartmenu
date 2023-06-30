@@ -170,7 +170,6 @@ def product_list(request):
     return render(request, 'product_list.html', {'products': products})
 
 
-
 @login_required
 def add_product(request):
     if request.method == 'POST':
