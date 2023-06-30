@@ -279,8 +279,9 @@ def user_detail_api(request):
 @api_view(['GET', 'POST'])
 def cart_list_api(request):
     if request.method == 'GET':
-        carts = Cart.objects.all()
-        serializer = CartSerializer(carts, many=True)
+        user_id = request.GET.get('user_id')  # Assuming user_id is passed as a query parameter
+        cart_items = Cart.objects.filter(user__user_id=user_id)
+        serializer = CartSerializer(cart_items, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -289,8 +290,6 @@ def cart_list_api(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
     
 
 
