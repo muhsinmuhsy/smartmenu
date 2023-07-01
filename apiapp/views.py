@@ -279,7 +279,7 @@ def user_detail_api(request):
 @api_view(['GET', 'POST'])
 def cart_list_api(request):
     if request.method == 'GET':
-        user_id = request.GET.get('user_id')  # Assuming user_id is passed as a query parameter
+        user_id = request.GET.get('user_id')  
         cart_items = Cart.objects.filter(user__user_id=user_id)
         serializer = CartSerializer(cart_items, many=True)
         return Response(serializer.data)
@@ -306,16 +306,34 @@ def my_carts_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# @api_view(['GET'])
+# def cart_items_view(request):
+#     user_id = request.GET.get('user_id')
+    
+#     try:
+#         user = User.objects.get(user_id=user_id)
+#     except User.DoesNotExist:
+#         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
+#     cart_items = Cart.objects.filter(user=user) 
+    
+#     cart_item_data = []
+#     for item in cart_items:
+#         cart_item_data.append({
+#             'id': item.id,
+#             'product_name': item.product_price.product.name,
+#             'product_price': item.product_price_dummy,
+#             'tax': item.tax_dummy,
+#             'quantity': item.quantity,
+#             'total': str(item.total),
+#         })
+#     return Response(cart_item_data)
+
 @api_view(['GET'])
 def cart_items_view(request):
-    user_id = request.GET.get('user_id')
     
-    try:
-        user = User.objects.get(user_id=user_id)
-    except User.DoesNotExist:
-        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
     
-    cart_items = Cart.objects.filter(user=user)
+    cart_items = Cart.objects.all()
     
     cart_item_data = []
     for item in cart_items:
@@ -357,44 +375,44 @@ def cart_detail_api(request, pk):
 
 # ----------------------------------------------------------------- Order ------------------------------------------------------ #
 
-@api_view(['GET', 'POST'])
-def order_item_list_api(request):
-    if request.method == 'GET':
-        order_items = Cart.objects.all()
-        serializer = CartSerializer(order_items, many=True)
-        return Response(serializer.data)
+# @api_view(['GET', 'POST'])
+# def order_item_list_api(request):
+#     if request.method == 'GET':
+#         order_items = Cart.objects.all()
+#         serializer = CartSerializer(order_items, many=True)
+#         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = CartSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+#     elif request.method == 'POST':
+#         serializer = CartSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def order_item_detail_api(request, pk):
-    try:
-        order_item = Cart.objects.get(pk=pk)
-    except Cart.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = CartSerializer(order_item)
-        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = CartSerializer(order_item, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def order_item_detail_api(request, pk):
+#     try:
+#         order_item = Cart.objects.get(pk=pk)
+#     except Cart.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    elif request.method == 'DELETE':
-        order_item.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     if request.method == 'GET':
+#         serializer = CartSerializer(order_item)
+#         return Response(serializer.data)
+
+#     elif request.method == 'PUT':
+#         serializer = CartSerializer(order_item, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     elif request.method == 'DELETE':
+#         order_item.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'adminapp',
     'u_auth',
     'apiapp',
@@ -140,7 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # Replace with your React app's domain
+    'https://thychatechnologies.com'
+    # 'http://localhost:3000',  # Replace with your React app's domain
 ]
 
 CORS_ALLOW_CREDENTIALS = True

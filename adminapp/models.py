@@ -3,6 +3,11 @@ from decimal import Decimal
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
+
 # Create your models here.
 
 # ------------------------------------------------- Category ---------------------------------------------------------------------- #
@@ -59,7 +64,6 @@ class ProductPrice(models.Model):
 # ------------------------------------------------- User ---------------------------------------------------------------------- #
 
 class User(models.Model):
-    
     user_id = models.CharField(max_length=500)
     def __str__(self):
         return self.user_id
@@ -207,6 +211,20 @@ class Table(models.Model):
     table_number = models.CharField(max_length=10)
     seating_capacity = models.PositiveIntegerField()
     is_occupied = models.BooleanField(default=False)
+    qr_code = models.ImageField(upload_to='qr_codes', blank=True)
     cart = models.ManyToManyField(Cart)
     def __str__(self):
         return self.table_number
+
+    def save(self, *args, **kwargs):
+        qrcode_img = qrcode.make(self.table_number)
+        canvas = Image.new('RGB', (290, 290), 'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.table_number}.png'
+        buffer = BytesIO()
+        canvas.save(buffer, 'PNG')
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kwargs)
+        

@@ -73,4 +73,5 @@ class CartSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id', 'order_items', 'reference_number', 'order_type', 'name', 'whatsapp_number', 'contact_number', 'address_one', 'address_two', 'address_three', 'order_note', 'payment_mode', 'date', 'time', 'canceled']
+        # fields = ['id', 'order_items', 'reference_number', 'order_type', 'name', 'whatsapp_number', 'contact_number', 'address_one', 'address_two', 'address_three', 'order_note', 'payment_mode', 'date', 'time', 'canceled']
+        fields = '__all__'
