@@ -1,7 +1,11 @@
 from django.db import models
+
 from decimal import Decimal
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from django.db.models.signals import pre_delete
 
 import qrcode
 from io import BytesIO
@@ -30,7 +34,10 @@ class Product(models.Model):
     availability = models.BooleanField(default=False)
     def __str__(self):
         return self.name
-    
+
+@receiver(pre_delete, sender=Category)
+def delete_related_products(sender, instance, **kwargs):
+    instance.product_set.all().delete() 
 # ------------------------------------------------- Product Price ---------------------------------------------------------------------- #
     
 class ProductPrice(models.Model):
