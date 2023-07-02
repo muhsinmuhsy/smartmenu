@@ -8,6 +8,9 @@ from django.utils import timezone
 from datetime import date
 from django.http import HttpResponse
 
+from django.db import IntegrityError
+
+
 # Create your views here.
 
 
@@ -426,14 +429,21 @@ def table_list(request):
     tables = Table.objects.all()
     return render(request, 'table_list.html', {'tables': tables})
 
+
+
 def table_create(request):
     if request.method == 'POST':
         table_number = request.POST['table_number']
         seating_capacity = request.POST['seating_capacity']
         is_occupied = request.POST.get('is_occupied', False) == 'on'
-        table = Table.objects.create(table_number=table_number, seating_capacity=seating_capacity, is_occupied=is_occupied)
-        return redirect('table_list')
+        try:
+            table = Table.objects.create(table_number=table_number, seating_capacity=seating_capacity, is_occupied=is_occupied)
+            return redirect('table_list')
+        except IntegrityError:
+            error_message = f"A table with the number {table_number} already exists."
+            return render(request, 'table_create.html', {'error_message': error_message})
     return render(request, 'table_create.html')
+
 
 def table_update(request, table_id):
     table = get_object_or_404(Table, id=table_id)

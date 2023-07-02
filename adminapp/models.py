@@ -215,7 +215,7 @@ class Order(models.Model):
 # ------------------------------------------------- Table ---------------------------------------------------------------------- #
 
 class Table(models.Model):
-    table_number = models.CharField(max_length=10)
+    table_number = models.CharField(max_length=10, unique=True)
     seating_capacity = models.PositiveIntegerField()
     is_occupied = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True)

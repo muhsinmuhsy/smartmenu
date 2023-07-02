@@ -98,6 +98,10 @@
     <div class="card fade-up">
 		
 		<div class="card-body">
+
+			{% if error_message %}
+				<p style="color: red;">{{ error_message }}</p>
+			{% endif %}
             <form method="POST" action="{% url 'table_create' %}">
                 {% csrf_token %}
                 <label for="table_number">Table Number:</label>
