@@ -74,6 +74,15 @@ class User(models.Model):
     user_id = models.CharField(max_length=500)
     def __str__(self):
         return self.user_id
+    
+    def __str__(self):
+        return self.user_id
+
+    def save(self, *args, **kwargs):
+        existing_user = User.objects.filter(user_id=self.user_id).first()
+        if existing_user:
+            return  # Don't save if a user with the same name already exists
+        super().save(*args, **kwargs)
 
 # ------------------------------------------------- Cart ---------------------------------------------------------------------- #
 
