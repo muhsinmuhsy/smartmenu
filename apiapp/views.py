@@ -295,8 +295,16 @@ def cart_list_api(request):
 def my_carts_api(request):
     if request.method == 'GET':
         carts = Cart.objects.all()
+        users = User.objects.all()
         serializer = CartSerializer(carts, many=True)
-        return Response(serializer.data)
+        userserializer = UserSerializer(users, many=True)
+        
+        response_data = {
+            "user": userserializer.data,
+            "carts": serializer.data
+        }
+        
+        return Response(response_data)
 
     elif request.method == 'POST':
         serializer = CartSerializer(data=request.data)
