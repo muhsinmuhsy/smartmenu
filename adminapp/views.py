@@ -66,7 +66,7 @@ def admin_index(request):
     total_orders_count = orders.count()
 
     # Filter the canceled orders for today
-    canceled_orders = orders.filter(status='Canceled')
+    canceled_orders = orders.filter(status='Cancel')
 
     # Calculate the count of canceled orders
     canceled_orders_count = canceled_orders.count()
