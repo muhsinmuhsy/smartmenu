@@ -440,6 +440,8 @@ def cart_items_view(request):
         cart_items = Cart.objects.all()
         cart_item_data = []
         for item in cart_items:
+            individual_prices = [str(item.product_price_dummy) for _ in range(item.quantity)]
+            
             image_path = item.product_price.product.image.url if item.product_price.product.image else None
             image_url = image_path if image_path else static(settings.MEDIA_URL + 'default_image.jpg')
             cart_item_data.append({
@@ -449,11 +451,13 @@ def cart_items_view(request):
                 'image': image_url,
                 'product_variant': item.product_price.name,
                 'product_price': item.product_price_dummy,
+                'product_price_total': individual_prices,
                 'tax': item.tax_dummy,
                 'quantity': item.quantity,
                 'total': str(item.total),
             })
         return Response(cart_item_data)
+
 
     elif request.method == 'PUT':
         cart_items = Cart.objects.all()
