@@ -75,8 +75,7 @@ class User(models.Model):
     def __str__(self):
         return self.user_id
     
-    def __str__(self):
-        return self.user_id
+   
 
     def save(self, *args, **kwargs):
         existing_user = User.objects.filter(user_id=self.user_id).first()

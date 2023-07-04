@@ -279,21 +279,43 @@ def user_detail_api(request):
 
 # -------------------------------------------------- Cart ------------------------------------------------------------ #
 
-@api_view(['GET', 'POST'])
-def cart_list_api(request):
-    if request.method == 'GET':
-        user_id = request.GET.get('user_id')  
-        cart_items = Cart.objects.filter(user__user_id=user_id)
-        serializer = CartSerializer(cart_items, many=True)
-        return Response(serializer.data)
+# @api_view(['GET', 'POST'])
+# def cart_list_api(request):
+#     if request.method == 'GET':
+#         user_id = request.GET.get('user_id')  
+#         cart_items = Cart.objects.filter(user__user_id=user_id)
+#         serializer = CartSerializer(cart_items, many=True)
+#         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = CartSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'POST':
+#         serializer = CartSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# @api_view(['GET', 'POST'])
+# def my_carts_api(request):
+#     if request.method == 'GET':
+#         carts = Cart.objects.all()
+#         users = User.objects.all()
+#         serializer = CartSerializer(carts, many=True)
+#         userserializer = UserSerializer(users, many=True)
+        
+#         response_data = {
+#             "user": userserializer.data,
+#             "carts": serializer.data
+#         }
+        
+#         return Response(response_data)
+
+#     elif request.method == 'POST':
+#         serializer = CartSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET', 'POST'])
 def my_carts_api(request):
     if request.method == 'GET':
@@ -312,9 +334,20 @@ def my_carts_api(request):
     elif request.method == 'POST':
         serializer = CartSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            product_price = serializer.validated_data['product_price']
+            user = serializer.validated_data['user']
+
+            # Check if the same product already exists in the cart for the user
+            existing_cart = Cart.objects.filter(user=user, product_price=product_price).first()
+            if existing_cart:
+                existing_cart.quantity += 1
+                existing_cart.save()
+                return Response(CartSerializer(existing_cart).data, status=status.HTTP_200_OK)
+            else:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # @api_view(['GET'])
@@ -357,7 +390,51 @@ def my_carts_api(request):
 #         })
 #     return Response(cart_item_data)
 
-@api_view(['GET', 'PUT'])
+
+
+# @api_view(['GET', 'PUT'])
+# def cart_items_view(request):
+#     if request.method == 'GET':
+#         cart_items = Cart.objects.all()
+#         cart_item_data = []
+#         for item in cart_items:
+#             image_path = item.product_price.product.image.url if item.product_price.product.image else None
+#             image_url = image_path if image_path else static(settings.MEDIA_URL + 'default_image.jpg')
+#             cart_item_data.append({
+#                 'id': item.id,
+#                 'user': item.user,
+#                 'product_name': item.product_price.product.name,
+#                 'image': image_url,
+#                 'product_variant': item.product_price.name,
+#                 'product_price': item.product_price_dummy,
+#                 'tax': item.tax_dummy,
+#                 'quantity': item.quantity,
+#                 'total': str(item.total),
+#             })
+#         return Response(cart_item_data)
+    
+#     elif request.method == 'PUT':
+#         cart_items = Cart.objects.all()
+#         cart_item_data = []
+#         for item in cart_items:
+#             item.quantity = request.data.get('quantity', item.quantity)
+#             item.save()
+#             cart_item_data.append({
+#                 'id': item.id,
+#                 'user': item.user,
+#                 'product_name': item.product_price.product.name,
+#                 'product_variant': item.product_price.name,
+#                 'product_price': item.product_price_dummy,
+#                 'tax': item.tax_dummy,
+#                 'quantity': item.quantity,
+#                 'total': str(item.total),
+#             })
+#         return Response(cart_item_data)
+    
+
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
 def cart_items_view(request):
     if request.method == 'GET':
         cart_items = Cart.objects.all()
@@ -377,7 +454,7 @@ def cart_items_view(request):
                 'total': str(item.total),
             })
         return Response(cart_item_data)
-    
+
     elif request.method == 'PUT':
         cart_items = Cart.objects.all()
         cart_item_data = []
@@ -396,6 +473,11 @@ def cart_items_view(request):
             })
         return Response(cart_item_data)
 
+    elif request.method == 'DELETE':
+        cart_items = Cart.objects.all()
+        for item in cart_items:
+            item.delete()
+        return Response({'message': 'Cart items deleted successfully.'})
 
     
 @api_view(['GET', 'PUT', 'DELETE'])
