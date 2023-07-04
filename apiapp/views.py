@@ -337,25 +337,59 @@ def my_carts_api(request):
 #         })
 #     return Response(cart_item_data)
 
-@api_view(['GET'])
+# @api_view(['GET'])
+# def cart_items_view():    
+#     cart_items = Cart.objects.all()
+#     cart_item_data = []
+#     for item in cart_items:
+#         cart_item_data.append({
+#             'id': item.id,
+#             'user': item.user,
+#             'product_name': item.product_price.product.name,
+#             'product_variant': item.product_price.name,
+#             'product_price': item.product_price_dummy,
+#             'tax': item.tax_dummy,
+#             'quantity': item.quantity,
+#             'total': str(item.total),
+#         })
+#     return Response(cart_item_data)
+
+@api_view(['GET', 'PUT'])
 def cart_items_view(request):
+    if request.method == 'GET':
+        cart_items = Cart.objects.all()
+        cart_item_data = []
+        for item in cart_items:
+            cart_item_data.append({
+                'id': item.id,
+                'user': item.user,
+                'product_name': item.product_price.product.name,
+                'product_variant': item.product_price.name,
+                'product_price': item.product_price_dummy,
+                'tax': item.tax_dummy,
+                'quantity': item.quantity,
+                'total': str(item.total),
+            })
+        return Response(cart_item_data)
     
-    
-    cart_items = Cart.objects.all()
-    
-    cart_item_data = []
-    for item in cart_items:
-        cart_item_data.append({
-            'id': item.id,
-            'user': item.user,
-            'product_name': item.product_price.product.name,
-            'product_variant': item.product_price.name,
-            'product_price': item.product_price_dummy,
-            'tax': item.tax_dummy,
-            'quantity': item.quantity,
-            'total': str(item.total),
-        })
-    return Response(cart_item_data)
+    elif request.method == 'PUT':
+        cart_items = Cart.objects.all()
+        cart_item_data = []
+        for item in cart_items:
+            item.quantity = request.data.get('quantity', item.quantity)
+            item.save()
+            cart_item_data.append({
+                'id': item.id,
+                'user': item.user,
+                'product_name': item.product_price.product.name,
+                'product_variant': item.product_price.name,
+                'product_price': item.product_price_dummy,
+                'tax': item.tax_dummy,
+                'quantity': item.quantity,
+                'total': str(item.total),
+            })
+        return Response(cart_item_data)
+
 
     
 @api_view(['GET', 'PUT', 'DELETE'])
