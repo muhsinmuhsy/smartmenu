@@ -544,3 +544,11 @@ def add_to_cart(request):
 
 
 
+#------------------------------------------------------------------------- #
+
+def table_main(request, table_id):
+    table = Table.objects.get(id=table_id)
+    context = {
+        'table' : table,
+    }
+    return render(request, 'table_main.html', context)

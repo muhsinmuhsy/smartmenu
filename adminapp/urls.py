@@ -57,6 +57,10 @@ urlpatterns = [
  
 
     
+    # --------------------------------------------------------------- #
+    
+    path('table_main/<int:table_id>/', views.table_main, name='table_main')
+    
 ]
 
 

@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .serializers import ProductSerializer, ProductPriceSerializer
 
+from django.conf import settings
+import static
+
 
 # ------------------------------------------ Category ----------------------------------------------------------- #
 @api_view(['GET', 'POST'])
@@ -360,10 +363,13 @@ def cart_items_view(request):
         cart_items = Cart.objects.all()
         cart_item_data = []
         for item in cart_items:
+            image_path = item.product_price.product.image.url if item.product_price.product.image else None
+            image_url = image_path if image_path else static(settings.MEDIA_URL + 'default_image.jpg')
             cart_item_data.append({
                 'id': item.id,
                 'user': item.user,
                 'product_name': item.product_price.product.name,
+                'image': image_url,
                 'product_variant': item.product_price.name,
                 'product_price': item.product_price_dummy,
                 'tax': item.tax_dummy,
