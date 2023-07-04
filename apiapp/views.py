@@ -347,7 +347,9 @@ def cart_items_view(request):
     for item in cart_items:
         cart_item_data.append({
             'id': item.id,
+            'user': item.user,
             'product_name': item.product_price.product.name,
+            'product_variant': item.product_price.name,
             'product_price': item.product_price_dummy,
             'tax': item.tax_dummy,
             'quantity': item.quantity,
