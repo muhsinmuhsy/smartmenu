@@ -3,8 +3,11 @@ from adminapp. models import *
 # Register your models here.
 admin.site.register(Category)
 
-admin.site.register(Product)
-
+# admin.site.register(Product)
+@admin.register(Product)
+class ProductModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name',  ]
+    
 admin.site.register(ProductPrice)
 
 @admin.register(Cart)
