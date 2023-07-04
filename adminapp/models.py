@@ -71,7 +71,7 @@ class ProductPrice(models.Model):
 # ------------------------------------------------- User ---------------------------------------------------------------------- #
 
 class User(models.Model):
-    user_id = models.CharField(max_length=500)
+    user_id = models.UUIDField()
     def __str__(self):
         return self.user_id
     
@@ -83,20 +83,51 @@ class User(models.Model):
         if existing_user:
             return  # Don't save if a user with the same name already exists
         super().save(*args, **kwargs)
+        
+        
+        
+# ------------------------------------------------- Table ---------------------------------------------------------------------- #
+
+class Table(models.Model):
+    table_number = models.CharField(max_length=10, unique=True)
+    seating_capacity = models.PositiveIntegerField()
+    is_occupied = models.BooleanField(default=False)
+    qr_code = models.ImageField(upload_to='qr_codes', blank=True)
+    
+    def __str__(self):
+        return self.table_number
+
+    def save(self, *args, **kwargs):
+        qrcode_img = qrcode.make(self.table_number)
+        canvas = Image.new('RGB', (290, 290), 'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.table_number}.png'
+        buffer = BytesIO()
+        canvas.save(buffer, 'PNG')
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kwargs)
+        
+        
 
 # ------------------------------------------------- Cart ---------------------------------------------------------------------- #
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.UUIDField(null=True, blank=True)
+    # table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
     product_price = models.ForeignKey(ProductPrice, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     product_price_dummy = models.CharField(max_length=100, null=True, blank=True)
     tax_dummy = models.CharField(max_length=100, null=True, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
+    # def __str__(self):
+    #     return self.user.user_id
+    
     def __str__(self):
-        return self.user.user_id
+        return self.product_price.name
     
     def save(self, *args, **kwargs):
         if self.product_price.discount_price is not None:
@@ -221,26 +252,5 @@ class Order(models.Model):
             total += cart_item.total
         return total
 
-# ------------------------------------------------- Table ---------------------------------------------------------------------- #
 
-class Table(models.Model):
-    table_number = models.CharField(max_length=10, unique=True)
-    seating_capacity = models.PositiveIntegerField()
-    is_occupied = models.BooleanField(default=False)
-    qr_code = models.ImageField(upload_to='qr_codes', blank=True)
-    cart = models.ManyToManyField(Cart)
-    def __str__(self):
-        return self.table_number
-
-    def save(self, *args, **kwargs):
-        qrcode_img = qrcode.make(self.table_number)
-        canvas = Image.new('RGB', (290, 290), 'white')
-        draw = ImageDraw.Draw(canvas)
-        canvas.paste(qrcode_img)
-        fname = f'qr_code-{self.table_number}.png'
-        buffer = BytesIO()
-        canvas.save(buffer, 'PNG')
-        self.qr_code.save(fname, File(buffer), save=False)
-        canvas.close()
-        super().save(*args, **kwargs)
         
