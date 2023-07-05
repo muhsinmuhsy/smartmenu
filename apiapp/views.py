@@ -518,7 +518,10 @@ def order_type_api(request):
     if request.method == 'GET':
         orders = Order.objects.all()
         serializer = OrderTypeSerializer(orders, many=True)
-        return Response(serializer.data)
+        serialized_data = serializer.data
+        for i, order_data in enumerate(serialized_data):
+            order_data['id'] = orders[i].id  # Add the 'id' field to each order data
+        return Response(serialized_data)
 
     elif request.method == 'POST':
         data = {
@@ -531,6 +534,27 @@ def order_type_api(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET', 'PUT', 'DELETE'])
+def order_detail_api(request, pk):
+    try:
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = OrderSerializer(order, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
     
     
@@ -593,24 +617,4 @@ def order_list_api(request):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def order_detail_api(request, pk):
-    try:
-        order = Order.objects.get(pk=pk)
-    except Order.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = OrderSerializer(order)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = OrderSerializer(order, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        order.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
