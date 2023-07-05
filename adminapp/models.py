@@ -239,7 +239,7 @@ class Order(models.Model):
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=100, choices=STATUS, default='Pending', null=True, blank=True)
-
+    confirm = models.BooleanField(default=False, null=True, blank=True)
     def get_product_total_price(self):
         total_price = Decimal(0)
         for order_item in self.cart.all():

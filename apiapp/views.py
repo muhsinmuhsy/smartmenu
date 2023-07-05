@@ -531,6 +531,7 @@ def order_type_api(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    
 # @api_view(['GET', 'POST'])
 # def order_item_list_api(request):
 #     if request.method == 'GET':

@@ -164,78 +164,80 @@
 			<tbody>
 				{% if orders %}
 					{% for order in orders %}
-					{% if order.status == 'Pending' or order.status == 'Order Confirmed'  %}
-							<tr class="text-center">
-								<td class="text-nowrap" style="padding-top: 13px; font-weight: bold;">{{ order.reference_number }}</td>
-								<td class="text-nowrap" style="padding-top: 13px;">{{ order.date }}</td>
-								<td class="text-nowrap" style="padding-top: 13px;">{{ order.time }}</td>
-								<td class="text-nowrap" style="padding-top: 13px;">
-									<a href="{% url 'type_details' order_id=order.id %}">
-										<span>View Order</span>
-										<span>
-											<i class="bi bi-eye-fill" style="color: #0a58ca;"></i>
-										</span> 
-									</a>
-								</td>
-								<!-- <td class="text-nowrap" style="padding-top: 13px;">{{ order.get_product_total_price }}</td> -->
-								<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_cart_total }}</td>
-								<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_order_type_display }}</td>
-								<td class="text-nowrap" style="padding-top: 13px; padding-left: 50px;">
-									<div class="action-td">
-										<div>
-											<a href="https://api.whatsapp.com/send?phone={{ order.whatsapp_number }}&text=Hello%20I%20would%20like%20to%20contact%20you" target="_blank">
-												<i class="bi bi-whatsapp btn" style="color: #fff; background-color: #009245; font-size: 12px; font-weight: bolder;"></i>
-											</a>
-										</div>
-										
-										<div style="padding-left: 10px;">
-											<form method="post" id="cancel-form-{{ order.id }}">
-												{% csrf_token %}
-												<input type="hidden" name="order_id" value="{{ order.id }}">
-												
-												{% for status in order.STATUS %}
-													{% if status.0 == 'Cancel' %}
-													<button type="button" style="font-size: 12px; font-weight: bold;" onclick="updateStatus('{{ order.id }}', '{{ status.0 }}')" class="btn btn-danger {% if order.status == status.0 %}selected{% endif %}">
-														{{ status.1 }}
-													</button>
-													{% else %}
-													<button type="button" style="font-size: 12px; font-weight: bold;"  onclick="updateStatus('{{ order.id }}', '{{ status.0 }}')" class="btn {% if order.status == status.0 %}btn-primary selected{% else %}btn-secondary{% endif %}">
-														{{ status.1 }}
-													</button>
-													{% endif %}
-												{% endfor %}
-											</form>
-												
-											<script>
-											function updateStatus(orderId, status) {
-												const form = document.getElementById('cancel-form-' + orderId);
-												const formData = new FormData(form);
-												formData.set('status', status); // Update the status value in the form data
-												
-												fetch(form.action, {
-												method: 'POST',
-												body: formData
-												})
-												.then(response => response.text())
-												.then(data => {
-												// Handle the response data, if needed
-												// For example, you can display a success message or update the UI
-												
-												// Refresh the page to reflect the updated status
-												location.reload();
-												})
-												.catch(error => {
-												// Handle any errors that occurred during the request
-												console.error('Error:', error);
-												});
-											}
-											</script>
-										</div>
-									</div>  
-								</td>
-								
-								
-							</tr>
+						{% if order.confirm %}
+							{% if order.status == 'Pending' or order.status == 'Order Confirmed'  %}
+								<tr class="text-center">
+									<td class="text-nowrap" style="padding-top: 13px; font-weight: bold;">{{ order.reference_number }}</td>
+									<td class="text-nowrap" style="padding-top: 13px;">{{ order.date }}</td>
+									<td class="text-nowrap" style="padding-top: 13px;">{{ order.time }}</td>
+									<td class="text-nowrap" style="padding-top: 13px;">
+										<a href="{% url 'type_details' order_id=order.id %}">
+											<span>View Order</span>
+											<span>
+												<i class="bi bi-eye-fill" style="color: #0a58ca;"></i>
+											</span> 
+										</a>
+									</td>
+									<!-- <td class="text-nowrap" style="padding-top: 13px;">{{ order.get_product_total_price }}</td> -->
+									<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_cart_total }}</td>
+									<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_order_type_display }}</td>
+									<td class="text-nowrap" style="padding-top: 13px; padding-left: 50px;">
+										<div class="action-td">
+											<div>
+												<a href="https://api.whatsapp.com/send?phone={{ order.whatsapp_number }}&text=Hello%20I%20would%20like%20to%20contact%20you" target="_blank">
+													<i class="bi bi-whatsapp btn" style="color: #fff; background-color: #009245; font-size: 12px; font-weight: bolder;"></i>
+												</a>
+											</div>
+											
+											<div style="padding-left: 10px;">
+												<form method="post" id="cancel-form-{{ order.id }}">
+													{% csrf_token %}
+													<input type="hidden" name="order_id" value="{{ order.id }}">
+													
+													{% for status in order.STATUS %}
+														{% if status.0 == 'Cancel' %}
+														<button type="button" style="font-size: 12px; font-weight: bold;" onclick="updateStatus('{{ order.id }}', '{{ status.0 }}')" class="btn btn-danger {% if order.status == status.0 %}selected{% endif %}">
+															{{ status.1 }}
+														</button>
+														{% else %}
+														<button type="button" style="font-size: 12px; font-weight: bold;"  onclick="updateStatus('{{ order.id }}', '{{ status.0 }}')" class="btn {% if order.status == status.0 %}btn-primary selected{% else %}btn-secondary{% endif %}">
+															{{ status.1 }}
+														</button>
+														{% endif %}
+													{% endfor %}
+												</form>
+													
+												<script>
+												function updateStatus(orderId, status) {
+													const form = document.getElementById('cancel-form-' + orderId);
+													const formData = new FormData(form);
+													formData.set('status', status); // Update the status value in the form data
+													
+													fetch(form.action, {
+													method: 'POST',
+													body: formData
+													})
+													.then(response => response.text())
+													.then(data => {
+													// Handle the response data, if needed
+													// For example, you can display a success message or update the UI
+													
+													// Refresh the page to reflect the updated status
+													location.reload();
+													})
+													.catch(error => {
+													// Handle any errors that occurred during the request
+													console.error('Error:', error);
+													});
+												}
+												</script>
+											</div>
+										</div>  
+									</td>
+									
+									
+								</tr>
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				{% else %}
