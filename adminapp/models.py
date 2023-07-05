@@ -125,8 +125,11 @@ class Cart(models.Model):
     # def __str__(self):
     #     return self.user.user_id
     
+    # def __str__(self):
+    #     return self.product_price.name
+    
     def __str__(self):
-        return self.product_price.name
+        return f"Cart {self.id} - User: {self.user}"
     
     def save(self, *args, **kwargs):
         if self.product_price.discount_price is not None:
@@ -233,9 +236,8 @@ class Order(models.Model):
     address_three = models.CharField(max_length=500)
     order_note = models.CharField(max_length=500)
     payment_mode = models.CharField(max_length=100, choices=PAYMENT_MODE)
-    # date = models.DateField(auto_now_add=True)
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=100, choices=STATUS, default='Pending', null=True, blank=True)
 
     def get_product_total_price(self):
@@ -250,6 +252,5 @@ class Order(models.Model):
         for cart_item in self.cart.all():
             total += cart_item.total
         return total
-
 
         

@@ -26,6 +26,8 @@ urlpatterns = [
     # path('order-items/', views.order_item_list_api, name='order_item_list'),
     # path('order-items/<int:pk>/', views.order_item_detail_api, name='order_item_detail'),
     
+    
+    path('order-type/', views.order_type_api, name='order_type'),
     path('orders/', views.order_list_api, name='order_list'),
     path('orders/<int:pk>/', views.order_detail_api, name='order_detail'),
 

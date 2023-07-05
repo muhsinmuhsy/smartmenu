@@ -512,6 +512,25 @@ def cart_detail_api(request, pk):
 
 # ----------------------------------------------------------------- Order ------------------------------------------------------ #
 
+
+@api_view(['GET', 'POST'])
+def order_type_api(request):
+    if request.method == 'GET':
+        orders = Order.objects.all()
+        serializer = OrderTypeSerializer(orders, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        data = {
+            'order_type': request.data.get('order_type'),
+            'cart': request.data.get('cart')
+        }
+        serializer = OrderTypeSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 # @api_view(['GET', 'POST'])
 # def order_item_list_api(request):
 #     if request.method == 'GET':
@@ -566,6 +585,9 @@ def order_list_api(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])

@@ -70,6 +70,17 @@ class CartSerializer(serializers.ModelSerializer):
 # -------------------------------------------- Order----------------------------------------------------------- #
 
 
+
+class OrderTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['order_type', 'cart']
+        extra_kwargs = {
+            'order_type': {'required': False},
+            'cart': {'required': False},
+        }
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
