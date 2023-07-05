@@ -456,7 +456,7 @@ def cart_items_view(request):
                 'quantity': item.quantity,
                 'product_price_total' : product_price_total,
                 'tax': item.tax_dummy,
-                'total': str(item.total),
+                
             })
         return Response(cart_item_data)
 
@@ -474,7 +474,7 @@ def cart_items_view(request):
                 'product_price': item.product_price_dummy,
                 'tax': item.tax_dummy,
                 'quantity': item.quantity,
-                'total': str(item.total),
+                
             })
         return Response(cart_item_data)
 
@@ -497,11 +497,10 @@ def cart_detail_api(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = CartSerializer(cart_item, data=request.data)
+        serializer = CartSerializer(cart_item, data={'quantity': request.data.get('quantity')}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         cart_item.delete()
