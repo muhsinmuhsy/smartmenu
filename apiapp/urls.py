@@ -28,8 +28,10 @@ urlpatterns = [
     
     
     path('order-type/', views.order_type_api, name='order_type'),
+    
+    path('order-type/<int:pk>/', views.order_detail_api, name='order_detail'),
+    
     path('orders/', views.order_list_api, name='order_list'),
-    path('orders/<int:pk>/', views.order_detail_api, name='order_detail'),
 
 ]
 
