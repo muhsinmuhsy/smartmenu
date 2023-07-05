@@ -456,6 +456,7 @@ def cart_items_view(request):
                 'quantity': item.quantity,
                 'product_price_total' : product_price_total,
                 'tax': item.tax_dummy,
+                'total': str(item.total),
                 
             })
         return Response(cart_item_data)
