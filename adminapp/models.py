@@ -226,7 +226,7 @@ class Order(models.Model):
         ('Cancel', 'Cancel'),          
     )
     cart = models.ManyToManyField(Cart)
-    reference_number = models.CharField(max_length=100, unique=True)
+    reference_number = models.CharField(max_length=100)
     order_type = models.CharField(max_length=100, choices=TYPE)
     name = models.CharField(max_length=200)
     whatsapp_number = models.CharField(max_length=20)
