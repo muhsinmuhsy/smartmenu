@@ -22,6 +22,7 @@
 	<!-- my css -->
 	<link rel="stylesheet" href="{% static 'css/product-list.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animated.css' %}">
+	<link rel="stylesheet" href="{% static 'css/img-dropdown.css' %}">
 
 </head>
 <body>
@@ -93,7 +94,14 @@
 
 			<div class="col">
 				<div class="admin-profile">
-					<img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 8px; margin-right: 10px;">
+					<div class="dropdown-img">
+						<img src="{% static 'images/admin.png' %}" alt="Image" width="50px" style="padding-top: 8px; margin-right: 10px;">
+						<div class="dropdown-content">
+						<div class="desc"  > <a href="{% url 'password_change' %}">Change Password</a></div>
+						<div class="desc"  > <a href="{% url 'logout' %}">Logout</a></div>
+						
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
