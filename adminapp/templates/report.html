@@ -153,23 +153,25 @@
             <tbody>
                 
                 {% for order in orders %}
-					{% if order.status == 'Order Don' %}
-						<tr class="text-center">
-							<td class="text-nowrap" style="padding-top: 13px; font-weight: bold;">{{ order.reference_number }}</td>
-							<td class="text-nowrap" style="padding-top: 13px;">{{ order.date }}</td>
-							<td class="text-nowrap" style="padding-top: 13px;">{{ order.name }}</td>
-							<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_order_type_display }}</td>
-		
-							<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_cart_total }}</td>
-							<td class="text-nowrap" style="padding-top: 13px;">
-								<a href="{% url 'type_details' order_id=order.id %}">
-									<span>View</span>
-									<span>
-										<i class="bi bi-eye-fill" style="color: #0a58ca;"></i>
-									</span> 
-								</a>
-							</td>
-						</tr>
+					{% if order.confirm %}
+						{% if order.status == 'Order Don' %}
+							<tr class="text-center">
+								<td class="text-nowrap" style="padding-top: 13px; font-weight: bold;">{{ order.reference_number }}</td>
+								<td class="text-nowrap" style="padding-top: 13px;">{{ order.date }}</td>
+								<td class="text-nowrap" style="padding-top: 13px;">{{ order.name }}</td>
+								<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_order_type_display }}</td>
+			
+								<td class="text-nowrap" style="padding-top: 13px;">{{ order.get_cart_total }}</td>
+								<td class="text-nowrap" style="padding-top: 13px;">
+									<a href="{% url 'type_details' order_id=order.id %}">
+										<span>View</span>
+										<span>
+											<i class="bi bi-eye-fill" style="color: #0a58ca;"></i>
+										</span> 
+									</a>
+								</td>
+							</tr>
+						{% endif %}
 					{% endif %}
                 {% endfor%}
             </tbody>

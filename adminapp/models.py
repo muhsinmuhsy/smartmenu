@@ -88,7 +88,7 @@ class User(models.Model):
 # ------------------------------------------------- Table ---------------------------------------------------------------------- #
 
 class Table(models.Model):
-    table_number = models.CharField(max_length=10, unique=True)
+    table_number = models.CharField(max_length=500, unique=True)
     seating_capacity = models.PositiveIntegerField()
     is_occupied = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True)
@@ -96,11 +96,54 @@ class Table(models.Model):
     def __str__(self):
         return self.table_number
 
+    # def save(self, *args, **kwargs):
+    #     qrcode_img = qrcode.make(self.table_number)
+    #     canvas = Image.new('RGB', (290, 290), 'white')
+    #     draw = ImageDraw.Draw(canvas)
+    #     canvas.paste(qrcode_img)
+    #     fname = f'qr_code-{self.table_number}.png'
+    #     buffer = BytesIO()
+    #     canvas.save(buffer, 'PNG')
+    #     self.qr_code.save(fname, File(buffer), save=False)
+    #     canvas.close()
+    #     super().save(*args, **kwargs)
+
+    # def save(self, *args, **kwargs):
+    #     qrcode_img = qrcode.make(self.table_number, box_size=6)  # Adjust box_size as needed
+    #     canvas = Image.new('RGB', (290, 290), 'white')
+    #     draw = ImageDraw.Draw(canvas)
+    #     canvas.paste(qrcode_img)
+    #     fname = f'qr_code-{self.table_number}.png'
+    #     buffer = BytesIO()
+    #     canvas.save(buffer, 'PNG')
+    #     self.qr_code.save(fname, File(buffer), save=False)
+    #     canvas.close()
+    #     super().save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
-        qrcode_img = qrcode.make(self.table_number)
-        canvas = Image.new('RGB', (290, 290), 'white')
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(self.table_number)
+        qr.make(fit=True)
+
+        qrcode_img = qr.make_image(fill_color="black", back_color="white")
+        qr_width, qr_height = qrcode_img.size
+
+        canvas_width = qr_width + 20
+        canvas_height = qr_height + 20
+
+        canvas = Image.new('RGB', (canvas_width, canvas_height), 'white')
         draw = ImageDraw.Draw(canvas)
-        canvas.paste(qrcode_img)
+
+        qr_x = (canvas_width - qr_width) // 2
+        qr_y = (canvas_height - qr_height) // 2
+
+        canvas.paste(qrcode_img, (qr_x, qr_y))
+
         fname = f'qr_code-{self.table_number}.png'
         buffer = BytesIO()
         canvas.save(buffer, 'PNG')
