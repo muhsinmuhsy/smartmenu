@@ -21,6 +21,8 @@ urlpatterns = [
     path('my-carts', views.my_carts_api,),
     path('cart-items/', views.cart_items_view, name='cart_items'),
     path('cart-items/<int:pk>/', views.cart_detail_api, name='cart-detail'),
+
+    # path('cart/count/', views.cart_count, name='cart_count'),
     
     
     # path('order-items/', views.order_item_list_api, name='order_item_list'),

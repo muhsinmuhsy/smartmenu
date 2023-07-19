@@ -508,6 +508,13 @@ def cart_detail_api(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# @api_view(['GET'])
+# def cart_count(request):
+#     user_uuid = request.user.pk  # Assuming request.user is a User instance
+#     cart_count = Cart.objects.filter(user=user_uuid).count()
+#     data = {'cart_count': cart_count}
+#     return Response(data)
+
 
 
 # ----------------------------------------------------------------- Order ------------------------------------------------------ #
